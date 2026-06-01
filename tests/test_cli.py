@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-from exam_materials_studio.cli import build_packs, validate_packs
+from exam_materials_studio.cli import build_packs, inventory_packs, validate_packs
 
 
 class CliTests(unittest.TestCase):
@@ -109,6 +109,53 @@ class CliTests(unittest.TestCase):
 
             self.assertEqual(result, 0)
             self.assertIn("PASS", report_path.read_text(encoding="utf-8"))
+
+    def test_inventory_packs_writes_markdown_and_csv_reports(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.json"
+            report_path = root / "reports" / "inventory.md"
+            csv_path = root / "reports" / "inventory.csv"
+            pack_path.write_text(
+                json.dumps(
+                    {
+                        "title": "Primary Fractions Worksheet",
+                        "slug": "primary-fractions-worksheet",
+                        "subject": "Mathematics",
+                        "level": "Primary",
+                        "resource_type": "worksheet",
+                        "education_system": "General primary",
+                        "course": "Fractions",
+                        "summary": "A short worksheet for equivalent fractions.",
+                        "skills": ["equivalent fractions"],
+                        "items": [
+                            {
+                                "prompt": "Write one half as quarters.",
+                                "answer": "2/4",
+                                "explanation": "Two quarters cover the same amount as one half.",
+                            },
+                            {
+                                "prompt": "Write two quarters as a fraction in simplest form.",
+                                "answer": "1/2",
+                                "explanation": "Both numerator and denominator can be divided by two.",
+                            },
+                            {
+                                "prompt": "Circle the larger fraction: 1/4 or 1/2.",
+                                "answer": "1/2",
+                                "explanation": "One half is larger because it is two quarters.",
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = inventory_packs([pack_path], report_path, csv_path)
+
+            self.assertEqual(result, 0)
+            self.assertIn("Resource Coverage Inventory", report_path.read_text(encoding="utf-8"))
+            self.assertIn("Primary Fractions Worksheet", csv_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

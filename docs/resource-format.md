@@ -90,3 +90,24 @@ or missing explanations.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.
+
+## Inventory Reports
+
+Run:
+
+```bash
+exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+```
+
+The Markdown inventory is designed for maintainers reviewing subject and
+curriculum coverage. It reports total resources, total items, and counts by:
+
+- subject
+- level
+- resource type
+- education system
+- exam board
+- course
+
+The CSV inventory writes one row per resource so maintainers can sort and
+filter coverage in a spreadsheet.
