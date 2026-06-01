@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exam-materials-studio"
-version = "0.1.0"
-description = "Build printable exam revision packs, answer keys, and static catalogs from structured syllabus data."
+version = "0.2.0"
+description = "Build printable education resources, answer keys, validation reports, and static catalogs from structured syllabus data."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -25,4 +25,3 @@ exam-materials-studio = "exam_materials_studio.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
