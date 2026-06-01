@@ -29,7 +29,9 @@ and resource types as the project grows. A scaffold command helps contributors
 start new JSON or CSV resources with the required metadata and starter items,
 and built-in scaffold presets now make common preschool, primary, Cambridge
 IGCSE, Cambridge A Level, AP, IB Diploma, and university resources easier to
-start consistently.
+start consistently. The format also supports learning objectives so resources
+can describe teacher-facing outcomes, not just question skills, which helps the
+project expand beyond exam packs into broader education materials.
 
 ## API Credits Use
 

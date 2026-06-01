@@ -71,7 +71,7 @@ class CliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             pack_path = root / "resource.json"
-            report_path = root / "validation.txt"
+            report_path = root / "reports" / "validation.txt"
             pack_path.write_text(
                 json.dumps(
                     {
@@ -240,6 +240,8 @@ class CliTests(unittest.TestCase):
                         "Mathematics",
                         "--course",
                         "Fractions",
+                        "--learning-objectives",
+                        "Represent equivalent fractions with simple models;Compare fraction models",
                         "--out",
                         str(output_path),
                     ]
@@ -249,6 +251,10 @@ class CliTests(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(data["level"], "Primary")
             self.assertEqual(data["education_system"], "General primary")
+            self.assertEqual(
+                data["learning_objectives"],
+                ["Represent equivalent fractions with simple models", "Compare fraction models"],
+            )
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

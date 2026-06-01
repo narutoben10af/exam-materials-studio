@@ -7,6 +7,10 @@
   "education_system": "General early years",
   "course": "Number sense foundations",
   "summary": "A gentle activity sheet for counting, matching, and comparing small quantities.",
+  "learning_objectives": [
+    "Match small quantities to written numerals.",
+    "Compare groups using more and fewer language."
+  ],
   "skills": ["counting to five", "one-to-one correspondence", "quantity comparison"],
   "items": [
     {
@@ -29,4 +33,3 @@
     }
   ]
 }
-

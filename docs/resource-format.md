@@ -19,6 +19,7 @@ be reviewed, versioned, regenerated, and published without a database.
 - `education_system`: For example `Cambridge International`, `IB`, `AP`, `US Common Core`, or `General early years`.
 - `exam_board`: For exam-board-specific resources, such as `Cambridge`, `Pearson Edexcel`, or `AQA`.
 - `course`: Course or specification identifier, such as `0478 Computer Science`.
+- `learning_objectives`: Teacher-facing objectives describing what learners should be able to do.
 
 These fields make the catalog useful when the repository grows across subjects,
 education systems, age ranges, and course types.
@@ -48,13 +49,15 @@ Supported columns:
 - `course`
 - `summary`
 - `skills`
+- `learning_objectives`
 - `type`
 - `prompt`
 - `answer`
 - `explanation`
 
-Separate multiple skills in the `skills` column with semicolons, for example:
-`classification;materials;properties`.
+Separate multiple skills or learning objectives with semicolons, for example:
+`classification;materials;properties` or
+`Classify everyday materials;Link properties to object uses`.
 
 ## Scaffolding
 
@@ -68,6 +71,7 @@ exam-materials-studio scaffold \
   --resource-type worksheet \
   --education-system "General primary" \
   --course Fractions \
+  --learning-objectives "Represent equivalent fractions with simple models" \
   --skills "fractions;equivalent fractions" \
   --out examples/primary_fractions_starter.json
 ```
@@ -83,6 +87,7 @@ exam-materials-studio scaffold \
   --title "IB Biology Cell Respiration Study Guide" \
   --subject Biology \
   --course "Biology HL" \
+  --learning-objectives "Explain how ATP is produced during respiration" \
   --skills "cell respiration;ATP" \
   --out examples/ib_biology_cell_respiration_study_guide.json
 ```
@@ -129,8 +134,8 @@ exam-materials-studio validate examples/*.csv
 The validator fails on structural errors, such as missing required fields or
 invalid JSON. It also emits warnings for resources that are technically valid
 but weak for publishing, including missing `education_system`, missing `course`,
-exam-specific resources without an `exam_board`, very short resources, and thin
-or missing explanations.
+missing `learning_objectives`, exam-specific resources without an `exam_board`,
+very short resources, and thin or missing explanations.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.

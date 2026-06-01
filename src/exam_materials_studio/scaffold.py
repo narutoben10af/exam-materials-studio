@@ -17,6 +17,7 @@ class ScaffoldSpec:
     exam_board: str
     course: str
     summary: str
+    learning_objectives: tuple[str, ...]
     skills: tuple[str, ...]
 
 
@@ -61,6 +62,7 @@ def _resource_dict(spec: ScaffoldSpec) -> dict[str, object]:
         "exam_board": spec.exam_board,
         "course": spec.course,
         "summary": spec.summary,
+        "learning_objectives": list(spec.learning_objectives),
         "skills": list(spec.skills),
         "items": _starter_items(spec),
     }
@@ -100,6 +102,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "exam_board",
         "course",
         "summary",
+        "learning_objectives",
         "skills",
         "type",
         "prompt",
@@ -121,8 +124,8 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
                     "exam_board": spec.exam_board,
                     "course": spec.course,
                     "summary": spec.summary,
+                    "learning_objectives": ";".join(spec.learning_objectives),
                     "skills": ";".join(spec.skills),
                     **item,
                 }
             )
-

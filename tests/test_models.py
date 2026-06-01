@@ -12,6 +12,10 @@ class PackModelTests(unittest.TestCase):
                 "subject": "Computer Science",
                 "level": "IGCSE",
                 "summary": "A sample pack.",
+                "learning_objectives": [
+                    "Understand how logic gates process binary inputs.",
+                    "Apply truth tables to simple Boolean expressions.",
+                ],
                 "resource_type": "worksheet",
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
@@ -26,6 +30,13 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.education_system, "Cambridge International")
         self.assertEqual(pack.exam_board, "Cambridge")
         self.assertEqual(pack.course, "0478 Computer Science")
+        self.assertEqual(
+            pack.learning_objectives,
+            (
+                "Understand how logic gates process binary inputs.",
+                "Apply truth tables to simple Boolean expressions.",
+            ),
+        )
         self.assertEqual(len(pack.items), 1)
 
     def test_invalid_slug_is_rejected(self):

@@ -70,6 +70,7 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         "course": _cell(first, "course"),
         "summary": _cell(first, "summary"),
         "skills": _split_skills(_cell(first, "skills")),
+        "learning_objectives": _split_skills(_cell(first, "learning_objectives")),
         "items": items,
     }
 
@@ -80,4 +81,3 @@ def _cell(row: dict[str, str | None], field: str) -> str:
 
 def _split_skills(raw_skills: str) -> list[str]:
     return [skill.strip() for skill in raw_skills.split(";") if skill.strip()]
-
