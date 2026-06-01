@@ -12,12 +12,20 @@ class PackModelTests(unittest.TestCase):
                 "subject": "Computer Science",
                 "level": "IGCSE",
                 "summary": "A sample pack.",
+                "resource_type": "worksheet",
+                "education_system": "Cambridge International",
+                "exam_board": "Cambridge",
+                "course": "0478 Computer Science",
                 "skills": ["logic"],
                 "items": [{"prompt": "Question?", "answer": "Answer."}],
             }
         )
 
         self.assertEqual(pack.slug, "sample-pack")
+        self.assertEqual(pack.resource_type, "worksheet")
+        self.assertEqual(pack.education_system, "Cambridge International")
+        self.assertEqual(pack.exam_board, "Cambridge")
+        self.assertEqual(pack.course, "0478 Computer Science")
         self.assertEqual(len(pack.items), 1)
 
     def test_invalid_slug_is_rejected(self):
@@ -34,7 +42,20 @@ class PackModelTests(unittest.TestCase):
                 }
             )
 
+    def test_empty_skills_are_rejected(self):
+        with self.assertRaises(PackValidationError):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Early Years",
+                    "level": "Preschool",
+                    "summary": "A sample pack.",
+                    "skills": [" "],
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
-

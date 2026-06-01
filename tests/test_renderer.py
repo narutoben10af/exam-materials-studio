@@ -1,7 +1,13 @@
 import unittest
 
 from exam_materials_studio.models import pack_from_dict
-from exam_materials_studio.renderer import render_answer_key_markdown, render_catalog_html, render_pack_markdown
+from exam_materials_studio.renderer import (
+    render_answer_key_html,
+    render_answer_key_markdown,
+    render_catalog_html,
+    render_pack_html,
+    render_pack_markdown,
+)
 
 
 class RendererTests(unittest.TestCase):
@@ -13,6 +19,10 @@ class RendererTests(unittest.TestCase):
                 "subject": "Computer Science",
                 "level": "IGCSE",
                 "summary": "Practice logic gates.",
+                "resource_type": "worksheet",
+                "education_system": "Cambridge International",
+                "exam_board": "Cambridge",
+                "course": "0478 Computer Science",
                 "skills": ["truth tables"],
                 "items": [
                     {
@@ -40,9 +50,30 @@ class RendererTests(unittest.TestCase):
         html = render_catalog_html([self.pack])
 
         self.assertIn("boolean-logic.md", html)
+        self.assertIn("boolean-logic.html", html)
         self.assertIn("boolean-logic-answer-key.md", html)
+        self.assertIn("boolean-logic-answer-key.html", html)
+        self.assertIn("Cambridge International / Cambridge / 0478 Computer Science", html)
+
+    def test_catalog_respects_requested_formats(self):
+        html = render_catalog_html([self.pack], formats={"markdown"})
+
+        self.assertIn("boolean-logic.md", html)
+        self.assertNotIn("boolean-logic.html", html)
+
+    def test_resource_html_contains_metadata_without_answer(self):
+        html = render_pack_html(self.pack)
+
+        self.assertIn("Cambridge International", html)
+        self.assertIn("A AND B", html)
+        self.assertNotIn("Both inputs must be 1.", html)
+
+    def test_answer_key_html_contains_explanation(self):
+        html = render_answer_key_html(self.pack)
+
+        self.assertIn("Answer 1", html)
+        self.assertIn("Both inputs must be 1.", html)
 
 
 if __name__ == "__main__":
     unittest.main()
-

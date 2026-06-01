@@ -3,6 +3,10 @@
   "slug": "igcse-economics-key-definitions",
   "subject": "Economics",
   "level": "IGCSE",
+  "resource_type": "definitions-drill",
+  "education_system": "Cambridge International",
+  "exam_board": "Cambridge",
+  "course": "0455 Economics",
   "summary": "Short-answer practice for foundational economics definitions.",
   "skills": ["definitions", "short answers", "exam command words"],
   "items": [
@@ -23,4 +27,3 @@
     }
   ]
 }
-

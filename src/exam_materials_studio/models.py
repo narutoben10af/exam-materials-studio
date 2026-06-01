@@ -9,6 +9,7 @@ class PackItem:
     prompt: str
     answer: str
     explanation: str = ""
+    item_type: str = "question"
 
 
 @dataclass(frozen=True)
@@ -20,6 +21,10 @@ class ExamPack:
     summary: str
     skills: tuple[str, ...]
     items: tuple[PackItem, ...]
+    resource_type: str = "exam-pack"
+    education_system: str = ""
+    exam_board: str = ""
+    course: str = ""
 
 
 class PackValidationError(ValueError):
@@ -34,6 +39,9 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
 
     if not isinstance(data["skills"], list) or not data["skills"]:
         raise PackValidationError("skills must be a non-empty list")
+    skills = tuple(str(skill).strip() for skill in data["skills"] if str(skill).strip())
+    if not skills:
+        raise PackValidationError("skills must include at least one non-empty skill")
 
     if not isinstance(data["items"], list) or not data["items"]:
         raise PackValidationError("items must be a non-empty list")
@@ -45,7 +53,8 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         prompt = _required_text(raw_item, "prompt", f"item {index}")
         answer = _required_text(raw_item, "answer", f"item {index}")
         explanation = str(raw_item.get("explanation", "")).strip()
-        items.append(PackItem(prompt=prompt, answer=answer, explanation=explanation))
+        item_type = str(raw_item.get("type", "question")).strip() or "question"
+        items.append(PackItem(prompt=prompt, answer=answer, explanation=explanation, item_type=item_type))
 
     return ExamPack(
         title=_required_text(data, "title", "pack"),
@@ -53,8 +62,12 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         subject=_required_text(data, "subject", "pack"),
         level=_required_text(data, "level", "pack"),
         summary=_required_text(data, "summary", "pack"),
-        skills=tuple(str(skill).strip() for skill in data["skills"] if str(skill).strip()),
+        skills=skills,
         items=tuple(items),
+        resource_type=str(data.get("resource_type", "exam-pack")).strip() or "exam-pack",
+        education_system=str(data.get("education_system", "")).strip(),
+        exam_board=str(data.get("exam_board", "")).strip(),
+        course=str(data.get("course", "")).strip(),
     )
 
 
@@ -71,4 +84,3 @@ def _required_slug(data: dict[str, Any]) -> str:
     if any(character not in allowed for character in slug):
         raise PackValidationError("slug may only contain lowercase letters, numbers, and hyphens")
     return slug
-

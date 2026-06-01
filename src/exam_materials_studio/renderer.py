@@ -9,8 +9,10 @@ def render_pack_markdown(pack: ExamPack) -> str:
     lines = [
         f"# {pack.title}",
         "",
+        f"**Resource type:** {pack.resource_type}",
         f"**Subject:** {pack.subject}",
         f"**Level:** {pack.level}",
+        *[f"**{label}:** {value}" for label, value in _metadata_fields(pack)],
         "",
         pack.summary,
         "",
@@ -23,7 +25,8 @@ def render_pack_markdown(pack: ExamPack) -> str:
     ]
 
     for index, item in enumerate(pack.items, start=1):
-        lines.extend([f"### Question {index}", "", item.prompt, ""])
+        heading = item.item_type.replace("-", " ").title()
+        lines.extend([f"### {heading} {index}", "", item.prompt, ""])
 
     lines.extend(
         [
@@ -40,8 +43,10 @@ def render_answer_key_markdown(pack: ExamPack) -> str:
     lines = [
         f"# {pack.title} Answer Key",
         "",
+        f"**Resource type:** {pack.resource_type}",
         f"**Subject:** {pack.subject}",
         f"**Level:** {pack.level}",
+        *[f"**{label}:** {value}" for label, value in _metadata_fields(pack)],
         "",
     ]
 
@@ -53,21 +58,97 @@ def render_answer_key_markdown(pack: ExamPack) -> str:
     return "\n".join(lines)
 
 
-def render_catalog_html(packs: list[ExamPack]) -> str:
+def render_pack_html(pack: ExamPack) -> str:
+    item_cards = []
+    for index, item in enumerate(pack.items, start=1):
+        heading = item.item_type.replace("-", " ").title()
+        item_cards.append(
+            "\n".join(
+                [
+                    "<section>",
+                    f"  <h2>{escape(heading)} {index}</h2>",
+                    f"  <p>{escape(item.prompt)}</p>",
+                    "</section>",
+                ]
+            )
+        )
+
+    return _html_page(
+        title=pack.title,
+        body="\n".join(
+            [
+                _resource_header(pack),
+                "<h2>Skills Practised</h2>",
+                "<ul>",
+                *[f"  <li>{escape(skill)}</li>" for skill in pack.skills],
+                "</ul>",
+                "<h2>Activities</h2>",
+                "\n".join(item_cards),
+            ]
+        ),
+    )
+
+
+def render_answer_key_html(pack: ExamPack) -> str:
+    answer_cards = []
+    for index, item in enumerate(pack.items, start=1):
+        answer_cards.append(
+            "\n".join(_answer_key_section(index, item.answer, item.explanation))
+        )
+
+    return _html_page(
+        title=f"{pack.title} Answer Key",
+        body="\n".join([_resource_header(pack), "\n".join(answer_cards)]),
+    )
+
+
+def _answer_key_section(index: int, answer: str, explanation: str) -> list[str]:
+    lines = [
+        "<section>",
+        f"  <h2>Answer {index}</h2>",
+        f"  <p>{escape(answer)}</p>",
+    ]
+    if explanation:
+        lines.append(f"  <p><strong>Explanation:</strong> {escape(explanation)}</p>")
+    lines.append("</section>")
+    return lines
+
+
+def render_catalog_html(packs: list[ExamPack], formats: set[str] | None = None) -> str:
+    formats = formats or {"markdown", "html"}
     cards = []
     for pack in packs:
         skills = ", ".join(pack.skills)
+        metadata = " / ".join(
+            value for value in [pack.education_system, pack.exam_board, pack.course] if value
+        )
+        links = []
+        if "markdown" in formats:
+            links.extend(
+                [
+                    f'  <a href="{escape(pack.slug)}.md">Resource</a>',
+                    f'  <a href="{escape(pack.slug)}-answer-key.md">Answer key</a>',
+                ]
+            )
+        if "html" in formats:
+            links.extend(
+                [
+                    f'  <a href="{escape(pack.slug)}.html">HTML</a>',
+                    f'  <a href="{escape(pack.slug)}-answer-key.html">Answer key HTML</a>',
+                ]
+            )
         cards.append(
             "\n".join(
                 [
                     '<article class="pack-card">',
                     f"  <h2>{escape(pack.title)}</h2>",
                     f"  <p>{escape(pack.summary)}</p>",
+                    f"  <p><strong>Type:</strong> {escape(pack.resource_type)}</p>",
                     f"  <p><strong>Subject:</strong> {escape(pack.subject)}</p>",
                     f"  <p><strong>Level:</strong> {escape(pack.level)}</p>",
+                    *([f"  <p><strong>Track:</strong> {escape(metadata)}</p>"] if metadata else []),
                     f"  <p><strong>Skills:</strong> {escape(skills)}</p>",
-                    f'  <a href="{escape(pack.slug)}.md">Worksheet</a>',
-                    f'  <a href="{escape(pack.slug)}-answer-key.md">Answer key</a>',
+                    *links,
                     "</article>",
                 ]
             )
@@ -93,3 +174,47 @@ def render_catalog_html(packs: list[ExamPack]) -> str:
 </html>
 """
 
+
+def _metadata_fields(pack: ExamPack) -> list[tuple[str, str]]:
+    return [
+        (label, value)
+        for label, value in [
+            ("Education system", pack.education_system),
+            ("Exam board", pack.exam_board),
+            ("Course", pack.course),
+        ]
+        if value
+    ]
+
+
+def _resource_header(pack: ExamPack) -> str:
+    metadata = "\n".join(
+        [
+            f"<p><strong>Resource type:</strong> {escape(pack.resource_type)}</p>",
+            f"<p><strong>Subject:</strong> {escape(pack.subject)}</p>",
+            f"<p><strong>Level:</strong> {escape(pack.level)}</p>",
+            *[f"<p><strong>{escape(label)}:</strong> {escape(value)}</p>" for label, value in _metadata_fields(pack)],
+            f"<p>{escape(pack.summary)}</p>",
+        ]
+    )
+    return f"<header>\n<h1>{escape(pack.title)}</h1>\n{metadata}\n</header>"
+
+
+def _html_page(title: str, body: str) -> str:
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{escape(title)}</title>
+  <style>
+    body {{ font-family: system-ui, sans-serif; line-height: 1.5; margin: 2rem; max-width: 840px; }}
+    header, section {{ border-bottom: 1px solid #d0d7de; padding-bottom: 1rem; margin-bottom: 1rem; }}
+    h1, h2 {{ line-height: 1.2; }}
+  </style>
+</head>
+<body>
+{body}
+</body>
+</html>
+"""

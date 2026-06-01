@@ -15,9 +15,11 @@ Primary maintainer.
 ## Why The Repository Qualifies
 
 Exam Materials Studio is an open-source toolkit for teachers and tutoring
-centres to generate printable revision packs, answer keys, and static catalogs
-from structured syllabus data. It targets a practical education workflow that is
-usually handled with scattered documents and manual formatting.
+centres to generate printable education resources, answer keys, and static
+catalogs from structured syllabus data. It now supports metadata for education
+systems, exam boards, courses, and resource types, which makes it suitable for a
+path beyond exam packs into lesson materials, activity sheets, worksheets, and
+study guides across preschool through university workflows.
 
 ## API Credits Use
 
@@ -31,4 +33,3 @@ notes for new education-material templates.
 This is a new repository. The strongest application should mention concrete
 adoption signals once they exist, such as stars, external users, issues,
 downloads, forks, or school/tutor usage.
-

@@ -1,0 +1,31 @@
+{
+  "title": "University Microeconomics Elasticity Study Guide",
+  "slug": "university-microeconomics-elasticity-study-guide",
+  "subject": "Microeconomics",
+  "level": "University",
+  "resource_type": "study-guide",
+  "education_system": "Higher education",
+  "course": "Introductory Microeconomics",
+  "summary": "A compact study guide for price elasticity of demand and revenue interpretation.",
+  "skills": ["elasticity calculation", "revenue interpretation", "economic reasoning"],
+  "items": [
+    {
+      "type": "concept-check",
+      "prompt": "Explain what it means when price elasticity of demand is less than 1 in absolute value.",
+      "answer": "Demand is price inelastic: quantity demanded changes proportionally less than price.",
+      "explanation": "Inelastic demand usually means total revenue moves in the same direction as price."
+    },
+    {
+      "type": "calculation",
+      "prompt": "Price rises from 10 to 12, and quantity demanded falls from 100 to 90. Use the midpoint method to calculate elasticity.",
+      "answer": "Approximately -0.58.",
+      "explanation": "Percentage quantity change is -10/95. Percentage price change is 2/11. The ratio is about -0.58 depending on rounding; the key interpretation is inelastic."
+    },
+    {
+      "type": "discussion",
+      "prompt": "Why might a medicine with few substitutes have inelastic demand?",
+      "answer": "Consumers may continue buying it despite price changes because it is necessary and substitutes are limited.",
+      "explanation": "Necessity and lack of substitutes are common causes of inelastic demand."
+    }
+  ]
+}
