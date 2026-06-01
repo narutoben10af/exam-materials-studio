@@ -56,6 +56,27 @@ Supported columns:
 Separate multiple skills in the `skills` column with semicolons, for example:
 `classification;materials;properties`.
 
+## Scaffolding
+
+Run:
+
+```bash
+exam-materials-studio scaffold \
+  --title "Primary Fractions Starter" \
+  --subject Mathematics \
+  --level Primary \
+  --resource-type worksheet \
+  --education-system "General primary" \
+  --course Fractions \
+  --skills "fractions;equivalent fractions" \
+  --out examples/primary_fractions_starter.json
+```
+
+The scaffold command writes a valid three-item starter resource with placeholder
+prompts, answers, and explanations. Use `--format csv` for spreadsheet-first
+authoring. Existing files are protected by default; pass `--force` only when
+you intentionally want to replace a scaffold.
+
 ## Outputs
 
 By default the CLI writes:

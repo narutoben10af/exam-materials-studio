@@ -12,6 +12,7 @@ from .renderer import (
     render_pack_html,
     render_pack_markdown,
 )
+from .scaffold import ScaffoldError, ScaffoldSpec, default_slug, scaffold_resource
 from .validator import has_errors, render_validation_report, validate_resources
 
 
@@ -55,6 +56,28 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional path for writing a resource-level CSV inventory",
     )
 
+    scaffold_parser = subparsers.add_parser(
+        "scaffold",
+        help="Create a starter resource JSON or CSV file",
+    )
+    scaffold_parser.add_argument("--title", required=True)
+    scaffold_parser.add_argument("--subject", required=True)
+    scaffold_parser.add_argument("--level", required=True)
+    scaffold_parser.add_argument("--out", required=True, type=Path)
+    scaffold_parser.add_argument("--format", choices=["json", "csv"], default="json")
+    scaffold_parser.add_argument("--slug")
+    scaffold_parser.add_argument("--resource-type", default="worksheet")
+    scaffold_parser.add_argument("--education-system", default="")
+    scaffold_parser.add_argument("--exam-board", default="")
+    scaffold_parser.add_argument("--course", default="")
+    scaffold_parser.add_argument("--summary", default="")
+    scaffold_parser.add_argument(
+        "--skills",
+        default="",
+        help="Semicolon-separated skills, for example: fractions;equivalent fractions",
+    )
+    scaffold_parser.add_argument("--force", action="store_true", help="Overwrite the output file if it exists")
+
     args = parser.parse_args(argv)
     if args.command == "build":
         return build_packs(args.packs, args.out, _parse_formats(args.formats))
@@ -62,6 +85,8 @@ def main(argv: list[str] | None = None) -> int:
         return validate_packs(args.packs, args.report)
     if args.command == "inventory":
         return inventory_packs(args.packs, args.out, args.csv)
+    if args.command == "scaffold":
+        return scaffold_pack(args)
 
     parser.error("unknown command")
     return 2
@@ -131,6 +156,30 @@ def inventory_packs(
     return 0
 
 
+def scaffold_pack(args: argparse.Namespace) -> int:
+    skills = _parse_skills(args.skills) or (args.subject,)
+    summary = args.summary or f"Starter {args.resource_type} for {args.subject} at {args.level} level."
+    spec = ScaffoldSpec(
+        title=args.title,
+        slug=args.slug or default_slug(args.title),
+        subject=args.subject,
+        level=args.level,
+        resource_type=args.resource_type,
+        education_system=args.education_system,
+        exam_board=args.exam_board,
+        course=args.course,
+        summary=summary,
+        skills=skills,
+    )
+    try:
+        scaffold_resource(spec, args.out, args.format, force=args.force)
+    except ScaffoldError as error:
+        print(f"error: {error}")
+        return 1
+    print(f"Created {args.format} scaffold at {args.out}")
+    return 0
+
+
 def _parse_formats(raw_formats: str) -> set[str]:
     formats = {item.strip().lower() for item in raw_formats.split(",") if item.strip()}
     supported = {"markdown", "html"}
@@ -138,3 +187,7 @@ def _parse_formats(raw_formats: str) -> set[str]:
     if unknown:
         raise SystemExit(f"unsupported format(s): {', '.join(sorted(unknown))}")
     return formats or {"markdown", "html"}
+
+
+def _parse_skills(raw_skills: str) -> tuple[str, ...]:
+    return tuple(skill.strip() for skill in raw_skills.split(";") if skill.strip())

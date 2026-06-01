@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-from exam_materials_studio.cli import build_packs, inventory_packs, validate_packs
+from exam_materials_studio.cli import build_packs, inventory_packs, scaffold_pack, validate_packs
 
 
 class CliTests(unittest.TestCase):
@@ -156,6 +156,36 @@ class CliTests(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertIn("Resource Coverage Inventory", report_path.read_text(encoding="utf-8"))
             self.assertIn("Primary Fractions Worksheet", csv_path.read_text(encoding="utf-8"))
+
+    def test_scaffold_pack_creates_json_from_cli_args(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "scaffolds" / "primary-fractions.json"
+            args = type(
+                "Args",
+                (),
+                {
+                    "title": "Primary Fractions",
+                    "subject": "Mathematics",
+                    "level": "Primary",
+                    "out": output_path,
+                    "format": "json",
+                    "slug": None,
+                    "resource_type": "worksheet",
+                    "education_system": "General primary",
+                    "exam_board": "",
+                    "course": "Fractions",
+                    "summary": "",
+                    "skills": "fractions;equivalent fractions",
+                    "force": False,
+                },
+            )()
+
+            with redirect_stdout(StringIO()):
+                result = scaffold_pack(args)
+
+            self.assertEqual(result, 0)
+            self.assertTrue(output_path.exists())
+            self.assertIn("primary-fractions", output_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
