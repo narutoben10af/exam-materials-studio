@@ -72,6 +72,26 @@ exam-materials-studio scaffold \
   --out examples/primary_fractions_starter.json
 ```
 
+To avoid repeating metadata for common education systems, list and apply built-in
+presets:
+
+```bash
+exam-materials-studio presets --out generated/scaffold-presets.md
+
+exam-materials-studio scaffold \
+  --preset ib-dp \
+  --title "IB Biology Cell Respiration Study Guide" \
+  --subject Biology \
+  --course "Biology HL" \
+  --skills "cell respiration;ATP" \
+  --out examples/ib_biology_cell_respiration_study_guide.json
+```
+
+Presets currently cover preschool, primary, Cambridge IGCSE, Cambridge A Level,
+AP, IB Diploma, and university materials. The scaffold still accepts explicit
+metadata flags, and explicit flags override preset defaults when a course or
+school needs a more specific level, board, system, or resource type.
+
 The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, and explanations. Use `--format csv` for spreadsheet-first
 authoring. Existing files are protected by default; pass `--force` only when

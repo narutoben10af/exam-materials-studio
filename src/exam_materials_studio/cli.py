@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .inventory import build_inventory, render_inventory_markdown, write_inventory_csv
 from .loader import ResourceLoadError, load_resource
+from .presets import PresetError, get_preset, render_presets_markdown
 from .renderer import (
     render_answer_key_html,
     render_answer_key_markdown,
@@ -56,19 +57,30 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional path for writing a resource-level CSV inventory",
     )
 
+    presets_parser = subparsers.add_parser(
+        "presets",
+        help="List built-in scaffold presets for common education systems and levels",
+    )
+    presets_parser.add_argument(
+        "--out",
+        type=Path,
+        help="Optional path for writing the Markdown preset list",
+    )
+
     scaffold_parser = subparsers.add_parser(
         "scaffold",
         help="Create a starter resource JSON or CSV file",
     )
     scaffold_parser.add_argument("--title", required=True)
+    scaffold_parser.add_argument("--preset", help="Built-in preset such as primary, cambridge-igcse, ap, or ib-dp")
     scaffold_parser.add_argument("--subject", required=True)
-    scaffold_parser.add_argument("--level", required=True)
+    scaffold_parser.add_argument("--level")
     scaffold_parser.add_argument("--out", required=True, type=Path)
     scaffold_parser.add_argument("--format", choices=["json", "csv"], default="json")
     scaffold_parser.add_argument("--slug")
-    scaffold_parser.add_argument("--resource-type", default="worksheet")
-    scaffold_parser.add_argument("--education-system", default="")
-    scaffold_parser.add_argument("--exam-board", default="")
+    scaffold_parser.add_argument("--resource-type")
+    scaffold_parser.add_argument("--education-system")
+    scaffold_parser.add_argument("--exam-board")
     scaffold_parser.add_argument("--course", default="")
     scaffold_parser.add_argument("--summary", default="")
     scaffold_parser.add_argument(
@@ -85,6 +97,8 @@ def main(argv: list[str] | None = None) -> int:
         return validate_packs(args.packs, args.report)
     if args.command == "inventory":
         return inventory_packs(args.packs, args.out, args.csv)
+    if args.command == "presets":
+        return list_presets(args.out)
     if args.command == "scaffold":
         return scaffold_pack(args)
 
@@ -157,16 +171,30 @@ def inventory_packs(
 
 
 def scaffold_pack(args: argparse.Namespace) -> int:
+    try:
+        preset = get_preset(args.preset)
+    except PresetError as error:
+        print(f"error: {error}")
+        return 1
+
+    level = args.level or (preset.level if preset else None)
+    if not level:
+        print("error: --level is required when --preset is not provided")
+        return 1
+
+    resource_type = args.resource_type or (preset.resource_type if preset else "worksheet")
+    education_system = args.education_system or (preset.education_system if preset else "")
+    exam_board = args.exam_board or (preset.exam_board if preset else "")
     skills = _parse_skills(args.skills) or (args.subject,)
-    summary = args.summary or f"Starter {args.resource_type} for {args.subject} at {args.level} level."
+    summary = args.summary or f"Starter {resource_type} for {args.subject} at {level} level."
     spec = ScaffoldSpec(
         title=args.title,
         slug=args.slug or default_slug(args.title),
         subject=args.subject,
-        level=args.level,
-        resource_type=args.resource_type,
-        education_system=args.education_system,
-        exam_board=args.exam_board,
+        level=level,
+        resource_type=resource_type,
+        education_system=education_system,
+        exam_board=exam_board,
         course=args.course,
         summary=summary,
         skills=skills,
@@ -177,6 +205,15 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         print(f"error: {error}")
         return 1
     print(f"Created {args.format} scaffold at {args.out}")
+    return 0
+
+
+def list_presets(report_path: Path | None = None) -> int:
+    report = render_presets_markdown()
+    print(report, end="")
+    if report_path:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(report, encoding="utf-8")
     return 0
 
 

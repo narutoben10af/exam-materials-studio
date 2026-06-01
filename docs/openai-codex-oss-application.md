@@ -26,7 +26,10 @@ teachers can draft resources in familiar tools before generating Markdown, HTML,
 answer keys, and catalogs. The inventory command gives maintainers a way to
 track coverage across subjects, education systems, exam boards, courses, levels,
 and resource types as the project grows. A scaffold command helps contributors
-start new JSON or CSV resources with the required metadata and starter items.
+start new JSON or CSV resources with the required metadata and starter items,
+and built-in scaffold presets now make common preschool, primary, Cambridge
+IGCSE, Cambridge A Level, AP, IB Diploma, and university resources easier to
+start consistently.
 
 ## API Credits Use
 
