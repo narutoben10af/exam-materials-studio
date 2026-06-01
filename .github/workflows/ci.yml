@@ -28,3 +28,5 @@ jobs:
         run: exam-materials-studio build examples/*.json examples/*.csv --out generated
       - name: Check generated Markdown catalog
         run: test -s generated/index.md
+      - name: Check generated JSON catalog
+        run: test -s generated/index.json

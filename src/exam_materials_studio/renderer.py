@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from html import escape
 
 from .models import ExamPack
@@ -137,6 +138,43 @@ def render_catalog_markdown(packs: list[ExamPack]) -> str:
         )
 
     return "\n".join(lines)
+
+
+def render_catalog_json(packs: list[ExamPack], formats: set[str] | None = None) -> str:
+    formats = formats or {"markdown", "html"}
+    data = {
+        "schema_version": 1,
+        "resource_count": len(packs),
+        "resources": [_catalog_resource(pack, formats) for pack in packs],
+    }
+    return json.dumps(data, indent=2) + "\n"
+
+
+def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
+    files: dict[str, str] = {}
+    if "markdown" in formats:
+        files["markdown"] = f"{pack.slug}.md"
+        files["answer_key_markdown"] = f"{pack.slug}-answer-key.md"
+    if "html" in formats:
+        files["html"] = f"{pack.slug}.html"
+        files["answer_key_html"] = f"{pack.slug}-answer-key.html"
+
+    return {
+        "title": pack.title,
+        "slug": pack.slug,
+        "subject": pack.subject,
+        "level": pack.level,
+        "resource_type": pack.resource_type,
+        "education_system": pack.education_system,
+        "exam_board": pack.exam_board,
+        "course": pack.course,
+        "summary": pack.summary,
+        "skills": list(pack.skills),
+        "learning_objectives": list(pack.learning_objectives),
+        "curriculum_references": list(pack.curriculum_references),
+        "item_count": len(pack.items),
+        "files": files,
+    }
 
 
 def _answer_key_section(index: int, answer: str, explanation: str) -> list[str]:

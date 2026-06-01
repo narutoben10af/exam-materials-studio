@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from exam_materials_studio.models import pack_from_dict
@@ -5,6 +6,7 @@ from exam_materials_studio.renderer import (
     render_answer_key_html,
     render_answer_key_markdown,
     render_catalog_html,
+    render_catalog_json,
     render_catalog_markdown,
     render_pack_html,
     render_pack_markdown,
@@ -78,6 +80,29 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Skills:** truth tables", markdown)
         self.assertIn("[Resource](boolean-logic.md)", markdown)
         self.assertIn("[Answer key](boolean-logic-answer-key.md)", markdown)
+
+    def test_catalog_json_includes_machine_readable_resource_metadata(self):
+        catalog = json.loads(render_catalog_json([self.pack], formats={"markdown", "html"}))
+
+        self.assertEqual(catalog["schema_version"], 1)
+        self.assertEqual(catalog["resource_count"], 1)
+        resource = catalog["resources"][0]
+        self.assertEqual(resource["title"], "Boolean Logic")
+        self.assertEqual(resource["slug"], "boolean-logic")
+        self.assertEqual(resource["subject"], "Computer Science")
+        self.assertEqual(resource["level"], "IGCSE")
+        self.assertEqual(resource["resource_type"], "worksheet")
+        self.assertEqual(resource["education_system"], "Cambridge International")
+        self.assertEqual(resource["exam_board"], "Cambridge")
+        self.assertEqual(resource["course"], "0478 Computer Science")
+        self.assertEqual(resource["skills"], ["truth tables"])
+        self.assertEqual(resource["learning_objectives"], ["Build truth tables for common logic gates.", "Explain Boolean outputs from binary inputs."])
+        self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
+        self.assertEqual(resource["item_count"], 1)
+        self.assertEqual(resource["files"]["markdown"], "boolean-logic.md")
+        self.assertEqual(resource["files"]["answer_key_markdown"], "boolean-logic-answer-key.md")
+        self.assertEqual(resource["files"]["html"], "boolean-logic.html")
+        self.assertEqual(resource["files"]["answer_key_html"], "boolean-logic-answer-key.html")
 
     def test_catalog_respects_requested_formats(self):
         html = render_catalog_html([self.pack], formats={"markdown"})

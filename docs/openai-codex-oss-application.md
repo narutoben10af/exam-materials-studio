@@ -35,6 +35,9 @@ project expand beyond exam packs into broader education materials.
 Curriculum reference metadata lets packs cite syllabus sections, standards, or
 module outcomes, which is important as the project grows across exam boards,
 school systems, and university courses.
+The build output also includes a machine-readable JSON catalog so generated
+resources can be indexed or integrated into static sites and future education
+tools without scraping Markdown or HTML.
 
 ## API Credits Use
 
