@@ -41,7 +41,12 @@ class CliTests(unittest.TestCase):
             self.assertTrue((output_dir / "primary-fractions-worksheet-answer-key.html").exists())
             self.assertTrue((output_dir / "index.html").exists())
             self.assertTrue((output_dir / "index.md").exists())
+            self.assertTrue((output_dir / "index.json").exists())
             self.assertIn("Primary Fractions Worksheet", (output_dir / "index.md").read_text(encoding="utf-8"))
+            catalog = json.loads((output_dir / "index.json").read_text(encoding="utf-8"))
+            self.assertEqual(catalog["resource_count"], 1)
+            self.assertEqual(catalog["resources"][0]["slug"], "primary-fractions-worksheet")
+            self.assertEqual(catalog["resources"][0]["files"]["html"], "primary-fractions-worksheet.html")
 
     def test_build_packs_accepts_csv_resource(self):
         with tempfile.TemporaryDirectory() as tmpdir:

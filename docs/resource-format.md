@@ -116,11 +116,13 @@ By default the CLI writes:
 - Answer key as Markdown.
 - Answer key as HTML.
 - Static `index.md` catalog for GitHub and release-note review.
+- Static `index.json` catalog for search, hosting, and integration workflows.
 - Static `index.html` catalog.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
-HTML catalog is always written so the output directory has a browser entrypoint.
+JSON and HTML catalogs are always written so the output directory has both a
+machine-readable manifest and a browser entrypoint.
 
 ## Validation
 
