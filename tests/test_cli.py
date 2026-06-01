@@ -40,6 +40,8 @@ class CliTests(unittest.TestCase):
             self.assertTrue((output_dir / "primary-fractions-worksheet-answer-key.md").exists())
             self.assertTrue((output_dir / "primary-fractions-worksheet-answer-key.html").exists())
             self.assertTrue((output_dir / "index.html").exists())
+            self.assertTrue((output_dir / "index.md").exists())
+            self.assertIn("Primary Fractions Worksheet", (output_dir / "index.md").read_text(encoding="utf-8"))
 
     def test_build_packs_accepts_csv_resource(self):
         with tempfile.TemporaryDirectory() as tmpdir:

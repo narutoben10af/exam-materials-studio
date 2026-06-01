@@ -10,6 +10,7 @@ from .renderer import (
     render_answer_key_html,
     render_answer_key_markdown,
     render_catalog_html,
+    render_catalog_markdown,
     render_pack_html,
     render_pack_markdown,
 )
@@ -131,6 +132,8 @@ def build_packs(pack_paths: list[Path], output_dir: Path, formats: set[str]) -> 
             )
         packs.append(pack)
 
+    if "markdown" in formats:
+        (output_dir / "index.md").write_text(render_catalog_markdown(packs), encoding="utf-8")
     (output_dir / "index.html").write_text(render_catalog_html(packs, formats=formats), encoding="utf-8")
     print(f"Built {len(packs)} pack(s) into {output_dir}")
     return 0

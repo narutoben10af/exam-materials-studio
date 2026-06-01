@@ -13,7 +13,7 @@ payment workflows, or commercial customer data.
 
 - Builds printable Markdown and HTML resources from structured JSON or CSV.
 - Generates separate answer keys for marking or self-study.
-- Creates a static HTML catalog page for sharing available packs.
+- Creates static Markdown and HTML catalog pages for sharing available packs.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, and courses.
 - Provides scaffold presets for common preschool, primary, exam-board, and
@@ -45,6 +45,7 @@ Generated files:
 - `generated/igcse-computer-science-boolean-logic.html`
 - `generated/igcse-computer-science-boolean-logic-answer-key.md`
 - `generated/igcse-computer-science-boolean-logic-answer-key.html`
+- `generated/index.md`
 - `generated/index.html`
 
 You can also run the module directly:
