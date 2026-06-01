@@ -76,6 +76,26 @@ The Markdown report summarizes resources and item counts by subject, level,
 resource type, education system, exam board, and course. The CSV export gives a
 spreadsheet-friendly row per resource for maintainer review.
 
+## Scaffold New Resources
+
+Use the scaffold command to start a new resource without copying an existing
+example:
+
+```bash
+exam-materials-studio scaffold \
+  --title "Primary Fractions Starter" \
+  --subject Mathematics \
+  --level Primary \
+  --resource-type worksheet \
+  --education-system "General primary" \
+  --course Fractions \
+  --skills "fractions;equivalent fractions" \
+  --out examples/primary_fractions_starter.json
+```
+
+Use `--format csv` to create a spreadsheet-friendly starter instead. The command
+refuses to overwrite existing files unless `--force` is provided.
+
 ## Resource Format
 
 Each resource can be authored as JSON or CSV. JSON is best for hand-edited
@@ -119,6 +139,7 @@ Primary Science Materials,primary-science-materials,Science,Primary,lesson-resou
 
 ```bash
 python3 -m unittest discover -s tests
+python3 -m exam_materials_studio scaffold --title "Primary Fractions Starter" --subject Mathematics --level Primary --resource-type worksheet --education-system "General primary" --course Fractions --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
 python3 -m exam_materials_studio validate examples/*.json examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated
