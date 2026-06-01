@@ -1,0 +1,26 @@
+{
+  "title": "IGCSE Economics Key Definitions",
+  "slug": "igcse-economics-key-definitions",
+  "subject": "Economics",
+  "level": "IGCSE",
+  "summary": "Short-answer practice for foundational economics definitions.",
+  "skills": ["definitions", "short answers", "exam command words"],
+  "items": [
+    {
+      "prompt": "Define opportunity cost.",
+      "answer": "The next best alternative forgone when a choice is made.",
+      "explanation": "The definition should refer to the alternative that is given up."
+    },
+    {
+      "prompt": "Define scarcity.",
+      "answer": "The basic economic problem that resources are limited while wants are unlimited.",
+      "explanation": "Good answers mention both limited resources and unlimited wants."
+    },
+    {
+      "prompt": "Explain one function of money.",
+      "answer": "Money acts as a medium of exchange, allowing goods and services to be traded without barter.",
+      "explanation": "Other valid functions include store of value, unit of account, and standard of deferred payment."
+    }
+  ]
+}
+

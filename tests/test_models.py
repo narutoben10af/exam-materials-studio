@@ -1,0 +1,40 @@
+import unittest
+
+from exam_materials_studio.models import PackValidationError, pack_from_dict
+
+
+class PackModelTests(unittest.TestCase):
+    def test_valid_pack_loads(self):
+        pack = pack_from_dict(
+            {
+                "title": "Sample",
+                "slug": "sample-pack",
+                "subject": "Computer Science",
+                "level": "IGCSE",
+                "summary": "A sample pack.",
+                "skills": ["logic"],
+                "items": [{"prompt": "Question?", "answer": "Answer."}],
+            }
+        )
+
+        self.assertEqual(pack.slug, "sample-pack")
+        self.assertEqual(len(pack.items), 1)
+
+    def test_invalid_slug_is_rejected(self):
+        with self.assertRaises(PackValidationError):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "Bad Slug",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
+
+
+if __name__ == "__main__":
+    unittest.main()
+

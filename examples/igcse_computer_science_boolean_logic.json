@@ -1,0 +1,26 @@
+{
+  "title": "IGCSE Computer Science Boolean Logic",
+  "slug": "igcse-computer-science-boolean-logic",
+  "subject": "Computer Science",
+  "level": "IGCSE",
+  "summary": "Targeted practice for logic gates, Boolean expressions, and truth tables.",
+  "skills": ["logic gates", "truth tables", "Boolean expressions"],
+  "items": [
+    {
+      "prompt": "Complete the output for A AND B when A = 1 and B = 0.",
+      "answer": "0",
+      "explanation": "An AND gate only outputs 1 when both inputs are 1."
+    },
+    {
+      "prompt": "Write the Boolean expression for a NOT gate applied to input X.",
+      "answer": "NOT X",
+      "explanation": "A NOT gate reverses a single input."
+    },
+    {
+      "prompt": "A system sounds an alarm when motion is detected OR the door is opened. Write this as a Boolean expression using M and D.",
+      "answer": "M OR D",
+      "explanation": "The alarm is active when either condition is true."
+    }
+  ]
+}
+
