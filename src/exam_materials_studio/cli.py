@@ -12,6 +12,7 @@ from .renderer import (
     render_pack_html,
     render_pack_markdown,
 )
+from .validator import has_errors, render_validation_report, validate_resources
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -30,9 +31,19 @@ def main(argv: list[str] | None = None) -> int:
         help="Comma-separated output formats: markdown, html",
     )
 
+    validate_parser = subparsers.add_parser("validate", help="Validate one or more resource JSON files")
+    validate_parser.add_argument("packs", nargs="+", type=Path)
+    validate_parser.add_argument(
+        "--report",
+        type=Path,
+        help="Optional path for writing the validation report",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "build":
         return build_packs(args.packs, args.out, _parse_formats(args.formats))
+    if args.command == "validate":
+        return validate_packs(args.packs, args.report)
 
     parser.error("unknown command")
     return 2
@@ -67,6 +78,15 @@ def build_packs(pack_paths: list[Path], output_dir: Path, formats: set[str]) -> 
     (output_dir / "index.html").write_text(render_catalog_html(packs, formats=formats), encoding="utf-8")
     print(f"Built {len(packs)} pack(s) into {output_dir}")
     return 0
+
+
+def validate_packs(pack_paths: list[Path], report_path: Path | None = None) -> int:
+    results = validate_resources(pack_paths)
+    report = render_validation_report(results)
+    print(report, end="")
+    if report_path:
+        report_path.write_text(report, encoding="utf-8")
+    return 1 if has_errors(results) else 0
 
 
 def _parse_formats(raw_formats: str) -> set[str]:

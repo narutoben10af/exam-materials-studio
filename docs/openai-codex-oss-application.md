@@ -19,7 +19,9 @@ centres to generate printable education resources, answer keys, and static
 catalogs from structured syllabus data. It now supports metadata for education
 systems, exam boards, courses, and resource types, which makes it suitable for a
 path beyond exam packs into lesson materials, activity sheets, worksheets, and
-study guides across preschool through university workflows.
+study guides across preschool through university workflows. The repository also
+includes a validation command that maintainers can use to triage resource
+quality before publishing.
 
 ## API Credits Use
 

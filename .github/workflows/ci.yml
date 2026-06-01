@@ -16,5 +16,7 @@ jobs:
         run: python -m pip install -e .
       - name: Run tests
         run: python -m unittest discover -s tests
+      - name: Validate sample resources
+        run: exam-materials-studio validate examples/*.json
       - name: Build sample packs
         run: exam-materials-studio build examples/*.json --out generated
