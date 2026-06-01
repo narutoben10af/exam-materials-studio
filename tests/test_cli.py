@@ -114,8 +114,8 @@ class CliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             pack_path = root / "resource.json"
-            report_path = root / "inventory.md"
-            csv_path = root / "inventory.csv"
+            report_path = root / "reports" / "inventory.md"
+            csv_path = root / "reports" / "inventory.csv"
             pack_path.write_text(
                 json.dumps(
                     {

@@ -123,8 +123,10 @@ def inventory_packs(
     report = render_inventory_markdown(inventory)
     print(report, end="")
     if report_path:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(report, encoding="utf-8")
     if csv_path:
+        csv_path.parent.mkdir(parents=True, exist_ok=True)
         write_inventory_csv(inventory, csv_path)
     return 0
 
