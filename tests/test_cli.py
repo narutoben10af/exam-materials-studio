@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-from exam_materials_studio.cli import build_packs, inventory_packs, scaffold_pack, validate_packs
+from exam_materials_studio.cli import build_packs, inventory_packs, list_presets, main, scaffold_pack, validate_packs
 
 
 class CliTests(unittest.TestCase):
@@ -165,6 +165,7 @@ class CliTests(unittest.TestCase):
                 (),
                 {
                     "title": "Primary Fractions",
+                    "preset": None,
                     "subject": "Mathematics",
                     "level": "Primary",
                     "out": output_path,
@@ -186,6 +187,167 @@ class CliTests(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertTrue(output_path.exists())
             self.assertIn("primary-fractions", output_path.read_text(encoding="utf-8"))
+
+    def test_scaffold_pack_applies_preset_when_level_is_omitted(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "scaffolds" / "igcse-chemistry.json"
+            args = type(
+                "Args",
+                (),
+                {
+                    "title": "IGCSE Chemistry Acids Starter",
+                    "preset": "cambridge-igcse",
+                    "subject": "Chemistry",
+                    "level": None,
+                    "out": output_path,
+                    "format": "json",
+                    "slug": None,
+                    "resource_type": None,
+                    "education_system": None,
+                    "exam_board": None,
+                    "course": "0620 Chemistry",
+                    "summary": "",
+                    "skills": "acids;bases",
+                    "force": False,
+                },
+            )()
+
+            with redirect_stdout(StringIO()):
+                result = scaffold_pack(args)
+
+            data = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(result, 0)
+            self.assertEqual(data["level"], "IGCSE")
+            self.assertEqual(data["resource_type"], "exam-practice")
+            self.assertEqual(data["education_system"], "Cambridge International")
+            self.assertEqual(data["exam_board"], "Cambridge")
+
+    def test_main_scaffold_accepts_preset_without_level_argument(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "scaffolds" / "primary-fractions.json"
+
+            with redirect_stdout(StringIO()):
+                result = main(
+                    [
+                        "scaffold",
+                        "--preset",
+                        "primary",
+                        "--title",
+                        "Primary Fractions",
+                        "--subject",
+                        "Mathematics",
+                        "--course",
+                        "Fractions",
+                        "--out",
+                        str(output_path),
+                    ]
+                )
+
+            data = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(result, 0)
+            self.assertEqual(data["level"], "Primary")
+            self.assertEqual(data["education_system"], "General primary")
+
+    def test_scaffold_pack_requires_level_without_preset(self):
+        args = type(
+            "Args",
+            (),
+            {
+                "title": "Untyped Resource",
+                "preset": None,
+                "subject": "Mathematics",
+                "level": None,
+                "out": Path("resource.json"),
+                "format": "json",
+                "slug": None,
+                "resource_type": None,
+                "education_system": None,
+                "exam_board": None,
+                "course": "",
+                "summary": "",
+                "skills": "",
+                "force": False,
+            },
+        )()
+
+        with redirect_stdout(StringIO()) as stdout:
+            result = scaffold_pack(args)
+
+        self.assertEqual(result, 1)
+        self.assertIn("--level is required", stdout.getvalue())
+
+    def test_scaffold_pack_reports_unknown_preset(self):
+        args = type(
+            "Args",
+            (),
+            {
+                "title": "Mystery Resource",
+                "preset": "unknown-system",
+                "subject": "Mathematics",
+                "level": None,
+                "out": Path("resource.json"),
+                "format": "json",
+                "slug": None,
+                "resource_type": None,
+                "education_system": None,
+                "exam_board": None,
+                "course": "",
+                "summary": "",
+                "skills": "",
+                "force": False,
+            },
+        )()
+
+        with redirect_stdout(StringIO()) as stdout:
+            result = scaffold_pack(args)
+
+        self.assertEqual(result, 1)
+        self.assertIn("unknown preset: unknown-system", stdout.getvalue())
+
+    def test_scaffold_pack_allows_explicit_fields_to_override_preset(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "scaffolds" / "primary-history.csv"
+            args = type(
+                "Args",
+                (),
+                {
+                    "title": "History Source Analysis",
+                    "preset": "cambridge-igcse",
+                    "subject": "History",
+                    "level": "Primary",
+                    "out": output_path,
+                    "format": "csv",
+                    "slug": None,
+                    "resource_type": "discussion-guide",
+                    "education_system": "Local primary",
+                    "exam_board": "District",
+                    "course": "History",
+                    "summary": "",
+                    "skills": "sources",
+                    "force": False,
+                },
+            )()
+
+            with redirect_stdout(StringIO()):
+                result = scaffold_pack(args)
+
+            output = output_path.read_text(encoding="utf-8")
+            self.assertEqual(result, 0)
+            self.assertIn("Primary", output)
+            self.assertIn("discussion-guide", output)
+            self.assertIn("Local primary", output)
+            self.assertIn("District", output)
+
+    def test_list_presets_writes_markdown_report(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "reports" / "presets.md"
+
+            with redirect_stdout(StringIO()) as stdout:
+                result = list_presets(output_path)
+
+            self.assertEqual(result, 0)
+            self.assertIn("cambridge-igcse", stdout.getvalue())
+            self.assertIn("university", output_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

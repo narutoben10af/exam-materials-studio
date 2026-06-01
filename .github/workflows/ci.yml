@@ -16,8 +16,10 @@ jobs:
         run: python -m pip install -e .
       - name: Run tests
         run: python -m unittest discover -s tests
+      - name: List scaffold presets
+        run: exam-materials-studio presets --out generated/scaffold-presets.md
       - name: Scaffold sample resource
-        run: exam-materials-studio scaffold --title "Primary Fractions Starter" --subject Mathematics --level Primary --resource-type worksheet --education-system "General primary" --course Fractions --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+        run: exam-materials-studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
       - name: Validate sample resources
         run: exam-materials-studio validate examples/*.json examples/*.csv
       - name: Inventory sample coverage

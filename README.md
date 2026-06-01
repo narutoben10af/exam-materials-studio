@@ -16,6 +16,8 @@ payment workflows, or commercial customer data.
 - Creates a static HTML catalog page for sharing available packs.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, and courses.
+- Provides scaffold presets for common preschool, primary, exam-board, and
+  university workflows.
 - Ships with sample resources from preschool through university level.
 
 ## Why This Is Useful
@@ -93,6 +95,26 @@ exam-materials-studio scaffold \
   --out examples/primary_fractions_starter.json
 ```
 
+For common systems and levels, use a preset instead of repeating the same
+metadata:
+
+```bash
+exam-materials-studio presets
+
+exam-materials-studio scaffold \
+  --preset cambridge-igcse \
+  --title "IGCSE Chemistry Acids Starter" \
+  --subject Chemistry \
+  --course "0620 Chemistry" \
+  --skills "acids;bases" \
+  --out examples/igcse_chemistry_acids_starter.json
+```
+
+Built-in presets cover `preschool`, `primary`, `cambridge-igcse`,
+`cambridge-a-level`, `ap`, `ib-dp`, and `university`. Explicit flags such as
+`--level`, `--resource-type`, `--education-system`, and `--exam-board` override
+the preset when a resource needs a local variation.
+
 Use `--format csv` to create a spreadsheet-friendly starter instead. The command
 refuses to overwrite existing files unless `--force` is provided.
 
@@ -139,7 +161,8 @@ Primary Science Materials,primary-science-materials,Science,Primary,lesson-resou
 
 ```bash
 python3 -m unittest discover -s tests
-python3 -m exam_materials_studio scaffold --title "Primary Fractions Starter" --subject Mathematics --level Primary --resource-type worksheet --education-system "General primary" --course Fractions --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
 python3 -m exam_materials_studio validate examples/*.json examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated
