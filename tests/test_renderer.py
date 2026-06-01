@@ -20,6 +20,10 @@ class RendererTests(unittest.TestCase):
                 "subject": "Computer Science",
                 "level": "IGCSE",
                 "summary": "Practice logic gates.",
+                "learning_objectives": [
+                    "Build truth tables for common logic gates.",
+                    "Explain Boolean outputs from binary inputs.",
+                ],
                 "resource_type": "worksheet",
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
@@ -38,6 +42,8 @@ class RendererTests(unittest.TestCase):
     def test_pack_markdown_contains_question_not_answer(self):
         markdown = render_pack_markdown(self.pack)
 
+        self.assertIn("## Learning Objectives", markdown)
+        self.assertIn("Build truth tables for common logic gates.", markdown)
         self.assertIn("A AND B", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
 
@@ -79,6 +85,8 @@ class RendererTests(unittest.TestCase):
     def test_resource_html_contains_metadata_without_answer(self):
         html = render_pack_html(self.pack)
 
+        self.assertIn("Learning Objectives", html)
+        self.assertIn("Build truth tables for common logic gates.", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)
         self.assertNotIn("Both inputs must be 1.", html)

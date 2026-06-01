@@ -8,6 +8,10 @@
   "exam_board": "Cambridge",
   "course": "0455 Economics",
   "summary": "Short-answer practice for foundational economics definitions.",
+  "learning_objectives": [
+    "Recall core IGCSE Economics definitions accurately.",
+    "Use exam command words to frame concise short answers."
+  ],
   "skills": ["definitions", "short answers", "exam command words"],
   "items": [
     {

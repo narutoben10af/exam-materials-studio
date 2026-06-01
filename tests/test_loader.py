@@ -12,10 +12,10 @@ class LoaderTests(unittest.TestCase):
             path.write_text(
                 "\n".join(
                     [
-                        "title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,type,prompt,answer,explanation",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,activity,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,question,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,discussion,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
+                        "title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,type,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,activity,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,question,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,discussion,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
                     ]
                 ),
                 encoding="utf-8",
@@ -26,6 +26,10 @@ class LoaderTests(unittest.TestCase):
             self.assertEqual(pack.title, "Primary Science")
             self.assertEqual(pack.slug, "primary-science")
             self.assertEqual(pack.skills, ("classification", "properties"))
+            self.assertEqual(
+                pack.learning_objectives,
+                ("Classify everyday materials", "Link properties to uses"),
+            )
             self.assertEqual(len(pack.items), 3)
             self.assertEqual(pack.items[0].item_type, "activity")
 
@@ -56,4 +60,3 @@ class LoaderTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

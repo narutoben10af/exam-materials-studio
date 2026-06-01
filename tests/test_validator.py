@@ -22,6 +22,10 @@ class ValidatorTests(unittest.TestCase):
                         "exam_board": "Cambridge",
                         "course": "9700 Biology",
                         "summary": "Practice on enzyme structure and rates of reaction.",
+                        "learning_objectives": [
+                            "Describe how enzyme structure supports catalysis.",
+                            "Interpret rate changes in enzyme experiments.",
+                        ],
                         "skills": ["enzyme structure", "reaction rates"],
                         "items": [
                             {
@@ -85,9 +89,9 @@ class ValidatorTests(unittest.TestCase):
             self.assertFalse(has_errors([result]))
             self.assertIn("Warnings:", report)
             self.assertIn("education_system is missing", report)
+            self.assertIn("learning_objectives is missing", report)
             self.assertIn("thin or missing explanations", report)
 
 
 if __name__ == "__main__":
     unittest.main()
-

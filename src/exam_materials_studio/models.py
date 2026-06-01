@@ -25,6 +25,7 @@ class ExamPack:
     education_system: str = ""
     exam_board: str = ""
     course: str = ""
+    learning_objectives: tuple[str, ...] = ()
 
 
 class PackValidationError(ValueError):
@@ -42,6 +43,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
     skills = tuple(str(skill).strip() for skill in data["skills"] if str(skill).strip())
     if not skills:
         raise PackValidationError("skills must include at least one non-empty skill")
+    learning_objectives = _optional_text_list(data.get("learning_objectives", []), "learning_objectives")
 
     if not isinstance(data["items"], list) or not data["items"]:
         raise PackValidationError("items must be a non-empty list")
@@ -68,6 +70,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         education_system=str(data.get("education_system", "")).strip(),
         exam_board=str(data.get("exam_board", "")).strip(),
         course=str(data.get("course", "")).strip(),
+        learning_objectives=learning_objectives,
     )
 
 
@@ -84,3 +87,11 @@ def _required_slug(data: dict[str, Any]) -> str:
     if any(character not in allowed for character in slug):
         raise PackValidationError("slug may only contain lowercase letters, numbers, and hyphens")
     return slug
+
+
+def _optional_text_list(value: Any, field: str) -> tuple[str, ...]:
+    if value in (None, ""):
+        return ()
+    if not isinstance(value, list):
+        raise PackValidationError(f"{field} must be a list when provided")
+    return tuple(str(item).strip() for item in value if str(item).strip())

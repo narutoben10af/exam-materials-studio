@@ -8,6 +8,10 @@
   "exam_board": "Cambridge",
   "course": "0478 Computer Science",
   "summary": "Targeted practice for logic gates, Boolean expressions, and truth tables.",
+  "learning_objectives": [
+    "Complete truth-table outputs for common logic gates.",
+    "Translate simple real-world rules into Boolean expressions."
+  ],
   "skills": ["logic gates", "truth tables", "Boolean expressions"],
   "items": [
     {

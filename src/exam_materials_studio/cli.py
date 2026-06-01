@@ -85,6 +85,11 @@ def main(argv: list[str] | None = None) -> int:
     scaffold_parser.add_argument("--course", default="")
     scaffold_parser.add_argument("--summary", default="")
     scaffold_parser.add_argument(
+        "--learning-objectives",
+        default="",
+        help="Semicolon-separated learning objectives for the resource",
+    )
+    scaffold_parser.add_argument(
         "--skills",
         default="",
         help="Semicolon-separated skills, for example: fractions;equivalent fractions",
@@ -144,6 +149,7 @@ def validate_packs(pack_paths: list[Path], report_path: Path | None = None) -> i
     report = render_validation_report(results)
     print(report, end="")
     if report_path:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(report, encoding="utf-8")
     return 1 if has_errors(results) else 0
 
@@ -188,6 +194,9 @@ def scaffold_pack(args: argparse.Namespace) -> int:
     resource_type = args.resource_type or (preset.resource_type if preset else "worksheet")
     education_system = args.education_system or (preset.education_system if preset else "")
     exam_board = args.exam_board or (preset.exam_board if preset else "")
+    learning_objectives = _parse_skills(getattr(args, "learning_objectives", ""))
+    if not learning_objectives:
+        learning_objectives = (f"Practise {args.subject} skills through {resource_type} tasks.",)
     skills = _parse_skills(args.skills) or (args.subject,)
     summary = args.summary or f"Starter {resource_type} for {args.subject} at {level} level."
     spec = ScaffoldSpec(
@@ -200,6 +209,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         exam_board=exam_board,
         course=args.course,
         summary=summary,
+        learning_objectives=learning_objectives,
         skills=skills,
     )
     try:

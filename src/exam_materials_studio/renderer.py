@@ -16,6 +16,7 @@ def render_pack_markdown(pack: ExamPack) -> str:
         "",
         pack.summary,
         "",
+        *_learning_objectives_markdown(pack),
         "## Skills Practised",
         "",
         *[f"- {skill}" for skill in pack.skills],
@@ -78,6 +79,7 @@ def render_pack_html(pack: ExamPack) -> str:
         body="\n".join(
             [
                 _resource_header(pack),
+                *_learning_objectives_html(pack),
                 "<h2>Skills Practised</h2>",
                 "<ul>",
                 *[f"  <li>{escape(skill)}</li>" for skill in pack.skills],
@@ -217,6 +219,28 @@ def _metadata_fields(pack: ExamPack) -> list[tuple[str, str]]:
             ("Course", pack.course),
         ]
         if value
+    ]
+
+
+def _learning_objectives_markdown(pack: ExamPack) -> list[str]:
+    if not pack.learning_objectives:
+        return []
+    return [
+        "## Learning Objectives",
+        "",
+        *[f"- {objective}" for objective in pack.learning_objectives],
+        "",
+    ]
+
+
+def _learning_objectives_html(pack: ExamPack) -> list[str]:
+    if not pack.learning_objectives:
+        return []
+    return [
+        "<h2>Learning Objectives</h2>",
+        "<ul>",
+        *[f"  <li>{escape(objective)}</li>" for objective in pack.learning_objectives],
+        "</ul>",
     ]
 
 
