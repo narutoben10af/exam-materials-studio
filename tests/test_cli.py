@@ -41,6 +41,30 @@ class CliTests(unittest.TestCase):
             self.assertTrue((output_dir / "primary-fractions-worksheet-answer-key.html").exists())
             self.assertTrue((output_dir / "index.html").exists())
 
+    def test_build_packs_accepts_csv_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.csv"
+            output_dir = root / "generated"
+            pack_path.write_text(
+                "\n".join(
+                    [
+                        "title,slug,subject,level,resource_type,education_system,course,summary,skills,type,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,Materials,A materials lesson,classification;properties,activity,Sort objects by material.,Objects are grouped by material.,This checks classification by observable material properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,Materials,A materials lesson,classification;properties,question,Name one property of glass.,Glass is transparent.,Transparency is a useful property for windows.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,Materials,A materials lesson,classification;properties,discussion,Why use plastic for bottles?,Plastic is waterproof and light.,This links material properties to object function.",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = build_packs([pack_path], output_dir, {"markdown", "html"})
+
+            self.assertEqual(result, 0)
+            self.assertTrue((output_dir / "primary-science.md").exists())
+            self.assertTrue((output_dir / "primary-science.html").exists())
+
     def test_validate_packs_writes_report(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)

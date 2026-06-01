@@ -1,7 +1,7 @@
 # Resource Format
 
-Exam Materials Studio uses a small JSON format so education resources can be
-reviewed, versioned, regenerated, and published without a database.
+Exam Materials Studio uses small JSON and CSV formats so education resources can
+be reviewed, versioned, regenerated, and published without a database.
 
 ## Required Fields
 
@@ -30,6 +30,32 @@ education systems, age ranges, and course types.
 - `explanation`: Optional reasoning for answer keys.
 - `type`: Optional item type such as `question`, `activity`, `teacher-note`, `calculation`, or `discussion`.
 
+## CSV Input
+
+CSV input is intended for spreadsheet-first workflows. Use one row per resource
+item. The first row supplies resource-level metadata, and every row supplies one
+item.
+
+Supported columns:
+
+- `title`
+- `slug`
+- `subject`
+- `level`
+- `resource_type`
+- `education_system`
+- `exam_board`
+- `course`
+- `summary`
+- `skills`
+- `type`
+- `prompt`
+- `answer`
+- `explanation`
+
+Separate multiple skills in the `skills` column with semicolons, for example:
+`classification;materials;properties`.
+
 ## Outputs
 
 By default the CLI writes:
@@ -48,6 +74,12 @@ Run:
 
 ```bash
 exam-materials-studio validate examples/*.json
+```
+
+CSV files can be validated with the same command:
+
+```bash
+exam-materials-studio validate examples/*.csv
 ```
 
 The validator fails on structural errors, such as missing required fields or

@@ -21,7 +21,9 @@ systems, exam boards, courses, and resource types, which makes it suitable for a
 path beyond exam packs into lesson materials, activity sheets, worksheets, and
 study guides across preschool through university workflows. The repository also
 includes a validation command that maintainers can use to triage resource
-quality before publishing.
+quality before publishing. It also supports spreadsheet-friendly CSV input, so
+teachers can draft resources in familiar tools before generating Markdown, HTML,
+answer keys, and catalogs.
 
 ## API Credits Use
 
