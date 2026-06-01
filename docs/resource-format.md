@@ -42,3 +42,19 @@ By default the CLI writes:
 
 Use `--formats markdown` or `--formats html` to limit output formats.
 
+## Validation
+
+Run:
+
+```bash
+exam-materials-studio validate examples/*.json
+```
+
+The validator fails on structural errors, such as missing required fields or
+invalid JSON. It also emits warnings for resources that are technically valid
+but weak for publishing, including missing `education_system`, missing `course`,
+exam-specific resources without an `exam_board`, very short resources, and thin
+or missing explanations.
+
+Use `--report path/to/report.txt` to save a report for release checks or pull
+request review.

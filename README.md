@@ -51,6 +51,19 @@ You can also run the module directly:
 python3 -m exam_materials_studio build examples/igcse_economics_definitions.json --out generated
 ```
 
+## Validate Resources
+
+Before publishing or adding a new subject area, run validation:
+
+```bash
+exam-materials-studio validate examples/*.json --report generated/validation-report.txt
+```
+
+Validation reports separate structural errors from quality warnings. Errors
+return a non-zero exit code. Warnings call out weaker maintainer signals such as
+missing education-system metadata, missing course fields, thin answer-key
+explanations, or very short resources.
+
 ## Resource Format
 
 Each resource is JSON with this shape. The `resource_type`,
@@ -83,6 +96,7 @@ for catalogs that span different levels and curricula.
 
 ```bash
 python3 -m unittest discover -s tests
+python3 -m exam_materials_studio validate examples/*.json
 python3 -m exam_materials_studio build examples/*.json --out generated
 ```
 
