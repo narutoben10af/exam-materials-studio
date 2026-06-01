@@ -23,7 +23,9 @@ study guides across preschool through university workflows. The repository also
 includes a validation command that maintainers can use to triage resource
 quality before publishing. It also supports spreadsheet-friendly CSV input, so
 teachers can draft resources in familiar tools before generating Markdown, HTML,
-answer keys, and catalogs.
+answer keys, and catalogs. The inventory command gives maintainers a way to
+track coverage across subjects, education systems, exam boards, courses, levels,
+and resource types as the project grows.
 
 ## API Credits Use
 

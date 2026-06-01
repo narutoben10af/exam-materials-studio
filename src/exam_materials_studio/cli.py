@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from .inventory import build_inventory, render_inventory_markdown, write_inventory_csv
 from .loader import ResourceLoadError, load_resource
 from .renderer import (
     render_answer_key_html,
@@ -38,11 +39,29 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional path for writing the validation report",
     )
 
+    inventory_parser = subparsers.add_parser(
+        "inventory",
+        help="Summarize resource coverage across subjects, levels, systems, boards, and courses",
+    )
+    inventory_parser.add_argument("packs", nargs="+", type=Path)
+    inventory_parser.add_argument(
+        "--out",
+        type=Path,
+        help="Optional path for writing the Markdown inventory report",
+    )
+    inventory_parser.add_argument(
+        "--csv",
+        type=Path,
+        help="Optional path for writing a resource-level CSV inventory",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "build":
         return build_packs(args.packs, args.out, _parse_formats(args.formats))
     if args.command == "validate":
         return validate_packs(args.packs, args.report)
+    if args.command == "inventory":
+        return inventory_packs(args.packs, args.out, args.csv)
 
     parser.error("unknown command")
     return 2
@@ -85,6 +104,29 @@ def validate_packs(pack_paths: list[Path], report_path: Path | None = None) -> i
     if report_path:
         report_path.write_text(report, encoding="utf-8")
     return 1 if has_errors(results) else 0
+
+
+def inventory_packs(
+    pack_paths: list[Path],
+    report_path: Path | None = None,
+    csv_path: Path | None = None,
+) -> int:
+    packs = []
+    for pack_path in pack_paths:
+        try:
+            packs.append(load_resource(pack_path))
+        except ResourceLoadError as error:
+            print(f"error: {pack_path}: {error}")
+            return 1
+
+    inventory = build_inventory(packs)
+    report = render_inventory_markdown(inventory)
+    print(report, end="")
+    if report_path:
+        report_path.write_text(report, encoding="utf-8")
+    if csv_path:
+        write_inventory_csv(inventory, csv_path)
+    return 0
 
 
 def _parse_formats(raw_formats: str) -> set[str]:

@@ -64,6 +64,18 @@ return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
 explanations, or very short resources.
 
+## Inventory Coverage
+
+Use the inventory command to see what the repository currently covers:
+
+```bash
+exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+```
+
+The Markdown report summarizes resources and item counts by subject, level,
+resource type, education system, exam board, and course. The CSV export gives a
+spreadsheet-friendly row per resource for maintainer review.
+
 ## Resource Format
 
 Each resource can be authored as JSON or CSV. JSON is best for hand-edited
@@ -108,6 +120,7 @@ Primary Science Materials,primary-science-materials,Science,Primary,lesson-resou
 ```bash
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio validate examples/*.json examples/*.csv
+python3 -m exam_materials_studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated
 ```
 
