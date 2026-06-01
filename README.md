@@ -18,6 +18,8 @@ payment workflows, or commercial customer data.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, courses, and
   curriculum references.
+- Tracks optional item difficulty metadata for foundation, core, and extension
+  activities.
 - Provides scaffold presets for common preschool, primary, exam-board, and
   university workflows.
 - Ships with sample resources from preschool through university level.
@@ -69,7 +71,7 @@ Validation reports separate structural errors from quality warnings. Errors
 return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
 explanations, missing learning objectives, missing curriculum references, or
-very short resources.
+missing item difficulty, or very short resources.
 
 ## Inventory Coverage
 
@@ -135,7 +137,8 @@ structured files. CSV is useful when teachers are drafting in a spreadsheet.
 JSON resources use this shape. The `resource_type`, `education_system`,
 `exam_board`, `course`, `learning_objectives`, and `curriculum_references`
 fields are optional, but useful for catalogs and teacher-facing resources that
-span different levels and curricula.
+span different levels and curricula. Each item can also include optional
+`difficulty` metadata using `foundation`, `core`, or `extension`.
 
 ```json
 {
@@ -159,6 +162,7 @@ span different levels and curricula.
   "skills": ["truth tables", "logic gates"],
   "items": [
     {
+      "difficulty": "foundation",
       "prompt": "State the output of A AND B when A = 1 and B = 0.",
       "answer": "0",
       "explanation": "AND only outputs 1 when both inputs are 1."
@@ -172,8 +176,8 @@ metadata is read from the first row. `skills`, `learning_objectives`, and
 `curriculum_references` are separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,curriculum_references,type,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 ## Development
@@ -192,7 +196,8 @@ python3 -m exam_materials_studio build examples/*.json examples/*.csv --out gene
 - YAML input support.
 - PDF export through optional backends.
 - More sample resources across preschool, primary, secondary, exam-board, vocational, and university workflows.
-- Teacher-facing validation reports for missing answers and weak explanations.
+- More teacher-facing validation checks for missing answers, weak explanations,
+  and incomplete progression metadata.
 - GitHub Action examples for publishing pack catalogs to Pages.
 
 ## Open Source Scope

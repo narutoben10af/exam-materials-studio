@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from html import escape
 
-from .models import ExamPack
+from .models import DIFFICULTY_ORDER, ExamPack, PackItem
 
 
 def render_pack_markdown(pack: ExamPack) -> str:
@@ -29,7 +29,7 @@ def render_pack_markdown(pack: ExamPack) -> str:
 
     for index, item in enumerate(pack.items, start=1):
         heading = item.item_type.replace("-", " ").title()
-        lines.extend([f"### {heading} {index}", "", item.prompt, ""])
+        lines.extend([f"### {heading} {index}", "", *_difficulty_markdown(item), item.prompt, ""])
 
     lines.extend(
         [
@@ -54,7 +54,7 @@ def render_answer_key_markdown(pack: ExamPack) -> str:
     ]
 
     for index, item in enumerate(pack.items, start=1):
-        lines.extend([f"## Answer {index}", "", item.answer, ""])
+        lines.extend([f"## Answer {index}", "", *_difficulty_markdown(item), item.answer, ""])
         if item.explanation:
             lines.extend(["**Explanation:**", "", item.explanation, ""])
 
@@ -70,6 +70,7 @@ def render_pack_html(pack: ExamPack) -> str:
                 [
                     "<section>",
                     f"  <h2>{escape(heading)} {index}</h2>",
+                    *_difficulty_html(item),
                     f"  <p>{escape(item.prompt)}</p>",
                     "</section>",
                 ]
@@ -98,7 +99,7 @@ def render_answer_key_html(pack: ExamPack) -> str:
     answer_cards = []
     for index, item in enumerate(pack.items, start=1):
         answer_cards.append(
-            "\n".join(_answer_key_section(index, item.answer, item.explanation))
+            "\n".join(_answer_key_section(index, item))
         )
 
     return _html_page(
@@ -173,18 +174,20 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "learning_objectives": list(pack.learning_objectives),
         "curriculum_references": list(pack.curriculum_references),
         "item_count": len(pack.items),
+        "difficulty_counts": _difficulty_counts(pack),
         "files": files,
     }
 
 
-def _answer_key_section(index: int, answer: str, explanation: str) -> list[str]:
+def _answer_key_section(index: int, item: PackItem) -> list[str]:
     lines = [
         "<section>",
         f"  <h2>Answer {index}</h2>",
-        f"  <p>{escape(answer)}</p>",
+        *_difficulty_html(item),
+        f"  <p>{escape(item.answer)}</p>",
     ]
-    if explanation:
-        lines.append(f"  <p><strong>Explanation:</strong> {escape(explanation)}</p>")
+    if item.explanation:
+        lines.append(f"  <p><strong>Explanation:</strong> {escape(item.explanation)}</p>")
     lines.append("</section>")
     return lines
 
@@ -317,6 +320,26 @@ def _resource_header(pack: ExamPack) -> str:
         ]
     )
     return f"<header>\n<h1>{escape(pack.title)}</h1>\n{metadata}\n</header>"
+
+
+def _difficulty_markdown(item: PackItem) -> list[str]:
+    if not item.difficulty:
+        return []
+    return [f"**Difficulty:** {item.difficulty}", ""]
+
+
+def _difficulty_html(item: PackItem) -> list[str]:
+    if not item.difficulty:
+        return []
+    return [f"  <p><strong>Difficulty:</strong> {escape(item.difficulty)}</p>"]
+
+
+def _difficulty_counts(pack: ExamPack) -> dict[str, int]:
+    counts = {
+        difficulty: sum(1 for item in pack.items if item.difficulty == difficulty)
+        for difficulty in DIFFICULTY_ORDER
+    }
+    return {difficulty: count for difficulty, count in counts.items() if count}
 
 
 def _html_page(title: str, body: str) -> str:

@@ -103,6 +103,13 @@ def _quality_warnings(path: Path, pack: ExamPack) -> list[ValidationMessage]:
             ValidationMessage(path, "warning", "resource has fewer than 3 items; consider adding depth")
         )
 
+    missing_difficulties = [
+        index for index, item in enumerate(pack.items, start=1) if not item.difficulty
+    ]
+    if missing_difficulties:
+        joined = ", ".join(str(index) for index in missing_difficulties)
+        warnings.append(ValidationMessage(path, "warning", f"missing difficulty for item(s): {joined}"))
+
     missing_explanations = [
         index for index, item in enumerate(pack.items, start=1) if len(item.explanation.split()) < 4
     ]

@@ -10,6 +10,7 @@ class PackItem:
     answer: str
     explanation: str = ""
     item_type: str = "question"
+    difficulty: str = ""
 
 
 @dataclass(frozen=True)
@@ -31,6 +32,10 @@ class ExamPack:
 
 class PackValidationError(ValueError):
     """Raised when a pack file is missing required content."""
+
+
+DIFFICULTY_ORDER = ("foundation", "core", "extension")
+ALLOWED_DIFFICULTIES = set(DIFFICULTY_ORDER)
 
 
 def pack_from_dict(data: dict[str, Any]) -> ExamPack:
@@ -61,7 +66,16 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         answer = _required_text(raw_item, "answer", f"item {index}")
         explanation = str(raw_item.get("explanation", "")).strip()
         item_type = str(raw_item.get("type", "question")).strip() or "question"
-        items.append(PackItem(prompt=prompt, answer=answer, explanation=explanation, item_type=item_type))
+        difficulty = _optional_difficulty(raw_item.get("difficulty", ""), index)
+        items.append(
+            PackItem(
+                prompt=prompt,
+                answer=answer,
+                explanation=explanation,
+                item_type=item_type,
+                difficulty=difficulty,
+            )
+        )
 
     return ExamPack(
         title=_required_text(data, "title", "pack"),
@@ -101,3 +115,11 @@ def _optional_text_list(value: Any, field: str) -> tuple[str, ...]:
     if not isinstance(value, list):
         raise PackValidationError(f"{field} must be a list when provided")
     return tuple(str(item).strip() for item in value if str(item).strip())
+
+
+def _optional_difficulty(value: Any, index: int) -> str:
+    difficulty = str(value or "").strip().lower()
+    if difficulty and difficulty not in ALLOWED_DIFFICULTIES:
+        allowed = ", ".join(sorted(ALLOWED_DIFFICULTIES))
+        raise PackValidationError(f"item {index} difficulty must be one of: {allowed}")
+    return difficulty

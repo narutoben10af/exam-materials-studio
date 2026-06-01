@@ -22,7 +22,7 @@ class PackModelTests(unittest.TestCase):
                 "exam_board": "Cambridge",
                 "course": "0478 Computer Science",
                 "skills": ["logic"],
-                "items": [{"prompt": "Question?", "answer": "Answer."}],
+                "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core"}],
             }
         )
 
@@ -39,7 +39,22 @@ class PackModelTests(unittest.TestCase):
             ),
         )
         self.assertEqual(pack.curriculum_references, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
+        self.assertEqual(pack.items[0].difficulty, "core")
         self.assertEqual(len(pack.items), 1)
+
+    def test_invalid_item_difficulty_is_rejected(self):
+        with self.assertRaisesRegex(PackValidationError, "item 1 difficulty"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "impossible"}],
+                }
+            )
 
     def test_invalid_slug_is_rejected(self):
         with self.assertRaises(PackValidationError):
