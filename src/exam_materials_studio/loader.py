@@ -71,6 +71,7 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         "summary": _cell(first, "summary"),
         "skills": _split_skills(_cell(first, "skills")),
         "learning_objectives": _split_skills(_cell(first, "learning_objectives")),
+        "curriculum_references": _split_skills(_cell(first, "curriculum_references")),
         "items": items,
     }
 

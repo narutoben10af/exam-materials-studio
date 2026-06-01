@@ -12,6 +12,10 @@
     "Complete truth-table outputs for common logic gates.",
     "Translate simple real-world rules into Boolean expressions."
   ],
+  "curriculum_references": [
+    "Cambridge IGCSE Computer Science 0478: logic gates",
+    "Cambridge IGCSE Computer Science 0478: truth tables"
+  ],
   "skills": ["logic gates", "truth tables", "Boolean expressions"],
   "items": [
     {

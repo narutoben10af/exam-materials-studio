@@ -19,7 +19,7 @@ jobs:
       - name: List scaffold presets
         run: exam-materials-studio presets --out generated/scaffold-presets.md
       - name: Scaffold sample resource
-        run: exam-materials-studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+        run: exam-materials-studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
       - name: Validate sample resources
         run: exam-materials-studio validate examples/*.json examples/*.csv
       - name: Inventory sample coverage

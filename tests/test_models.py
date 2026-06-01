@@ -16,6 +16,7 @@ class PackModelTests(unittest.TestCase):
                     "Understand how logic gates process binary inputs.",
                     "Apply truth tables to simple Boolean expressions.",
                 ],
+                "curriculum_references": ["Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"],
                 "resource_type": "worksheet",
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
@@ -37,6 +38,7 @@ class PackModelTests(unittest.TestCase):
                 "Apply truth tables to simple Boolean expressions.",
             ),
         )
+        self.assertEqual(pack.curriculum_references, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
         self.assertEqual(len(pack.items), 1)
 
     def test_invalid_slug_is_rejected(self):

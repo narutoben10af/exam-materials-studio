@@ -24,6 +24,7 @@ class RendererTests(unittest.TestCase):
                     "Build truth tables for common logic gates.",
                     "Explain Boolean outputs from binary inputs.",
                 ],
+                "curriculum_references": ["Cambridge 0478 4.1"],
                 "resource_type": "worksheet",
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
@@ -44,6 +45,8 @@ class RendererTests(unittest.TestCase):
 
         self.assertIn("## Learning Objectives", markdown)
         self.assertIn("Build truth tables for common logic gates.", markdown)
+        self.assertIn("## Curriculum References", markdown)
+        self.assertIn("Cambridge 0478 4.1", markdown)
         self.assertIn("A AND B", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
 
@@ -87,6 +90,8 @@ class RendererTests(unittest.TestCase):
 
         self.assertIn("Learning Objectives", html)
         self.assertIn("Build truth tables for common logic gates.", html)
+        self.assertIn("Curriculum References", html)
+        self.assertIn("Cambridge 0478 4.1", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)
         self.assertNotIn("Both inputs must be 1.", html)

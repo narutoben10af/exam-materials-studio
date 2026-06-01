@@ -12,6 +12,10 @@
     "Recall core IGCSE Economics definitions accurately.",
     "Use exam command words to frame concise short answers."
   ],
+  "curriculum_references": [
+    "Cambridge IGCSE Economics 0455: basic economic problem",
+    "Cambridge IGCSE Economics 0455: money and exchange"
+  ],
   "skills": ["definitions", "short answers", "exam command words"],
   "items": [
     {

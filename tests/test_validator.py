@@ -26,6 +26,7 @@ class ValidatorTests(unittest.TestCase):
                             "Describe how enzyme structure supports catalysis.",
                             "Interpret rate changes in enzyme experiments.",
                         ],
+                        "curriculum_references": ["Cambridge 9700 3.1"],
                         "skills": ["enzyme structure", "reaction rates"],
                         "items": [
                             {
@@ -90,6 +91,7 @@ class ValidatorTests(unittest.TestCase):
             self.assertIn("Warnings:", report)
             self.assertIn("education_system is missing", report)
             self.assertIn("learning_objectives is missing", report)
+            self.assertIn("curriculum_references is missing", report)
             self.assertIn("thin or missing explanations", report)
 
 

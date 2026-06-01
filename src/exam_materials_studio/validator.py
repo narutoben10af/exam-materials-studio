@@ -95,6 +95,9 @@ def _quality_warnings(path: Path, pack: ExamPack) -> list[ValidationMessage]:
     if not pack.learning_objectives:
         warnings.append(ValidationMessage(path, "warning", "learning_objectives is missing"))
 
+    if not pack.curriculum_references:
+        warnings.append(ValidationMessage(path, "warning", "curriculum_references is missing"))
+
     if len(pack.items) < 3:
         warnings.append(
             ValidationMessage(path, "warning", "resource has fewer than 3 items; consider adding depth")

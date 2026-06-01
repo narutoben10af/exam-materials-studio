@@ -16,7 +16,7 @@ payment workflows, or commercial customer data.
 - Creates static Markdown and HTML catalog pages for sharing available packs.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, courses, and
-  learning objectives.
+  curriculum references.
 - Provides scaffold presets for common preschool, primary, exam-board, and
   university workflows.
 - Ships with sample resources from preschool through university level.
@@ -66,7 +66,8 @@ exam-materials-studio validate examples/*.json --report generated/validation-rep
 Validation reports separate structural errors from quality warnings. Errors
 return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
-explanations, missing learning objectives, or very short resources.
+explanations, missing learning objectives, missing curriculum references, or
+very short resources.
 
 ## Inventory Coverage
 
@@ -94,6 +95,7 @@ exam-materials-studio scaffold \
   --education-system "General primary" \
   --course Fractions \
   --learning-objectives "Represent equivalent fractions with simple models" \
+  --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
   --out examples/primary_fractions_starter.json
 ```
@@ -110,6 +112,7 @@ exam-materials-studio scaffold \
   --subject Chemistry \
   --course "0620 Chemistry" \
   --learning-objectives "Classify acids and bases using common indicators" \
+  --curriculum-references "Cambridge IGCSE Chemistry 0620: acids and bases" \
   --skills "acids;bases" \
   --out examples/igcse_chemistry_acids_starter.json
 ```
@@ -128,9 +131,9 @@ Each resource can be authored as JSON or CSV. JSON is best for hand-edited
 structured files. CSV is useful when teachers are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
-`exam_board`, `course`, and `learning_objectives` fields are optional, but
-useful for catalogs and teacher-facing resources that span different levels and
-curricula.
+`exam_board`, `course`, `learning_objectives`, and `curriculum_references`
+fields are optional, but useful for catalogs and teacher-facing resources that
+span different levels and curricula.
 
 ```json
 {
@@ -147,6 +150,10 @@ curricula.
     "Complete truth-table outputs for common logic gates.",
     "Translate simple real-world rules into Boolean expressions."
   ],
+  "curriculum_references": [
+    "Cambridge IGCSE Computer Science 0478: logic gates",
+    "Cambridge IGCSE Computer Science 0478: truth tables"
+  ],
   "skills": ["truth tables", "logic gates"],
   "items": [
     {
@@ -159,12 +166,12 @@ curricula.
 ```
 
 CSV resources use one row per activity, question, or teacher note. Resource
-metadata is read from the first row. `skills` and `learning_objectives` are
-separated with semicolons:
+metadata is read from the first row. `skills`, `learning_objectives`, and
+`curriculum_references` are separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,type,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,activity,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,curriculum_references,type,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 ## Development
@@ -172,7 +179,7 @@ Primary Science Materials,primary-science-materials,Science,Primary,lesson-resou
 ```bash
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
-python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
 python3 -m exam_materials_studio validate examples/*.json examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated

@@ -16,6 +16,7 @@ def render_pack_markdown(pack: ExamPack) -> str:
         "",
         pack.summary,
         "",
+        *_curriculum_references_markdown(pack),
         *_learning_objectives_markdown(pack),
         "## Skills Practised",
         "",
@@ -79,6 +80,7 @@ def render_pack_html(pack: ExamPack) -> str:
         body="\n".join(
             [
                 _resource_header(pack),
+                *_curriculum_references_html(pack),
                 *_learning_objectives_html(pack),
                 "<h2>Skills Practised</h2>",
                 "<ul>",
@@ -233,6 +235,17 @@ def _learning_objectives_markdown(pack: ExamPack) -> list[str]:
     ]
 
 
+def _curriculum_references_markdown(pack: ExamPack) -> list[str]:
+    if not pack.curriculum_references:
+        return []
+    return [
+        "## Curriculum References",
+        "",
+        *[f"- {reference}" for reference in pack.curriculum_references],
+        "",
+    ]
+
+
 def _learning_objectives_html(pack: ExamPack) -> list[str]:
     if not pack.learning_objectives:
         return []
@@ -240,6 +253,17 @@ def _learning_objectives_html(pack: ExamPack) -> list[str]:
         "<h2>Learning Objectives</h2>",
         "<ul>",
         *[f"  <li>{escape(objective)}</li>" for objective in pack.learning_objectives],
+        "</ul>",
+    ]
+
+
+def _curriculum_references_html(pack: ExamPack) -> list[str]:
+    if not pack.curriculum_references:
+        return []
+    return [
+        "<h2>Curriculum References</h2>",
+        "<ul>",
+        *[f"  <li>{escape(reference)}</li>" for reference in pack.curriculum_references],
         "</ul>",
     ]
 
