@@ -11,7 +11,7 @@ payment workflows, or commercial customer data.
 
 ## What It Does
 
-- Builds printable Markdown and HTML resources from structured JSON.
+- Builds printable Markdown and HTML resources from structured JSON or CSV.
 - Generates separate answer keys for marking or self-study.
 - Creates a static HTML catalog page for sharing available packs.
 - Validates resource structure before output is written.
@@ -66,9 +66,12 @@ explanations, or very short resources.
 
 ## Resource Format
 
-Each resource is JSON with this shape. The `resource_type`,
-`education_system`, `exam_board`, and `course` fields are optional, but useful
-for catalogs that span different levels and curricula.
+Each resource can be authored as JSON or CSV. JSON is best for hand-edited
+structured files. CSV is useful when teachers are drafting in a spreadsheet.
+
+JSON resources use this shape. The `resource_type`, `education_system`,
+`exam_board`, and `course` fields are optional, but useful for catalogs that
+span different levels and curricula.
 
 ```json
 {
@@ -92,12 +95,20 @@ for catalogs that span different levels and curricula.
 }
 ```
 
+CSV resources use one row per activity, question, or teacher note. Resource
+metadata is read from the first row, and `skills` are separated with semicolons:
+
+```csv
+title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,type,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,activity,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+```
+
 ## Development
 
 ```bash
 python3 -m unittest discover -s tests
-python3 -m exam_materials_studio validate examples/*.json
-python3 -m exam_materials_studio build examples/*.json --out generated
+python3 -m exam_materials_studio validate examples/*.json examples/*.csv
+python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated
 ```
 
 ## Roadmap

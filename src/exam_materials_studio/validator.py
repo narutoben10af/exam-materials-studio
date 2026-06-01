@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from .models import ExamPack, PackValidationError, pack_from_dict
+from .loader import ResourceLoadError, load_resource
+from .models import ExamPack
 
 
 @dataclass(frozen=True)
@@ -28,9 +28,8 @@ class ValidationResult:
 
 def validate_resource(path: Path) -> ValidationResult:
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        pack = pack_from_dict(data)
-    except (OSError, json.JSONDecodeError, PackValidationError) as error:
+        pack = load_resource(path)
+    except ResourceLoadError as error:
         return ValidationResult(
             path=path,
             pack=None,
@@ -108,4 +107,3 @@ def _quality_warnings(path: Path, pack: ExamPack) -> list[ValidationMessage]:
         )
 
     return warnings
-

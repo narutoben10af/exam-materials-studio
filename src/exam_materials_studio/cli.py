@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
-from .models import PackValidationError, pack_from_dict
+from .loader import ResourceLoadError, load_resource
 from .renderer import (
     render_answer_key_html,
     render_answer_key_markdown,
@@ -18,11 +17,11 @@ from .validator import has_errors, render_validation_report, validate_resources
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="exam-materials-studio",
-        description="Build printable education resources and answer keys from JSON files.",
+        description="Build printable education resources and answer keys from JSON or CSV files.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    build_parser = subparsers.add_parser("build", help="Build one or more resource JSON files")
+    build_parser = subparsers.add_parser("build", help="Build one or more resource JSON or CSV files")
     build_parser.add_argument("packs", nargs="+", type=Path)
     build_parser.add_argument("--out", type=Path, default=Path("generated"))
     build_parser.add_argument(
@@ -31,7 +30,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Comma-separated output formats: markdown, html",
     )
 
-    validate_parser = subparsers.add_parser("validate", help="Validate one or more resource JSON files")
+    validate_parser = subparsers.add_parser("validate", help="Validate one or more resource JSON or CSV files")
     validate_parser.add_argument("packs", nargs="+", type=Path)
     validate_parser.add_argument(
         "--report",
@@ -55,9 +54,8 @@ def build_packs(pack_paths: list[Path], output_dir: Path, formats: set[str]) -> 
 
     for pack_path in pack_paths:
         try:
-            data = json.loads(pack_path.read_text(encoding="utf-8"))
-            pack = pack_from_dict(data)
-        except (json.JSONDecodeError, OSError, PackValidationError) as error:
+            pack = load_resource(pack_path)
+        except ResourceLoadError as error:
             print(f"error: {pack_path}: {error}")
             return 1
 
