@@ -5,6 +5,7 @@ from exam_materials_studio.renderer import (
     render_answer_key_html,
     render_answer_key_markdown,
     render_catalog_html,
+    render_catalog_markdown,
     render_pack_html,
     render_pack_markdown,
 )
@@ -54,6 +55,20 @@ class RendererTests(unittest.TestCase):
         self.assertIn("boolean-logic-answer-key.md", html)
         self.assertIn("boolean-logic-answer-key.html", html)
         self.assertIn("Cambridge International / Cambridge / 0478 Computer Science", html)
+
+    def test_catalog_markdown_links_generated_markdown_outputs(self):
+        markdown = render_catalog_markdown([self.pack])
+
+        self.assertIn("# Exam Materials Catalog", markdown)
+        self.assertIn("## Boolean Logic", markdown)
+        self.assertIn("Practice logic gates.", markdown)
+        self.assertIn("**Type:** worksheet", markdown)
+        self.assertIn("**Subject:** Computer Science", markdown)
+        self.assertIn("**Level:** IGCSE", markdown)
+        self.assertIn("**Track:** Cambridge International / Cambridge / 0478 Computer Science", markdown)
+        self.assertIn("**Skills:** truth tables", markdown)
+        self.assertIn("[Resource](boolean-logic.md)", markdown)
+        self.assertIn("[Answer key](boolean-logic-answer-key.md)", markdown)
 
     def test_catalog_respects_requested_formats(self):
         html = render_catalog_html([self.pack], formats={"markdown"})

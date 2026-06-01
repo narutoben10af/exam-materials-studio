@@ -26,3 +26,5 @@ jobs:
         run: exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
       - name: Build sample packs
         run: exam-materials-studio build examples/*.json examples/*.csv --out generated
+      - name: Check generated Markdown catalog
+        run: test -s generated/index.md

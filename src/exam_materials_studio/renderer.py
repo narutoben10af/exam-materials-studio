@@ -102,6 +102,39 @@ def render_answer_key_html(pack: ExamPack) -> str:
     )
 
 
+def render_catalog_markdown(packs: list[ExamPack]) -> str:
+    lines = ["# Exam Materials Catalog", ""]
+    for pack in packs:
+        skills = ", ".join(pack.skills)
+        metadata = " / ".join(
+            value for value in [pack.education_system, pack.exam_board, pack.course] if value
+        )
+        lines.extend(
+            [
+                f"## {pack.title}",
+                "",
+                pack.summary,
+                "",
+                f"**Type:** {pack.resource_type}",
+                f"**Subject:** {pack.subject}",
+                f"**Level:** {pack.level}",
+            ]
+        )
+        if metadata:
+            lines.append(f"**Track:** {metadata}")
+        lines.extend(
+            [
+                f"**Skills:** {skills}",
+                "",
+                f"- [Resource]({pack.slug}.md)",
+                f"- [Answer key]({pack.slug}-answer-key.md)",
+                "",
+            ]
+        )
+
+    return "\n".join(lines)
+
+
 def _answer_key_section(index: int, answer: str, explanation: str) -> list[str]:
     lines = [
         "<section>",

@@ -105,9 +105,12 @@ By default the CLI writes:
 - Learner resource as HTML.
 - Answer key as Markdown.
 - Answer key as HTML.
+- Static `index.md` catalog for GitHub and release-note review.
 - Static `index.html` catalog.
 
-Use `--formats markdown` or `--formats html` to limit output formats.
+Use `--formats markdown` or `--formats html` to limit resource and answer-key
+formats. The Markdown catalog is written when Markdown output is requested; the
+HTML catalog is always written so the output directory has a browser entrypoint.
 
 ## Validation
 
