@@ -32,6 +32,9 @@ IGCSE, Cambridge A Level, AP, IB Diploma, and university resources easier to
 start consistently. The format also supports learning objectives so resources
 can describe teacher-facing outcomes, not just question skills, which helps the
 project expand beyond exam packs into broader education materials.
+Curriculum reference metadata lets packs cite syllabus sections, standards, or
+module outcomes, which is important as the project grows across exam boards,
+school systems, and university courses.
 
 ## API Credits Use
 

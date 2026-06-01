@@ -21,6 +21,7 @@ class ScaffoldTests(unittest.TestCase):
             course="Fractions",
             summary="A starter worksheet for equivalent fractions.",
             learning_objectives=("Represent equivalent fractions with simple models.",),
+            curriculum_references=("Local primary mathematics: fractions",),
             skills=("fractions", "equivalent fractions"),
         )
 
@@ -37,6 +38,7 @@ class ScaffoldTests(unittest.TestCase):
 
             self.assertEqual(pack.title, "Primary Fractions Starter")
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
+            self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(len(pack.items), 3)
             self.assertTrue(result.ok)
             self.assertEqual(result.warnings, ())
@@ -50,6 +52,7 @@ class ScaffoldTests(unittest.TestCase):
 
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
+            self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(pack.items[0].item_type, "concept-check")
 
     def test_scaffold_refuses_to_overwrite_without_force(self):

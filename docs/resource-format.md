@@ -20,6 +20,7 @@ be reviewed, versioned, regenerated, and published without a database.
 - `exam_board`: For exam-board-specific resources, such as `Cambridge`, `Pearson Edexcel`, or `AQA`.
 - `course`: Course or specification identifier, such as `0478 Computer Science`.
 - `learning_objectives`: Teacher-facing objectives describing what learners should be able to do.
+- `curriculum_references`: Syllabus sections, standards, specification points, or module outcomes.
 
 These fields make the catalog useful when the repository grows across subjects,
 education systems, age ranges, and course types.
@@ -50,14 +51,16 @@ Supported columns:
 - `summary`
 - `skills`
 - `learning_objectives`
+- `curriculum_references`
 - `type`
 - `prompt`
 - `answer`
 - `explanation`
 
-Separate multiple skills or learning objectives with semicolons, for example:
+Separate multiple skills, objectives, or references with semicolons, for example:
 `classification;materials;properties` or
-`Classify everyday materials;Link properties to object uses`.
+`Classify everyday materials;Link properties to object uses` or
+`Cambridge 0478 4.1;Cambridge 0478 4.2`.
 
 ## Scaffolding
 
@@ -72,6 +75,7 @@ exam-materials-studio scaffold \
   --education-system "General primary" \
   --course Fractions \
   --learning-objectives "Represent equivalent fractions with simple models" \
+  --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
   --out examples/primary_fractions_starter.json
 ```
@@ -88,6 +92,7 @@ exam-materials-studio scaffold \
   --subject Biology \
   --course "Biology HL" \
   --learning-objectives "Explain how ATP is produced during respiration" \
+  --curriculum-references "IB Biology: cell respiration" \
   --skills "cell respiration;ATP" \
   --out examples/ib_biology_cell_respiration_study_guide.json
 ```
@@ -134,8 +139,9 @@ exam-materials-studio validate examples/*.csv
 The validator fails on structural errors, such as missing required fields or
 invalid JSON. It also emits warnings for resources that are technically valid
 but weak for publishing, including missing `education_system`, missing `course`,
-missing `learning_objectives`, exam-specific resources without an `exam_board`,
-very short resources, and thin or missing explanations.
+missing `learning_objectives`, missing `curriculum_references`, exam-specific
+resources without an `exam_board`, very short resources, and thin or missing
+explanations.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.

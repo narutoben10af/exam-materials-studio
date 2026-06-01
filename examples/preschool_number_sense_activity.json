@@ -11,6 +11,9 @@
     "Match small quantities to written numerals.",
     "Compare groups using more and fewer language."
   ],
+  "curriculum_references": [
+    "Early years number sense: counting and cardinality"
+  ],
   "skills": ["counting to five", "one-to-one correspondence", "quantity comparison"],
   "items": [
     {

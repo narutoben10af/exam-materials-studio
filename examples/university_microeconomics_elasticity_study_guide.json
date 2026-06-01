@@ -11,6 +11,10 @@
     "Interpret price elasticity values in economic context.",
     "Connect elasticity estimates to total revenue decisions."
   ],
+  "curriculum_references": [
+    "Introductory Microeconomics: price elasticity of demand",
+    "Introductory Microeconomics: elasticity and total revenue"
+  ],
   "skills": ["elasticity calculation", "revenue interpretation", "economic reasoning"],
   "items": [
     {

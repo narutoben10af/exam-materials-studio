@@ -12,10 +12,10 @@ class LoaderTests(unittest.TestCase):
             path.write_text(
                 "\n".join(
                     [
-                        "title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,type,prompt,answer,explanation",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,activity,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,question,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,discussion,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
+                        "title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,curriculum_references,type,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
                     ]
                 ),
                 encoding="utf-8",
@@ -30,6 +30,7 @@ class LoaderTests(unittest.TestCase):
                 pack.learning_objectives,
                 ("Classify everyday materials", "Link properties to uses"),
             )
+            self.assertEqual(pack.curriculum_references, ("National Curriculum KS1 Materials",))
             self.assertEqual(len(pack.items), 3)
             self.assertEqual(pack.items[0].item_type, "activity")
 

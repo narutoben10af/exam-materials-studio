@@ -242,6 +242,8 @@ class CliTests(unittest.TestCase):
                         "Fractions",
                         "--learning-objectives",
                         "Represent equivalent fractions with simple models;Compare fraction models",
+                        "--curriculum-references",
+                        "Local Grade 4 Fractions;School Scheme 2.1",
                         "--out",
                         str(output_path),
                     ]
@@ -255,6 +257,7 @@ class CliTests(unittest.TestCase):
                 data["learning_objectives"],
                 ["Represent equivalent fractions with simple models", "Compare fraction models"],
             )
+            self.assertEqual(data["curriculum_references"], ["Local Grade 4 Fractions", "School Scheme 2.1"])
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

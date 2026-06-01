@@ -90,6 +90,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Semicolon-separated learning objectives for the resource",
     )
     scaffold_parser.add_argument(
+        "--curriculum-references",
+        default="",
+        help="Semicolon-separated curriculum, syllabus, or standards references",
+    )
+    scaffold_parser.add_argument(
         "--skills",
         default="",
         help="Semicolon-separated skills, for example: fractions;equivalent fractions",
@@ -197,6 +202,9 @@ def scaffold_pack(args: argparse.Namespace) -> int:
     learning_objectives = _parse_skills(getattr(args, "learning_objectives", ""))
     if not learning_objectives:
         learning_objectives = (f"Practise {args.subject} skills through {resource_type} tasks.",)
+    curriculum_references = _parse_skills(getattr(args, "curriculum_references", ""))
+    if not curriculum_references:
+        curriculum_references = (args.course or f"{education_system or args.level} {args.subject}",)
     skills = _parse_skills(args.skills) or (args.subject,)
     summary = args.summary or f"Starter {resource_type} for {args.subject} at {level} level."
     spec = ScaffoldSpec(
@@ -210,6 +218,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         course=args.course,
         summary=summary,
         learning_objectives=learning_objectives,
+        curriculum_references=curriculum_references,
         skills=skills,
     )
     try:
