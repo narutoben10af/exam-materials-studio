@@ -31,6 +31,8 @@ education systems, age ranges, and course types.
 - `answer`: The expected answer, marking note, or suggested response.
 - `explanation`: Optional reasoning for answer keys.
 - `type`: Optional item type such as `question`, `activity`, `teacher-note`, `calculation`, or `discussion`.
+- `difficulty`: Optional progression label. Supported values are `foundation`,
+  `core`, and `extension`.
 
 ## CSV Input
 
@@ -53,6 +55,7 @@ Supported columns:
 - `learning_objectives`
 - `curriculum_references`
 - `type`
+- `difficulty`
 - `prompt`
 - `answer`
 - `explanation`
@@ -103,9 +106,9 @@ metadata flags, and explicit flags override preset defaults when a course or
 school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
-prompts, answers, and explanations. Use `--format csv` for spreadsheet-first
-authoring. Existing files are protected by default; pass `--force` only when
-you intentionally want to replace a scaffold.
+prompts, answers, explanations, and starter difficulty progression labels. Use
+`--format csv` for spreadsheet-first authoring. Existing files are protected by
+default; pass `--force` only when you intentionally want to replace a scaffold.
 
 ## Outputs
 
@@ -118,6 +121,10 @@ By default the CLI writes:
 - Static `index.md` catalog for GitHub and release-note review.
 - Static `index.json` catalog for search, hosting, and integration workflows.
 - Static `index.html` catalog.
+
+The JSON catalog includes per-resource `difficulty_counts` so maintainers can
+quickly see whether a resource leans too heavily toward foundation, core, or
+extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -142,8 +149,8 @@ The validator fails on structural errors, such as missing required fields or
 invalid JSON. It also emits warnings for resources that are technically valid
 but weak for publishing, including missing `education_system`, missing `course`,
 missing `learning_objectives`, missing `curriculum_references`, exam-specific
-resources without an `exam_board`, very short resources, and thin or missing
-explanations.
+resources without an `exam_board`, missing item difficulty labels, very short
+resources, and thin or missing explanations.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.

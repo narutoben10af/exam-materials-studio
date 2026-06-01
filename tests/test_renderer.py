@@ -37,6 +37,7 @@ class RendererTests(unittest.TestCase):
                         "prompt": "A AND B where A = 1 and B = 0.",
                         "answer": "0",
                         "explanation": "Both inputs must be 1.",
+                        "difficulty": "core",
                     }
                 ],
             }
@@ -49,12 +50,14 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Build truth tables for common logic gates.", markdown)
         self.assertIn("## Curriculum References", markdown)
         self.assertIn("Cambridge 0478 4.1", markdown)
+        self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("A AND B", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
 
     def test_answer_key_contains_explanation(self):
         markdown = render_answer_key_markdown(self.pack)
 
+        self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("0", markdown)
         self.assertIn("Both inputs must be 1.", markdown)
 
@@ -99,10 +102,35 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["learning_objectives"], ["Build truth tables for common logic gates.", "Explain Boolean outputs from binary inputs."])
         self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
         self.assertEqual(resource["item_count"], 1)
+        self.assertEqual(resource["difficulty_counts"], {"core": 1})
         self.assertEqual(resource["files"]["markdown"], "boolean-logic.md")
         self.assertEqual(resource["files"]["answer_key_markdown"], "boolean-logic-answer-key.md")
         self.assertEqual(resource["files"]["html"], "boolean-logic.html")
         self.assertEqual(resource["files"]["answer_key_html"], "boolean-logic-answer-key.html")
+
+    def test_catalog_json_orders_difficulty_counts_by_learning_progression(self):
+        pack = pack_from_dict(
+            {
+                "title": "Progression",
+                "slug": "progression",
+                "subject": "Science",
+                "level": "Primary",
+                "summary": "Practice ordered difficulty metadata.",
+                "skills": ["progression"],
+                "items": [
+                    {"prompt": "Starter", "answer": "A", "difficulty": "extension"},
+                    {"prompt": "Core", "answer": "B", "difficulty": "core"},
+                    {"prompt": "Foundation", "answer": "C", "difficulty": "foundation"},
+                ],
+            }
+        )
+
+        catalog = json.loads(render_catalog_json([pack], formats={"markdown"}))
+
+        self.assertEqual(
+            list(catalog["resources"][0]["difficulty_counts"]),
+            ["foundation", "core", "extension"],
+        )
 
     def test_catalog_respects_requested_formats(self):
         html = render_catalog_html([self.pack], formats={"markdown"})
@@ -117,6 +145,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Build truth tables for common logic gates.", html)
         self.assertIn("Curriculum References", html)
         self.assertIn("Cambridge 0478 4.1", html)
+        self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)
         self.assertNotIn("Both inputs must be 1.", html)
@@ -125,6 +154,7 @@ class RendererTests(unittest.TestCase):
         html = render_answer_key_html(self.pack)
 
         self.assertIn("Answer 1", html)
+        self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("Both inputs must be 1.", html)
 
 

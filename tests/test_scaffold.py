@@ -40,6 +40,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
             self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(len(pack.items), 3)
+            self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertTrue(result.ok)
             self.assertEqual(result.warnings, ())
 
@@ -54,6 +55,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
             self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(pack.items[0].item_type, "concept-check")
+            self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
 
     def test_scaffold_refuses_to_overwrite_without_force(self):
         with tempfile.TemporaryDirectory() as tmpdir:

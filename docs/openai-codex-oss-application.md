@@ -38,6 +38,9 @@ school systems, and university courses.
 The build output also includes a machine-readable JSON catalog so generated
 resources can be indexed or integrated into static sites and future education
 tools without scraping Markdown or HTML.
+Item-level difficulty metadata now lets maintainers balance foundation, core,
+and extension work inside each resource, which supports deeper learning
+progressions beyond simple exam-question generation.
 
 ## API Credits Use
 

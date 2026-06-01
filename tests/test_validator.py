@@ -33,16 +33,19 @@ class ValidatorTests(unittest.TestCase):
                                 "prompt": "Define active site.",
                                 "answer": "The region of an enzyme where the substrate binds.",
                                 "explanation": "This definition identifies the enzyme region and its substrate-binding role.",
+                                "difficulty": "foundation",
                             },
                             {
                                 "prompt": "Explain why high temperature reduces enzyme activity.",
                                 "answer": "High temperature denatures the enzyme and changes the active site.",
                                 "explanation": "Denaturation changes the active site's shape, so fewer enzyme-substrate complexes form.",
+                                "difficulty": "core",
                             },
                             {
                                 "prompt": "Describe one controlled variable in an enzyme rate experiment.",
                                 "answer": "The pH should be kept constant.",
                                 "explanation": "Changing pH can also affect enzyme shape and would make temperature effects harder to interpret.",
+                                "difficulty": "extension",
                             },
                         ],
                     }
@@ -92,6 +95,7 @@ class ValidatorTests(unittest.TestCase):
             self.assertIn("education_system is missing", report)
             self.assertIn("learning_objectives is missing", report)
             self.assertIn("curriculum_references is missing", report)
+            self.assertIn("missing difficulty for item(s): 1", report)
             self.assertIn("thin or missing explanations", report)
 
 
