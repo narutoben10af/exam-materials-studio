@@ -59,6 +59,8 @@ def render_answer_key_markdown(pack: ExamPack) -> str:
 
     for index, item in enumerate(pack.items, start=1):
         lines.extend([f"## Answer {index}", "", *_item_metadata_markdown(item), item.answer, ""])
+        if item.rubric:
+            lines.extend(["**Rubric:**", "", *[f"- {point}" for point in item.rubric], ""])
         if item.explanation:
             lines.extend(["**Explanation:**", "", item.explanation, ""])
 
@@ -193,6 +195,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "delivery_modes": list(pack.delivery_modes),
         "item_count": len(pack.items),
         "total_marks": _total_marks(pack),
+        "rubric_point_count": _rubric_point_count(pack),
         "command_word_counts": _command_word_counts(pack),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -206,6 +209,15 @@ def _answer_key_section(index: int, item: PackItem) -> list[str]:
         *_item_metadata_html(item),
         f"  <p>{escape(item.answer)}</p>",
     ]
+    if item.rubric:
+        lines.extend(
+            [
+                "  <p><strong>Rubric:</strong></p>",
+                "  <ul>",
+                *[f"    <li>{escape(point)}</li>" for point in item.rubric],
+                "  </ul>",
+            ]
+        )
     if item.explanation:
         lines.append(f"  <p><strong>Explanation:</strong> {escape(item.explanation)}</p>")
     lines.append("</section>")
@@ -454,6 +466,10 @@ def _command_word_counts(pack: ExamPack) -> dict[str, int]:
 
 def _total_marks(pack: ExamPack) -> int:
     return sum(item.marks for item in pack.items)
+
+
+def _rubric_point_count(pack: ExamPack) -> int:
+    return sum(len(item.rubric) for item in pack.items)
 
 
 def _html_page(title: str, body: str) -> str:

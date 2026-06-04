@@ -38,7 +38,11 @@
       "command_word": "explain",
       "prompt": "Explain what it means when price elasticity of demand is less than 1 in absolute value.",
       "answer": "Demand is price inelastic: quantity demanded changes proportionally less than price.",
-      "explanation": "Inelastic demand usually means total revenue moves in the same direction as price."
+      "explanation": "Inelastic demand usually means total revenue moves in the same direction as price.",
+      "rubric": [
+        "1 mark for identifying inelastic demand.",
+        "1 mark for explaining quantity changes proportionally less than price."
+      ]
     },
     {
       "type": "calculation",
@@ -47,7 +51,13 @@
       "command_word": "calculate",
       "prompt": "Price rises from 10 to 12, and quantity demanded falls from 100 to 90. Use the midpoint method to calculate elasticity.",
       "answer": "Approximately -0.58.",
-      "explanation": "Percentage quantity change is -10/95. Percentage price change is 2/11. The ratio is about -0.58 depending on rounding; the key interpretation is inelastic."
+      "explanation": "Percentage quantity change is -10/95. Percentage price change is 2/11. The ratio is about -0.58 depending on rounding; the key interpretation is inelastic.",
+      "rubric": [
+        "1 mark for calculating percentage quantity change.",
+        "1 mark for calculating percentage price change.",
+        "1 mark for dividing the changes correctly.",
+        "1 mark for interpreting the result as inelastic."
+      ]
     },
     {
       "type": "discussion",
@@ -56,7 +66,12 @@
       "command_word": "discuss",
       "prompt": "Why might a medicine with few substitutes have inelastic demand?",
       "answer": "Consumers may continue buying it despite price changes because it is necessary and substitutes are limited.",
-      "explanation": "Necessity and lack of substitutes are common causes of inelastic demand."
+      "explanation": "Necessity and lack of substitutes are common causes of inelastic demand.",
+      "rubric": [
+        "1 mark for explaining necessity.",
+        "1 mark for explaining limited substitutes.",
+        "1 mark for linking both ideas to weak price response."
+      ]
     }
   ]
 }

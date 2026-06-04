@@ -13,6 +13,7 @@ class PackItem:
     difficulty: str = ""
     marks: int = 0
     command_word: str = ""
+    rubric: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -78,6 +79,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         difficulty = _optional_difficulty(raw_item.get("difficulty", ""), index)
         marks = _optional_item_marks(raw_item.get("marks", None), index)
         command_word = str(raw_item.get("command_word", "")).strip().lower()
+        rubric = _optional_item_text_list(raw_item.get("rubric", []), "rubric", index)
         items.append(
             PackItem(
                 prompt=prompt,
@@ -87,6 +89,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
                 difficulty=difficulty,
                 marks=marks,
                 command_word=command_word,
+                rubric=rubric,
             )
         )
 
@@ -131,6 +134,14 @@ def _optional_text_list(value: Any, field: str) -> tuple[str, ...]:
         return ()
     if not isinstance(value, list):
         raise PackValidationError(f"{field} must be a list when provided")
+    return tuple(str(item).strip() for item in value if str(item).strip())
+
+
+def _optional_item_text_list(value: Any, field: str, index: int) -> tuple[str, ...]:
+    if value in (None, ""):
+        return ()
+    if not isinstance(value, list):
+        raise PackValidationError(f"item {index} {field} must be a list when provided")
     return tuple(str(item).strip() for item in value if str(item).strip())
 
 

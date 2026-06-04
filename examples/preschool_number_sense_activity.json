@@ -36,7 +36,10 @@
       "command_word": "draw",
       "prompt": "Draw a line from each group of dots to the matching number: 1, 2, 3, 4, or 5.",
       "answer": "Each group should be matched to the numeral showing the same number of dots.",
-      "explanation": "This checks whether learners can connect counted objects to written numerals."
+      "explanation": "This checks whether learners can connect counted objects to written numerals.",
+      "rubric": [
+        "Credit matching each group to the correct numeral."
+      ]
     },
     {
       "type": "activity",
@@ -45,7 +48,10 @@
       "command_word": "circle",
       "prompt": "Circle the group that has more objects: two stars or four stars.",
       "answer": "Four stars.",
-      "explanation": "Four is greater than two."
+      "explanation": "Four is greater than two.",
+      "rubric": [
+        "Credit circling the group with four stars."
+      ]
     },
     {
       "type": "teacher-note",
@@ -54,7 +60,11 @@
       "command_word": "count",
       "prompt": "Ask the learner to count five classroom objects aloud.",
       "answer": "The learner should count one object per number word up to five.",
-      "explanation": "Listen for skipped objects, repeated counts, or mismatched pointing."
+      "explanation": "Listen for skipped objects, repeated counts, or mismatched pointing.",
+      "rubric": [
+        "Credit one-to-one pointing.",
+        "Credit counting aloud in the correct order."
+      ]
     }
   ]
 }

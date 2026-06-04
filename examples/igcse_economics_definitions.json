@@ -38,7 +38,10 @@
       "command_word": "define",
       "prompt": "Define opportunity cost.",
       "answer": "The next best alternative forgone when a choice is made.",
-      "explanation": "The definition should refer to the alternative that is given up."
+      "explanation": "The definition should refer to the alternative that is given up.",
+      "rubric": [
+        "1 mark for referring to the next best alternative forgone."
+      ]
     },
     {
       "difficulty": "foundation",
@@ -46,7 +49,10 @@
       "command_word": "define",
       "prompt": "Define scarcity.",
       "answer": "The basic economic problem that resources are limited while wants are unlimited.",
-      "explanation": "Good answers mention both limited resources and unlimited wants."
+      "explanation": "Good answers mention both limited resources and unlimited wants.",
+      "rubric": [
+        "1 mark for limited resources and unlimited wants."
+      ]
     },
     {
       "difficulty": "core",
@@ -54,7 +60,11 @@
       "command_word": "explain",
       "prompt": "Explain one function of money.",
       "answer": "Money acts as a medium of exchange, allowing goods and services to be traded without barter.",
-      "explanation": "Other valid functions include store of value, unit of account, and standard of deferred payment."
+      "explanation": "Other valid functions include store of value, unit of account, and standard of deferred payment.",
+      "rubric": [
+        "1 mark for naming a valid function of money.",
+        "1 mark for explaining how that function helps exchange."
+      ]
     }
   ]
 }

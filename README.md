@@ -32,6 +32,8 @@ payment workflows, or commercial customer data.
   and inventory reports can roll up total marks.
 - Tracks optional item command words so teachers can review assessment intent
   across define, explain, calculate, discuss, compare, identify, and evaluate tasks.
+- Tracks optional item rubric points so teacher answer keys can include marking
+  criteria while learner-facing resources stay clean.
 - Provides scaffold presets for common preschool, primary, exam-board, and
   university workflows.
 - Ships with sample resources from preschool through university level.
@@ -97,8 +99,8 @@ The Markdown report summarizes resources and item counts by subject, level,
 resource type, education system, exam board, course, delivery mode, command
 word, and difficulty coverage. The CSV export gives a spreadsheet-friendly row
 per resource, including delivery modes, command words, estimated duration, total
-marks, and foundation/core/extension/unspecified difficulty counts for
-maintainer review.
+marks, rubric points, and foundation/core/extension/unspecified difficulty
+counts for maintainer review.
 
 ## Scaffold New Resources
 
@@ -163,7 +165,9 @@ optional, but useful for catalogs and teacher-facing resources that span
 different levels, curricula, and delivery settings. Each item can also include
 optional `difficulty` metadata using `foundation`, `core`, or `extension`, plus
 optional positive-integer `marks` metadata for assessment weighting and
-optional `command_word` metadata for assessment intent.
+optional `command_word` metadata for assessment intent. Optional `rubric`
+bullets are teacher-facing marking criteria that appear in answer keys and
+coverage reports, not in learner-facing resources.
 
 ```json
 {
@@ -206,7 +210,10 @@ optional `command_word` metadata for assessment intent.
       "command_word": "state",
       "prompt": "State the output of A AND B when A = 1 and B = 0.",
       "answer": "0",
-      "explanation": "AND only outputs 1 when both inputs are 1."
+      "explanation": "AND only outputs 1 when both inputs are 1.",
+      "rubric": [
+        "1 mark for the correct output."
+      ]
     }
   ]
 }
@@ -218,8 +225,8 @@ metadata is read from the first row. `skills`, `prerequisites`, `materials`,
 separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,marks,command_word,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,1,sort,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,marks,command_word,rubric,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,1,sort,1 mark for grouping objects by material.,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -255,6 +262,9 @@ items:
     prompt: Identify two provenance details a historian should check before using a source.
     answer: The author and the date of creation.
     explanation: Provenance details such as author, date, audience, and origin help establish context.
+    rubric:
+      - 1 mark for identifying the author.
+      - 1 mark for identifying the date or origin.
 ```
 
 ## Development

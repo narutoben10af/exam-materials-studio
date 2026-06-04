@@ -44,6 +44,10 @@ class RendererTests(unittest.TestCase):
                         "difficulty": "core",
                         "marks": 2,
                         "command_word": "calculate",
+                        "rubric": [
+                            "1 mark for the correct output.",
+                            "1 mark for applying the AND rule.",
+                        ],
                     }
                 ],
             }
@@ -66,9 +70,11 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Marks:** 2", markdown)
         self.assertIn("**Command word:** calculate", markdown)
         self.assertIn("A AND B", markdown)
+        self.assertNotIn("**Rubric:**", markdown)
+        self.assertNotIn("1 mark for the correct output.", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
 
-    def test_answer_key_contains_explanation(self):
+    def test_answer_key_contains_explanation_and_rubric(self):
         markdown = render_answer_key_markdown(self.pack)
 
         self.assertIn("**Estimated time:** 40 minutes", markdown)
@@ -78,6 +84,9 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("**Marks:** 2", markdown)
         self.assertIn("**Command word:** calculate", markdown)
+        self.assertIn("**Rubric:**", markdown)
+        self.assertIn("- 1 mark for the correct output.", markdown)
+        self.assertIn("- 1 mark for applying the AND rule.", markdown)
         self.assertIn("0", markdown)
         self.assertIn("Both inputs must be 1.", markdown)
 
@@ -130,6 +139,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
         self.assertEqual(resource["item_count"], 1)
         self.assertEqual(resource["total_marks"], 2)
+        self.assertEqual(resource["rubric_point_count"], 2)
         self.assertEqual(resource["command_word_counts"], {"calculate": 1})
         self.assertEqual(resource["difficulty_counts"], {"core": 1})
         self.assertEqual(resource["files"]["markdown"], "boolean-logic.md")
@@ -185,15 +195,19 @@ class RendererTests(unittest.TestCase):
         self.assertIn("<strong>Command word:</strong> calculate", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)
+        self.assertNotIn("Rubric", html)
+        self.assertNotIn("1 mark for the correct output.", html)
         self.assertNotIn("Both inputs must be 1.", html)
 
-    def test_answer_key_html_contains_explanation(self):
+    def test_answer_key_html_contains_explanation_and_rubric(self):
         html = render_answer_key_html(self.pack)
 
         self.assertIn("Answer 1", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("<strong>Marks:</strong> 2", html)
         self.assertIn("<strong>Command word:</strong> calculate", html)
+        self.assertIn("<strong>Rubric:</strong>", html)
+        self.assertIn("<li>1 mark for the correct output.</li>", html)
         self.assertIn("Both inputs must be 1.", html)
 
 

@@ -51,6 +51,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
+            self.assertTrue(all(item.rubric for item in pack.items))
             self.assertTrue(result.ok)
             self.assertEqual(result.warnings, ())
 
@@ -72,6 +73,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
+            self.assertTrue(all(item.rubric for item in pack.items))
 
     def test_scaffold_yaml_creates_valid_resource(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -93,6 +95,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
+            self.assertTrue(all(item.rubric for item in pack.items))
             self.assertTrue(result.ok)
             self.assertEqual(result.warnings, ())
 

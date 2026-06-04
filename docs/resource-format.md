@@ -43,6 +43,9 @@ education systems, age ranges, and course types.
   rubric planning.
 - `command_word`: Optional assessment-intent label such as `define`, `explain`,
   `calculate`, `discuss`, `compare`, `identify`, or `evaluate`.
+- `rubric`: Optional list of teacher-facing marking or success-criteria bullets.
+  Rubric points render in answer keys and roll up in catalogs and inventory
+  reports, but they are intentionally not shown in learner-facing resources.
 
 ## YAML Input
 
@@ -80,17 +83,20 @@ Supported columns:
 - `difficulty`
 - `marks`
 - `command_word`
+- `rubric`
 - `prompt`
 - `answer`
 - `explanation`
 
-Separate multiple skills, prerequisites, materials, delivery modes, objectives, or references with semicolons, for example:
+Separate multiple skills, prerequisites, materials, delivery modes, objectives,
+references, or rubric points with semicolons, for example:
 `classification;materials;properties` or
 `Name common classroom objects;Describe simple object uses` or
 `Wood sample;Metal spoon;Plastic bottle` or
 `classroom;tutoring;self-study` or
 `Classify everyday materials;Link properties to object uses` or
-`Cambridge 0478 4.1;Cambridge 0478 4.2`.
+`Cambridge 0478 4.1;Cambridge 0478 4.2` or
+`1 mark for the method;1 mark for the final answer`.
 
 ## Scaffolding
 
@@ -139,7 +145,7 @@ school needs a more specific level, board, system, or resource type.
 The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, explanations, prerequisites, materials, estimated duration,
 delivery modes, starter difficulty progression labels, 1/2/3 mark weights, and
-starter command words.
+starter command words and rubric bullets.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -157,11 +163,11 @@ By default the CLI writes:
 - Static `index.html` catalog.
 
 The JSON catalog includes per-resource `duration_minutes`, `prerequisites`,
-`materials`, `delivery_modes`, `total_marks`, `command_word_counts`, and
-`difficulty_counts` so maintainers can quickly see entry requirements,
-preparation needs, delivery settings, planned time, assessment weight,
-assessment intent, and whether a resource leans too heavily toward foundation,
-core, or extension work.
+`materials`, `delivery_modes`, `total_marks`, `command_word_counts`,
+`rubric_point_count`, and `difficulty_counts` so maintainers can quickly see
+entry requirements, preparation needs, delivery settings, planned time,
+assessment weight, marking-criteria depth, assessment intent, and whether a
+resource leans too heavily toward foundation, core, or extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -215,11 +221,13 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - command word
 - total planned duration
 - total marks
+- rubric points
 - difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
 filter coverage in a spreadsheet. It includes `delivery_modes`,
 `command_words`, `duration_minutes`, `total_marks`, `foundation_items`,
-`core_items`, `extension_items`, and `unspecified_difficulty_items` columns so
-reviewers can spot resources that need more delivery coverage, assessment
-intent coverage, assessment balance, or progression balance.
+`core_items`, `extension_items`, `rubric_points`, and
+`unspecified_difficulty_items` columns so reviewers can spot resources that need
+more delivery coverage, assessment intent coverage, marking support,
+assessment balance, or progression balance.

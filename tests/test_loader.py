@@ -38,6 +38,9 @@ items:
     difficulty: foundation
     marks: 2
     command_word: write
+    rubric:
+      - 1 mark for writing 2/4.
+      - 1 mark for showing that quarters are equal parts.
     prompt: Write one half as quarters.
     answer: 2/4
     explanation: Two quarters cover the same amount as one half.
@@ -57,6 +60,10 @@ items:
             self.assertEqual(pack.items[0].difficulty, "foundation")
             self.assertEqual(pack.items[0].marks, 2)
             self.assertEqual(pack.items[0].command_word, "write")
+            self.assertEqual(
+                pack.items[0].rubric,
+                ("1 mark for writing 2/4.", "1 mark for showing that quarters are equal parts."),
+            )
 
     def test_loads_yml_resource(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -87,10 +94,10 @@ items:
             path.write_text(
                 "\n".join(
                     [
-                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,marks,command_word,prompt,answer,explanation",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,1,sort,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,2,name,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,3,explain,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
+                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,marks,command_word,rubric,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,1,sort,1 mark for grouping by material,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,2,name,1 mark for naming a valid property;1 mark for linking property to metal,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,3,explain,1 mark for transparency;1 mark for function;1 mark for clear explanation,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
                     ]
                 ),
                 encoding="utf-8",
@@ -115,6 +122,7 @@ items:
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["sort", "name", "explain"])
+            self.assertEqual(pack.items[1].rubric, ("1 mark for naming a valid property", "1 mark for linking property to metal"))
 
     def test_csv_requires_prompt_and_answer_per_row(self):
         with tempfile.TemporaryDirectory() as tmpdir:
