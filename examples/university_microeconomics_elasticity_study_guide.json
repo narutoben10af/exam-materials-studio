@@ -6,6 +6,8 @@
   "resource_type": "study-guide",
   "education_system": "Higher education",
   "course": "Introductory Microeconomics",
+  "unit": "Elasticity and revenue",
+  "sequence_order": 1,
   "duration_minutes": 35,
   "prerequisites": [
     "Understand demand curves and price changes.",

@@ -89,6 +89,12 @@ standards, specification objectives, or university module outcomes. Catalog and
 inventory outputs surface standards coverage, which helps maintainers review
 whether a resource is useful for broader lesson planning and course coverage,
 not just exam-style generation.
+Resource-level unit and sequence metadata adds course-structure support beyond
+standalone exam materials. Resources can now identify the lesson, module, topic,
+or course-pack section they belong to and their order inside that path, helping
+the project grow toward deeper education materials such as ordered lesson
+series, tutoring pathways, study-guide progressions, and university course
+modules.
 
 ## API Credits Use
 

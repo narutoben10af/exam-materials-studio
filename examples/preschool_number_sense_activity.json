@@ -6,6 +6,8 @@
   "resource_type": "activity-sheet",
   "education_system": "General early years",
   "course": "Number sense foundations",
+  "unit": "Counting and comparison",
+  "sequence_order": 1,
   "duration_minutes": 15,
   "prerequisites": [
     "Count aloud from one to five.",

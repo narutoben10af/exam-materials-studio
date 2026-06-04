@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Added resource-level `unit` and `sequence_order` metadata so resources can be
+  organized into lesson sequences, course packs, tutoring pathways, modules, and
+  study-guide progressions.
+- Added unit and sequence output to rendered resources, answer keys, JSON
+  catalogs, Markdown inventory summaries, CSV inventory exports, scaffolds, and
+  bundled examples.
+
 ## v0.8.0
 
 - Added item-level `standards` metadata for mapping individual activities,

@@ -84,6 +84,13 @@ def main(argv: list[str] | None = None) -> int:
     scaffold_parser.add_argument("--education-system")
     scaffold_parser.add_argument("--exam-board")
     scaffold_parser.add_argument("--course", default="")
+    scaffold_parser.add_argument("--unit", default="", help="Unit, module, topic, or course-pack section")
+    scaffold_parser.add_argument(
+        "--sequence-order",
+        type=int,
+        default=1,
+        help="Positive order number for placing this resource inside a unit or course sequence",
+    )
     scaffold_parser.add_argument(
         "--duration-minutes",
         type=int,
@@ -242,6 +249,8 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         education_system=education_system,
         exam_board=exam_board,
         course=args.course,
+        unit=getattr(args, "unit", ""),
+        sequence_order=getattr(args, "sequence_order", 1),
         duration_minutes=getattr(args, "duration_minutes", 30),
         prerequisites=prerequisites,
         materials=materials,

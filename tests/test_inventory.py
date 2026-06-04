@@ -19,6 +19,8 @@ class InventoryTests(unittest.TestCase):
                     "resource_type": "activity-sheet",
                     "education_system": "General early years",
                     "course": "Counting",
+                    "unit": "Number sense",
+                    "sequence_order": 1,
                     "duration_minutes": 15,
                     "delivery_modes": ["classroom", "tutoring"],
                     "summary": "Count small groups.",
@@ -61,6 +63,8 @@ class InventoryTests(unittest.TestCase):
                     "education_system": "Cambridge International",
                     "exam_board": "Cambridge",
                     "course": "0455 Economics",
+                    "unit": "Basic economic problem",
+                    "sequence_order": 2,
                     "duration_minutes": 20,
                     "delivery_modes": ["revision", "self-study"],
                     "summary": "Define key economics terms.",
@@ -104,6 +108,9 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("## Delivery Modes", report)
         self.assertIn("| classroom | 1 |", report)
         self.assertIn("| self-study | 1 |", report)
+        self.assertIn("## Units", report)
+        self.assertIn("| Number sense | 1 |", report)
+        self.assertIn("| Basic economic problem | 1 |", report)
         self.assertIn("## Command Words", report)
         self.assertIn("| count | 2 |", report)
         self.assertIn("| define | 1 |", report)
@@ -124,11 +131,11 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("| Preschool | 1 |", report)
         self.assertIn("0455 Economics", report)
         self.assertIn(
-            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 15 | 3 | 3 | guided-practice;warm-up | EYFS Mathematics Number 1;School Scheme Counting A | 2 | 1 | 1 | 0 | 0 |",
+            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | Number sense | 1 | 15 min | 15 | 3 | 3 | guided-practice;warm-up | EYFS Mathematics Number 1;School Scheme Counting A | 2 | 1 | 1 | 0 | 0 |",
             report,
         )
         self.assertIn(
-            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 7 | 3 | 1 | assessment | Cambridge 0455 1.1 Basic economic problem | 1 | 0 | 0 | 0 | 1 |",
+            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | Basic economic problem | 2 | 20 min | 7 | 3 | 1 | assessment | Cambridge 0455 1.1 Basic economic problem | 1 | 0 | 0 | 0 | 1 |",
             report,
         )
 
@@ -142,6 +149,8 @@ class InventoryTests(unittest.TestCase):
 
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[0]["title"], "Preschool Counting")
+            self.assertEqual(rows[0]["unit"], "Number sense")
+            self.assertEqual(rows[0]["sequence_order"], "1")
             self.assertEqual(rows[0]["duration_minutes"], "15")
             self.assertEqual(rows[0]["item_time_minutes"], "15")
             self.assertEqual(rows[0]["total_marks"], "3")
@@ -155,6 +164,8 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[0]["extension_items"], "0")
             self.assertEqual(rows[0]["unspecified_difficulty_items"], "0")
             self.assertEqual(rows[1]["course"], "0455 Economics")
+            self.assertEqual(rows[1]["unit"], "Basic economic problem")
+            self.assertEqual(rows[1]["sequence_order"], "2")
             self.assertEqual(rows[1]["duration_minutes"], "20")
             self.assertEqual(rows[1]["item_time_minutes"], "7")
             self.assertEqual(rows[1]["total_marks"], "3")

@@ -32,6 +32,8 @@ class ExamPack:
     education_system: str = ""
     exam_board: str = ""
     course: str = ""
+    unit: str = ""
+    sequence_order: int | None = None
     duration_minutes: int | None = None
     prerequisites: tuple[str, ...] = ()
     materials: tuple[str, ...] = ()
@@ -114,6 +116,8 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         education_system=str(data.get("education_system", "")).strip(),
         exam_board=str(data.get("exam_board", "")).strip(),
         course=str(data.get("course", "")).strip(),
+        unit=str(data.get("unit", "")).strip(),
+        sequence_order=_optional_positive_int(data.get("sequence_order", None), "sequence_order"),
         duration_minutes=_optional_positive_int(data.get("duration_minutes", None), "duration_minutes"),
         prerequisites=prerequisites,
         materials=materials,

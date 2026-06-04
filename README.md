@@ -18,6 +18,9 @@ payment workflows, or commercial customer data.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, courses, and
   curriculum references.
+- Tracks optional units and sequence order so resources can become ordered
+  lessons, course packs, tutoring pathways, modules, and study-guide
+  progressions.
 - Tracks prerequisites so resources can fit into lesson sequences, tutoring
   pathways, and revision plans.
 - Tracks materials so teachers can prepare supplies, devices, files, or tools
@@ -102,11 +105,11 @@ exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv -
 ```
 
 The Markdown report summarizes resources and item counts by subject, level,
-resource type, education system, exam board, course, delivery mode, command
-word, learning phase, item standards, and difficulty coverage. The CSV export gives a
-spreadsheet-friendly row per resource, including delivery modes, command words,
-learning phases, item standards, estimated duration, item-level planned time, total marks,
-rubric points, and
+resource type, education system, exam board, course, unit, delivery mode,
+command word, learning phase, item standards, and difficulty coverage. The CSV
+export gives a spreadsheet-friendly row per resource, including unit,
+sequence order, delivery modes, command words, learning phases, item standards,
+estimated duration, item-level planned time, total marks, rubric points, and
 foundation/core/extension/unspecified difficulty counts for maintainer review.
 
 ## Scaffold New Resources
@@ -122,6 +125,8 @@ exam-materials-studio scaffold \
   --resource-type worksheet \
   --education-system "General primary" \
   --course Fractions \
+  --unit "Equivalent fractions" \
+  --sequence-order 1 \
   --duration-minutes 30 \
   --prerequisites "Count equal parts in a shape" \
   --materials "Fraction strips;Counters" \
@@ -143,6 +148,8 @@ exam-materials-studio scaffold \
   --title "IGCSE Chemistry Acids Starter" \
   --subject Chemistry \
   --course "0620 Chemistry" \
+  --unit "Acids and bases" \
+  --sequence-order 1 \
   --learning-objectives "Classify acids and bases using common indicators" \
   --curriculum-references "Cambridge IGCSE Chemistry 0620: acids and bases" \
   --skills "acids;bases" \
@@ -166,18 +173,22 @@ where teachers want readable lists and indentation. CSV is useful when teachers
 are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
-`exam_board`, `course`, `duration_minutes`, `prerequisites`, `materials`,
-`delivery_modes`, `learning_objectives`, and `curriculum_references` fields are
-optional, but useful for catalogs and teacher-facing resources that span
-different levels, curricula, and delivery settings. Each item can also include
+`exam_board`, `course`, `unit`, `sequence_order`, `duration_minutes`,
+`prerequisites`, `materials`, `delivery_modes`, `learning_objectives`, and
+`curriculum_references` fields are optional, but useful for catalogs and
+teacher-facing resources that span different levels, curricula, course
+sequences, and delivery settings. `unit` names a lesson, module, topic, or
+course-pack section. `sequence_order` is a positive integer for placing the
+resource inside that unit or course sequence. Each item can also include
 optional `difficulty` metadata using `foundation`, `core`, or `extension`, plus
 optional `phase` metadata such as `warm-up`, `guided-practice`, `application`,
 `assessment`, or `reflection`, plus optional positive-integer `time_minutes`
 metadata for item pacing. Items can also include optional `standards` metadata
 as a list of syllabus points, curriculum standards, or course outcomes, optional
-positive-integer `marks` metadata for assessment weighting, and optional `command_word` metadata for
-assessment intent. Optional `rubric` bullets are teacher-facing marking criteria
-that appear in answer keys and coverage reports, not in learner-facing resources.
+positive-integer `marks` metadata for assessment weighting, and optional
+`command_word` metadata for assessment intent. Optional `rubric` bullets are
+teacher-facing marking criteria that appear in answer keys and coverage reports,
+not in learner-facing resources.
 
 ```json
 {
@@ -189,6 +200,8 @@ that appear in answer keys and coverage reports, not in learner-facing resources
   "education_system": "Cambridge International",
   "exam_board": "Cambridge",
   "course": "0478 Computer Science",
+  "unit": "Logic gates and Boolean expressions",
+  "sequence_order": 1,
   "duration_minutes": 25,
   "prerequisites": [
     "Recognise binary values 0 and 1.",
@@ -240,8 +253,8 @@ metadata is read from the first row. `skills`, `prerequisites`, `materials`,
 `standards`, and `rubric` points are separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,phase,time_minutes,standards,difficulty,marks,command_word,rubric,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,warm-up,5,Primary science: everyday materials,foundation,1,sort,1 mark for grouping objects by material.,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,unit,sequence_order,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,phase,time_minutes,standards,difficulty,marks,command_word,rubric,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,Everyday materials,1,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,warm-up,5,Primary science: everyday materials,foundation,1,sort,1 mark for grouping objects by material.,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -254,6 +267,8 @@ level: Secondary
 resource_type: source-analysis
 education_system: General secondary
 course: Historical source skills
+unit: Source reliability and usefulness
+sequence_order: 1
 duration_minutes: 30
 prerequisites:
   - Identify the author and date of a historical source.
@@ -291,8 +306,8 @@ items:
 ```bash
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
-python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
-python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --unit "Equivalent fractions" --sequence-order 1 --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --unit "Equivalent fractions" --sequence-order 2 --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
 python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated

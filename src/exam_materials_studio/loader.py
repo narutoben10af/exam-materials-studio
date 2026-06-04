@@ -97,6 +97,8 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         "education_system": _cell(first, "education_system"),
         "exam_board": _cell(first, "exam_board"),
         "course": _cell(first, "course"),
+        "unit": _cell(first, "unit"),
+        "sequence_order": _cell(first, "sequence_order"),
         "duration_minutes": _cell(first, "duration_minutes"),
         "prerequisites": _split_semicolon_values(_cell(first, "prerequisites")),
         "materials": _split_semicolon_values(_cell(first, "materials")),
