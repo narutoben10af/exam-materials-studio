@@ -73,6 +73,12 @@ criteria to answer keys while keeping learner-facing resources clean. Catalog
 and inventory outputs roll up rubric point counts, which helps maintainers see
 whether a resource has enough marking depth for exams, worksheets, activities,
 study guides, and course materials across preschool through university levels.
+Item-level phase metadata adds lesson-flow structure beyond assessment fields:
+resources can label warm-up, instruction, guided-practice, application,
+assessment, reflection, discussion, and seminar steps. Catalog and inventory
+outputs surface phase coverage, which helps maintainers review whether resources
+work as complete lessons, tutoring sessions, activity sheets, study guides, and
+course materials rather than just isolated questions.
 
 ## API Credits Use
 

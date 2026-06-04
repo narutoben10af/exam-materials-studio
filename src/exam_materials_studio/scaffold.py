@@ -91,6 +91,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
     return [
         {
             "type": "concept-check",
+            "phase": "warm-up",
             "difficulty": "foundation",
             "marks": 1,
             "command_word": "identify",
@@ -103,6 +104,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
         },
         {
             "type": "practice",
+            "phase": "guided-practice",
             "difficulty": "core",
             "marks": 2,
             "command_word": "apply",
@@ -116,6 +118,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
         },
         {
             "type": "reflection",
+            "phase": "reflection",
             "difficulty": "extension",
             "marks": 3,
             "command_word": "evaluate",
@@ -150,6 +153,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "curriculum_references",
         "skills",
         "type",
+        "phase",
         "difficulty",
         "marks",
         "command_word",

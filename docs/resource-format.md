@@ -37,6 +37,9 @@ education systems, age ranges, and course types.
 - `answer`: The expected answer, marking note, or suggested response.
 - `explanation`: Optional reasoning for answer keys.
 - `type`: Optional item type such as `question`, `activity`, `teacher-note`, `calculation`, or `discussion`.
+- `phase`: Optional lesson-flow label such as `warm-up`, `instruction`,
+  `guided-practice`, `independent-practice`, `application`, `assessment`,
+  `extension`, `reflection`, or `discussion`. Spaces are normalised to hyphens.
 - `difficulty`: Optional progression label. Supported values are `foundation`,
   `core`, and `extension`.
 - `marks`: Optional positive integer for assessment weighting, scoring, or
@@ -80,6 +83,7 @@ Supported columns:
 - `learning_objectives`
 - `curriculum_references`
 - `type`
+- `phase`
 - `difficulty`
 - `marks`
 - `command_word`
@@ -145,7 +149,7 @@ school needs a more specific level, board, system, or resource type.
 The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, explanations, prerequisites, materials, estimated duration,
 delivery modes, starter difficulty progression labels, 1/2/3 mark weights, and
-starter command words and rubric bullets.
+starter command words, lesson-flow phases, and rubric bullets.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -164,10 +168,11 @@ By default the CLI writes:
 
 The JSON catalog includes per-resource `duration_minutes`, `prerequisites`,
 `materials`, `delivery_modes`, `total_marks`, `command_word_counts`,
-`rubric_point_count`, and `difficulty_counts` so maintainers can quickly see
-entry requirements, preparation needs, delivery settings, planned time,
-assessment weight, marking-criteria depth, assessment intent, and whether a
-resource leans too heavily toward foundation, core, or extension work.
+`phase_counts`, `rubric_point_count`, and `difficulty_counts` so maintainers can
+quickly see entry requirements, preparation needs, delivery settings, planned
+time, assessment weight, lesson-flow coverage, marking-criteria depth,
+assessment intent, and whether a resource leans too heavily toward foundation,
+core, or extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -219,6 +224,7 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - course
 - delivery mode
 - command word
+- learning phase
 - total planned duration
 - total marks
 - rubric points
@@ -226,8 +232,8 @@ curriculum coverage. It reports total resources, total items, and counts by:
 
 The CSV inventory writes one row per resource so maintainers can sort and
 filter coverage in a spreadsheet. It includes `delivery_modes`,
-`command_words`, `duration_minutes`, `total_marks`, `foundation_items`,
-`core_items`, `extension_items`, `rubric_points`, and
+`command_words`, `phases`, `duration_minutes`, `total_marks`,
+`foundation_items`, `core_items`, `extension_items`, `rubric_points`, and
 `unspecified_difficulty_items` columns so reviewers can spot resources that need
-more delivery coverage, assessment intent coverage, marking support,
-assessment balance, or progression balance.
+more delivery coverage, lesson-flow coverage, assessment intent coverage,
+marking support, assessment balance, or progression balance.

@@ -65,6 +65,9 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         item_type = _cell(row, "type")
         if item_type:
             item["type"] = item_type
+        phase = _cell(row, "phase")
+        if phase:
+            item["phase"] = phase
         difficulty = _cell(row, "difficulty")
         if difficulty:
             item["difficulty"] = difficulty

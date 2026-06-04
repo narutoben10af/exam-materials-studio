@@ -196,6 +196,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "item_count": len(pack.items),
         "total_marks": _total_marks(pack),
         "rubric_point_count": _rubric_point_count(pack),
+        "phase_counts": _phase_counts(pack),
         "command_word_counts": _command_word_counts(pack),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -428,6 +429,8 @@ def _resource_header(pack: ExamPack) -> str:
 
 def _item_metadata_markdown(item: PackItem) -> list[str]:
     lines = []
+    if item.phase:
+        lines.extend([f"**Phase:** {item.phase}", ""])
     if item.difficulty:
         lines.extend([f"**Difficulty:** {item.difficulty}", ""])
     if item.marks:
@@ -439,6 +442,8 @@ def _item_metadata_markdown(item: PackItem) -> list[str]:
 
 def _item_metadata_html(item: PackItem) -> list[str]:
     lines = []
+    if item.phase:
+        lines.append(f"  <p><strong>Phase:</strong> {escape(item.phase)}</p>")
     if item.difficulty:
         lines.append(f"  <p><strong>Difficulty:</strong> {escape(item.difficulty)}</p>")
     if item.marks:
@@ -461,6 +466,14 @@ def _command_word_counts(pack: ExamPack) -> dict[str, int]:
     return {
         command_word: sum(1 for item in pack.items if item.command_word == command_word)
         for command_word in command_words
+    }
+
+
+def _phase_counts(pack: ExamPack) -> dict[str, int]:
+    phases = sorted({item.phase for item in pack.items if item.phase})
+    return {
+        phase: sum(1 for item in pack.items if item.phase == phase)
+        for phase in phases
     }
 
 

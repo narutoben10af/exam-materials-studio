@@ -33,6 +33,7 @@
   "skills": ["definitions", "short answers", "exam command words"],
   "items": [
     {
+      "phase": "warm-up",
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "define",
@@ -44,6 +45,7 @@
       ]
     },
     {
+      "phase": "retrieval-practice",
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "define",
@@ -55,6 +57,7 @@
       ]
     },
     {
+      "phase": "assessment",
       "difficulty": "core",
       "marks": 2,
       "command_word": "explain",
