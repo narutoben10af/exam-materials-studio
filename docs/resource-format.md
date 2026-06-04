@@ -1,7 +1,8 @@
 # Resource Format
 
-Exam Materials Studio uses small JSON and CSV formats so education resources can
-be reviewed, versioned, regenerated, and published without a database.
+Exam Materials Studio uses small JSON, YAML, and CSV formats so education
+resources can be reviewed, versioned, regenerated, and published without a
+database.
 
 ## Required Fields
 
@@ -33,6 +34,14 @@ education systems, age ranges, and course types.
 - `type`: Optional item type such as `question`, `activity`, `teacher-note`, `calculation`, or `discussion`.
 - `difficulty`: Optional progression label. Supported values are `foundation`,
   `core`, and `extension`.
+
+## YAML Input
+
+YAML resources use the same fields as JSON. They are useful for hand-edited
+resources because lists of objectives, references, skills, and items stay
+readable without spreadsheet quoting.
+
+Supported file extensions are `.yaml` and `.yml`.
 
 ## CSV Input
 
@@ -136,7 +145,7 @@ machine-readable manifest and a browser entrypoint.
 Run:
 
 ```bash
-exam-materials-studio validate examples/*.json
+exam-materials-studio validate examples/*.json examples/*.yaml
 ```
 
 CSV files can be validated with the same command:
@@ -145,12 +154,13 @@ CSV files can be validated with the same command:
 exam-materials-studio validate examples/*.csv
 ```
 
-The validator fails on structural errors, such as missing required fields or
-invalid JSON. It also emits warnings for resources that are technically valid
-but weak for publishing, including missing `education_system`, missing `course`,
-missing `learning_objectives`, missing `curriculum_references`, exam-specific
-resources without an `exam_board`, missing item difficulty labels, very short
-resources, and thin or missing explanations.
+The validator fails on structural errors, such as missing required fields,
+invalid JSON, invalid YAML, or malformed CSV rows. It also emits warnings for
+resources that are technically valid but weak for publishing, including missing
+`education_system`, missing `course`, missing `learning_objectives`, missing
+`curriculum_references`, exam-specific resources without an `exam_board`,
+missing item difficulty labels, very short resources, and thin or missing
+explanations.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.
@@ -160,7 +170,7 @@ request review.
 Run:
 
 ```bash
-exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 ```
 
 The Markdown inventory is designed for maintainers reviewing subject and

@@ -22,11 +22,11 @@ from .validator import has_errors, render_validation_report, validate_resources
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="exam-materials-studio",
-        description="Build printable education resources and answer keys from JSON or CSV files.",
+        description="Build printable education resources and answer keys from JSON, YAML, or CSV files.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    build_parser = subparsers.add_parser("build", help="Build one or more resource JSON or CSV files")
+    build_parser = subparsers.add_parser("build", help="Build one or more resource JSON, YAML, or CSV files")
     build_parser.add_argument("packs", nargs="+", type=Path)
     build_parser.add_argument("--out", type=Path, default=Path("generated"))
     build_parser.add_argument(
@@ -35,7 +35,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Comma-separated output formats: markdown, html",
     )
 
-    validate_parser = subparsers.add_parser("validate", help="Validate one or more resource JSON or CSV files")
+    validate_parser = subparsers.add_parser("validate", help="Validate one or more resource JSON, YAML, or CSV files")
     validate_parser.add_argument("packs", nargs="+", type=Path)
     validate_parser.add_argument(
         "--report",

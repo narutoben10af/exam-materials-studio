@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from .models import ExamPack, PackValidationError, pack_from_dict
 
 
@@ -17,12 +19,18 @@ def load_resource(path: Path) -> ExamPack:
     try:
         if suffix == ".json":
             data = json.loads(path.read_text(encoding="utf-8"))
+        elif suffix in {".yaml", ".yml"}:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
         elif suffix == ".csv":
             data = _resource_dict_from_csv(path)
         else:
             raise ResourceLoadError(f"unsupported resource format: {suffix or 'no extension'}")
+        if not isinstance(data, dict):
+            raise ResourceLoadError("resource file must contain a mapping/object")
         return pack_from_dict(data)
     except json.JSONDecodeError as error:
+        raise ResourceLoadError(str(error)) from error
+    except yaml.YAMLError as error:
         raise ResourceLoadError(str(error)) from error
     except OSError as error:
         raise ResourceLoadError(str(error)) from error

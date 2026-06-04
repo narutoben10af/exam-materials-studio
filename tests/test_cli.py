@@ -72,6 +72,40 @@ class CliTests(unittest.TestCase):
             self.assertTrue((output_dir / "primary-science.md").exists())
             self.assertTrue((output_dir / "primary-science.html").exists())
 
+    def test_build_packs_accepts_yaml_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.yaml"
+            output_dir = root / "generated"
+            pack_path.write_text(
+                """title: Primary Fractions YAML
+slug: primary-fractions-yaml
+subject: Mathematics
+level: Primary
+resource_type: worksheet
+education_system: General primary
+course: Fractions
+summary: A YAML-authored fractions resource.
+skills:
+  - equivalent fractions
+items:
+  - difficulty: foundation
+    prompt: Write one half as quarters.
+    answer: 2/4
+    explanation: Two quarters cover the same amount as one half.
+""",
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = build_packs([pack_path], output_dir, {"markdown", "html"})
+
+            self.assertEqual(result, 0)
+            self.assertTrue((output_dir / "primary-fractions-yaml.md").exists())
+            catalog = json.loads((output_dir / "index.json").read_text(encoding="utf-8"))
+            self.assertEqual(catalog["resources"][0]["slug"], "primary-fractions-yaml")
+            self.assertEqual(catalog["resources"][0]["difficulty_counts"], {"foundation": 1})
+
     def test_validate_packs_writes_report(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)

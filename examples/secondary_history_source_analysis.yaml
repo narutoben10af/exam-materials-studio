@@ -1,0 +1,33 @@
+title: Secondary History Source Analysis
+slug: secondary-history-source-analysis
+subject: History
+level: Secondary
+resource_type: source-analysis
+education_system: General secondary
+course: Historical source skills
+summary: A short resource for evaluating historical source reliability and usefulness.
+learning_objectives:
+  - Identify provenance details in a historical source.
+  - Explain how source purpose affects usefulness.
+curriculum_references:
+  - Secondary history: source analysis and evidence evaluation
+skills:
+  - provenance
+  - reliability
+  - usefulness
+items:
+  - type: concept-check
+    difficulty: foundation
+    prompt: Identify two provenance details a historian should check before using a source.
+    answer: The author and the date of creation.
+    explanation: Provenance details such as author, date, audience, and origin help establish context.
+  - type: analysis
+    difficulty: core
+    prompt: Explain why the purpose of a wartime poster might affect its reliability.
+    answer: It may be designed to persuade, so it could exaggerate or omit information.
+    explanation: Purpose shapes the message and can introduce bias, especially in propaganda.
+  - type: discussion
+    difficulty: extension
+    prompt: When might a biased source still be useful to a historian?
+    answer: It can reveal attitudes, beliefs, priorities, or propaganda methods from the time.
+    explanation: A biased source may be unreliable for facts but useful as evidence of perspective.
