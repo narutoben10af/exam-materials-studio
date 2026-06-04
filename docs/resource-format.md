@@ -115,9 +115,10 @@ metadata flags, and explicit flags override preset defaults when a course or
 school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
-prompts, answers, explanations, and starter difficulty progression labels. Use
-`--format csv` for spreadsheet-first authoring. Existing files are protected by
-default; pass `--force` only when you intentionally want to replace a scaffold.
+prompts, answers, explanations, and starter difficulty progression labels.
+Use `--format yaml` for hand-edited resources or `--format csv` for
+spreadsheet-first authoring. Existing files are protected by default; pass
+`--force` only when you intentionally want to replace a scaffold.
 
 ## Outputs
 

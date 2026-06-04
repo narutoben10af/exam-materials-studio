@@ -20,6 +20,10 @@ jobs:
         run: exam-materials-studio presets --out generated/scaffold-presets.md
       - name: Scaffold sample resource
         run: exam-materials-studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+      - name: Scaffold YAML sample resource
+        run: exam-materials-studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
+      - name: Validate scaffolded YAML resource
+        run: exam-materials-studio validate generated/primary-fractions-yaml-starter.yaml
       - name: Validate sample resources
         run: exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv
       - name: Inventory sample coverage

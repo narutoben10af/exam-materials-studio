@@ -127,8 +127,9 @@ Built-in presets cover `preschool`, `primary`, `cambridge-igcse`,
 `--level`, `--resource-type`, `--education-system`, and `--exam-board` override
 the preset when a resource needs a local variation.
 
-Use `--format csv` to create a spreadsheet-friendly starter instead. The command
-refuses to overwrite existing files unless `--force` is provided.
+Use `--format yaml` for a hand-editable starter or `--format csv` for a
+spreadsheet-friendly starter instead. The command refuses to overwrite existing
+files unless `--force` is provided.
 
 ## Resource Format
 
@@ -211,6 +212,7 @@ items:
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
 python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
 python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated

@@ -5,6 +5,8 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+import yaml
+
 
 @dataclass(frozen=True)
 class ScaffoldSpec:
@@ -40,7 +42,7 @@ def default_slug(title: str) -> str:
 
 
 def scaffold_resource(spec: ScaffoldSpec, output_path: Path, output_format: str, force: bool = False) -> None:
-    if output_format not in {"json", "csv"}:
+    if output_format not in {"json", "yaml", "csv"}:
         raise ScaffoldError(f"unsupported scaffold format: {output_format}")
     if output_path.exists() and not force:
         raise ScaffoldError(f"refusing to overwrite existing file: {output_path}")
@@ -48,6 +50,11 @@ def scaffold_resource(spec: ScaffoldSpec, output_path: Path, output_format: str,
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if output_format == "json":
         output_path.write_text(json.dumps(_resource_dict(spec), indent=2) + "\n", encoding="utf-8")
+    elif output_format == "yaml":
+        output_path.write_text(
+            yaml.safe_dump(_resource_dict(spec), sort_keys=False, allow_unicode=True),
+            encoding="utf-8",
+        )
     else:
         _write_csv_scaffold(spec, output_path)
 

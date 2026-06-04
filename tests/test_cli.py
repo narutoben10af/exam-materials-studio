@@ -298,6 +298,38 @@ items:
             )
             self.assertEqual(data["curriculum_references"], ["Local Grade 4 Fractions", "School Scheme 2.1"])
 
+    def test_main_scaffold_creates_yaml_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "scaffolds" / "primary-fractions.yaml"
+
+            with redirect_stdout(StringIO()):
+                result = main(
+                    [
+                        "scaffold",
+                        "--preset",
+                        "primary",
+                        "--title",
+                        "Primary Fractions YAML",
+                        "--subject",
+                        "Mathematics",
+                        "--course",
+                        "Fractions",
+                        "--learning-objectives",
+                        "Represent equivalent fractions with simple models",
+                        "--curriculum-references",
+                        "Local Grade 4 Fractions",
+                        "--skills",
+                        "fractions;equivalent fractions",
+                        "--format",
+                        "yaml",
+                        "--out",
+                        str(output_path),
+                    ]
+                )
+
+            self.assertEqual(result, 0)
+            self.assertIn("title: Primary Fractions YAML", output_path.read_text(encoding="utf-8"))
+
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(
             "Args",
