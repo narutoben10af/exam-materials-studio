@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.7.0
+
 - Added item-level `phase` metadata for lesson-flow labels such as warm-up,
   guided practice, application, assessment, reflection, and discussion.
 - Added phase output to rendered resources, answer keys, JSON catalogs, Markdown
