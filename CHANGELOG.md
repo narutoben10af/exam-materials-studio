@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added item-level `time_minutes` metadata for pacing individual lesson,
+  tutoring, activity, worksheet, study-guide, and assessment steps.
+- Added item-time output to rendered resources, answer keys, JSON catalogs,
+  Markdown inventory summaries, CSV inventory exports, scaffolds, and bundled examples.
+
 ## v0.7.0
 
 - Added item-level `phase` metadata for lesson-flow labels such as warm-up,

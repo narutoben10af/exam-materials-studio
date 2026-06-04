@@ -29,6 +29,7 @@ skills:
 items:
   - type: concept-check
     phase: warm-up
+    time_minutes: 8
     difficulty: foundation
     marks: 2
     command_word: identify
@@ -40,6 +41,7 @@ items:
       - 1 mark for identifying the date or origin.
   - type: analysis
     phase: guided-practice
+    time_minutes: 12
     difficulty: core
     marks: 3
     command_word: explain
@@ -52,6 +54,7 @@ items:
       - 1 mark for linking purpose to reliability.
   - type: discussion
     phase: reflection
+    time_minutes: 10
     difficulty: extension
     marks: 3
     command_word: evaluate

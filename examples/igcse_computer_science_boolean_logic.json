@@ -34,6 +34,7 @@
   "items": [
     {
       "phase": "warm-up",
+      "time_minutes": 5,
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "complete",
@@ -46,6 +47,7 @@
     },
     {
       "phase": "guided-practice",
+      "time_minutes": 8,
       "difficulty": "core",
       "marks": 2,
       "command_word": "write",
@@ -59,6 +61,7 @@
     },
     {
       "phase": "application",
+      "time_minutes": 12,
       "difficulty": "extension",
       "marks": 3,
       "command_word": "write",

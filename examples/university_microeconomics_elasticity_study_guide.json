@@ -34,6 +34,7 @@
     {
       "type": "concept-check",
       "phase": "concept-check",
+      "time_minutes": 10,
       "difficulty": "foundation",
       "marks": 2,
       "command_word": "explain",
@@ -48,6 +49,7 @@
     {
       "type": "calculation",
       "phase": "guided-practice",
+      "time_minutes": 15,
       "difficulty": "core",
       "marks": 4,
       "command_word": "calculate",
@@ -64,6 +66,7 @@
     {
       "type": "discussion",
       "phase": "seminar-discussion",
+      "time_minutes": 10,
       "difficulty": "extension",
       "marks": 3,
       "command_word": "discuss",

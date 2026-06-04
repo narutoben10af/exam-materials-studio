@@ -79,6 +79,10 @@ assessment, reflection, discussion, and seminar steps. Catalog and inventory
 outputs surface phase coverage, which helps maintainers review whether resources
 work as complete lessons, tutoring sessions, activity sheets, study guides, and
 course materials rather than just isolated questions.
+Item-level time metadata adds practical pacing for each step of a resource.
+Learner outputs and answer keys can show how long a warm-up, guided-practice
+task, assessment item, or reflection should take, while catalogs and inventory
+reports roll up item-level planned minutes for maintainer review.
 
 ## API Credits Use
 

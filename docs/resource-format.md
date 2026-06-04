@@ -40,6 +40,8 @@ education systems, age ranges, and course types.
 - `phase`: Optional lesson-flow label such as `warm-up`, `instruction`,
   `guided-practice`, `independent-practice`, `application`, `assessment`,
   `extension`, `reflection`, or `discussion`. Spaces are normalised to hyphens.
+- `time_minutes`: Optional positive integer for pacing an individual item,
+  activity, question, or teacher note.
 - `difficulty`: Optional progression label. Supported values are `foundation`,
   `core`, and `extension`.
 - `marks`: Optional positive integer for assessment weighting, scoring, or
@@ -84,6 +86,7 @@ Supported columns:
 - `curriculum_references`
 - `type`
 - `phase`
+- `time_minutes`
 - `difficulty`
 - `marks`
 - `command_word`
@@ -150,6 +153,7 @@ The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, explanations, prerequisites, materials, estimated duration,
 delivery modes, starter difficulty progression labels, 1/2/3 mark weights, and
 starter command words, lesson-flow phases, and rubric bullets.
+Starter items also include item-level pacing with `time_minutes`.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -168,9 +172,10 @@ By default the CLI writes:
 
 The JSON catalog includes per-resource `duration_minutes`, `prerequisites`,
 `materials`, `delivery_modes`, `total_marks`, `command_word_counts`,
-`phase_counts`, `rubric_point_count`, and `difficulty_counts` so maintainers can
-quickly see entry requirements, preparation needs, delivery settings, planned
-time, assessment weight, lesson-flow coverage, marking-criteria depth,
+`phase_counts`, `item_time_minutes`, `rubric_point_count`, and
+`difficulty_counts` so maintainers can quickly see entry requirements,
+preparation needs, delivery settings, planned time, item pacing, assessment
+weight, lesson-flow coverage, marking-criteria depth,
 assessment intent, and whether a resource leans too heavily toward foundation,
 core, or extension work.
 
@@ -226,14 +231,15 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - command word
 - learning phase
 - total planned duration
+- item-level planned time
 - total marks
 - rubric points
 - difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
 filter coverage in a spreadsheet. It includes `delivery_modes`,
-`command_words`, `phases`, `duration_minutes`, `total_marks`,
+`command_words`, `phases`, `duration_minutes`, `item_time_minutes`, `total_marks`,
 `foundation_items`, `core_items`, `extension_items`, `rubric_points`, and
 `unspecified_difficulty_items` columns so reviewers can spot resources that need
-more delivery coverage, lesson-flow coverage, assessment intent coverage,
-marking support, assessment balance, or progression balance.
+more delivery coverage, pacing detail, lesson-flow coverage, assessment intent
+coverage, marking support, assessment balance, or progression balance.

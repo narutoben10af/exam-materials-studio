@@ -34,6 +34,7 @@
   "items": [
     {
       "phase": "warm-up",
+      "time_minutes": 5,
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "define",
@@ -46,6 +47,7 @@
     },
     {
       "phase": "retrieval-practice",
+      "time_minutes": 5,
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "define",
@@ -58,6 +60,7 @@
     },
     {
       "phase": "assessment",
+      "time_minutes": 10,
       "difficulty": "core",
       "marks": 2,
       "command_word": "explain",

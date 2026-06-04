@@ -194,6 +194,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "materials": list(pack.materials),
         "delivery_modes": list(pack.delivery_modes),
         "item_count": len(pack.items),
+        "item_time_minutes": _item_time_minutes(pack),
         "total_marks": _total_marks(pack),
         "rubric_point_count": _rubric_point_count(pack),
         "phase_counts": _phase_counts(pack),
@@ -431,6 +432,8 @@ def _item_metadata_markdown(item: PackItem) -> list[str]:
     lines = []
     if item.phase:
         lines.extend([f"**Phase:** {item.phase}", ""])
+    if item.time_minutes:
+        lines.extend([f"**Time:** {item.time_minutes} minutes", ""])
     if item.difficulty:
         lines.extend([f"**Difficulty:** {item.difficulty}", ""])
     if item.marks:
@@ -444,6 +447,8 @@ def _item_metadata_html(item: PackItem) -> list[str]:
     lines = []
     if item.phase:
         lines.append(f"  <p><strong>Phase:</strong> {escape(item.phase)}</p>")
+    if item.time_minutes:
+        lines.append(f"  <p><strong>Time:</strong> {item.time_minutes} minutes</p>")
     if item.difficulty:
         lines.append(f"  <p><strong>Difficulty:</strong> {escape(item.difficulty)}</p>")
     if item.marks:
@@ -479,6 +484,10 @@ def _phase_counts(pack: ExamPack) -> dict[str, int]:
 
 def _total_marks(pack: ExamPack) -> int:
     return sum(item.marks for item in pack.items)
+
+
+def _item_time_minutes(pack: ExamPack) -> int:
+    return sum(item.time_minutes for item in pack.items)
 
 
 def _rubric_point_count(pack: ExamPack) -> int:
