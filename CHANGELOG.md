@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added a `pathway` command that renders ordered Markdown learning pathways
+  from course, unit, and sequence metadata.
+- Added pathway report tests so maintainers can review lesson series, tutoring
+  pathways, course packs, and study-guide progressions as ordered resources.
 - Added resource-level `unit` and `sequence_order` metadata so resources can be
   organized into lesson sequences, course packs, tutoring pathways, modules, and
   study-guide progressions.

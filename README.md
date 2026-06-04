@@ -16,6 +16,8 @@ payment workflows, or commercial customer data.
 - Creates static Markdown, HTML, and JSON catalog files for sharing and indexing
   available packs.
 - Validates resource structure before output is written.
+- Renders ordered Markdown learning pathways from course, unit, and sequence
+  metadata.
 - Supports optional metadata for education systems, exam boards, courses, and
   curriculum references.
 - Tracks optional units and sequence order so resources can become ordered
@@ -111,6 +113,21 @@ export gives a spreadsheet-friendly row per resource, including unit,
 sequence order, delivery modes, command words, learning phases, item standards,
 estimated duration, item-level planned time, total marks, rubric points, and
 foundation/core/extension/unspecified difficulty counts for maintainer review.
+
+## Learning Pathways
+
+Use the pathway command to turn sequenced resources into a teacher-facing course
+map:
+
+```bash
+exam-materials-studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md
+```
+
+The pathway report groups resources by level, subject, course, and unit, then
+orders each unit by `sequence_order`. It keeps unsequenced resources visible so
+maintainers can spot packs that still need placement. Each row includes duration,
+delivery modes, prerequisites, learning objectives, and links to the generated
+resource and answer key filenames.
 
 ## Scaffold New Resources
 
@@ -310,6 +327,7 @@ python3 -m exam_materials_studio scaffold --preset primary --title "Primary Frac
 python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --unit "Equivalent fractions" --sequence-order 2 --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
 python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+python3 -m exam_materials_studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md
 python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated
 ```
 

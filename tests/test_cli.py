@@ -5,7 +5,15 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-from exam_materials_studio.cli import build_packs, inventory_packs, list_presets, main, scaffold_pack, validate_packs
+from exam_materials_studio.cli import (
+    build_packs,
+    inventory_packs,
+    list_presets,
+    main,
+    pathway_packs,
+    scaffold_pack,
+    validate_packs,
+)
 
 
 class CliTests(unittest.TestCase):
@@ -197,6 +205,43 @@ items:
             self.assertEqual(result, 0)
             self.assertIn("Resource Coverage Inventory", report_path.read_text(encoding="utf-8"))
             self.assertIn("Primary Fractions Worksheet", csv_path.read_text(encoding="utf-8"))
+
+    def test_pathway_packs_writes_ordered_markdown_report(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.json"
+            report_path = root / "reports" / "pathway.md"
+            pack_path.write_text(
+                json.dumps(
+                    {
+                        "title": "Primary Fractions Worksheet",
+                        "slug": "primary-fractions-worksheet",
+                        "subject": "Mathematics",
+                        "level": "Primary",
+                        "resource_type": "worksheet",
+                        "education_system": "General primary",
+                        "course": "Fractions",
+                        "unit": "Equivalent fractions",
+                        "sequence_order": 1,
+                        "duration_minutes": 20,
+                        "delivery_modes": ["classroom"],
+                        "learning_objectives": ["Represent equivalent fractions"],
+                        "summary": "A short worksheet for equivalent fractions.",
+                        "skills": ["equivalent fractions"],
+                        "items": [{"prompt": "Write one half as quarters.", "answer": "2/4"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = pathway_packs([pack_path], report_path)
+
+            self.assertEqual(result, 0)
+            report = report_path.read_text(encoding="utf-8")
+            self.assertIn("# Learning Pathway", report)
+            self.assertIn("## Primary / Mathematics / Fractions", report)
+            self.assertIn("| 1 | [Primary Fractions Worksheet](primary-fractions-worksheet.md)", report)
 
     def test_scaffold_pack_creates_json_from_cli_args(self):
         with tempfile.TemporaryDirectory() as tmpdir:
