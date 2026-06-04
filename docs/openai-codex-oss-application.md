@@ -60,6 +60,10 @@ for classrooms, tutoring, self-study, homework, revision, seminars, or
 discussion, which helps the repository grow into a broader platform for lesson
 materials, worksheets, study guides, activities, and course resources rather
 than only exam-pack generation.
+Item-level marks metadata adds assessment planning support across exam papers,
+worksheets, quizzes, problem sets, and study checks. Generated resources and
+answer keys can show item weights, while catalogs and inventory reports roll up
+total marks so maintainers can review scoring balance across levels and formats.
 
 ## API Credits Use
 

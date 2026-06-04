@@ -26,7 +26,7 @@ class PackModelTests(unittest.TestCase):
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
                 "delivery_modes": ["classroom", "self-study"],
                 "skills": ["logic"],
-                "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core"}],
+                "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core", "marks": "2"}],
             }
         )
 
@@ -48,6 +48,7 @@ class PackModelTests(unittest.TestCase):
         )
         self.assertEqual(pack.curriculum_references, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
         self.assertEqual(pack.items[0].difficulty, "core")
+        self.assertEqual(pack.items[0].marks, 2)
         self.assertEqual(len(pack.items), 1)
 
     def test_invalid_duration_is_rejected(self):
@@ -137,6 +138,22 @@ class PackModelTests(unittest.TestCase):
                     "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "impossible"}],
                 }
             )
+
+    def test_invalid_item_marks_are_rejected(self):
+        for marks in ("two", 0):
+            with self.subTest(marks=marks):
+                with self.assertRaisesRegex(PackValidationError, "item 1 marks must be a positive integer"):
+                    pack_from_dict(
+                        {
+                            "title": "Sample",
+                            "slug": "sample-pack",
+                            "subject": "Computer Science",
+                            "level": "IGCSE",
+                            "summary": "A sample pack.",
+                            "skills": ["logic"],
+                            "items": [{"prompt": "Question?", "answer": "Answer.", "marks": marks}],
+                        }
+                    )
 
     def test_invalid_slug_is_rejected(self):
         with self.assertRaises(PackValidationError):

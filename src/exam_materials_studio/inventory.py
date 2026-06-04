@@ -28,6 +28,10 @@ class Inventory:
     def total_duration_minutes(self) -> int:
         return sum(pack.duration_minutes or 0 for pack in self.packs)
 
+    @property
+    def total_marks(self) -> int:
+        return sum(_total_marks(pack) for pack in self.packs)
+
 
 def build_inventory(packs: list[ExamPack]) -> Inventory:
     return Inventory(packs=tuple(packs))
@@ -40,6 +44,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         f"- Resources: {inventory.resource_count}",
         f"- Items: {inventory.item_count}",
         f"- Planned time: {inventory.total_duration_minutes} minutes",
+        f"- Total marks: {inventory.total_marks}",
         "",
     ]
 
@@ -60,8 +65,8 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         [
             "## Resources",
             "",
-            "| Title | Level | Subject | Type | Course | Duration | Items | Foundation | Core | Extension | Unspecified Difficulty |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Title | Level | Subject | Type | Course | Duration | Marks | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
@@ -76,6 +81,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     _table_cell(pack.resource_type),
                     _table_cell(pack.course or "Unspecified"),
                     _table_cell(_duration_label(pack)),
+                    str(_total_marks(pack)),
                     str(len(pack.items)),
                     str(difficulty_counts["foundation"]),
                     str(difficulty_counts["core"]),
@@ -103,6 +109,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "exam_board",
                 "course",
                 "duration_minutes",
+                "total_marks",
                 "delivery_modes",
                 "item_count",
                 "foundation_items",
@@ -125,6 +132,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "exam_board": pack.exam_board,
                     "course": pack.course,
                     "duration_minutes": pack.duration_minutes or "",
+                    "total_marks": _total_marks(pack),
                     "delivery_modes": ";".join(pack.delivery_modes),
                     "item_count": len(pack.items),
                     "foundation_items": difficulty_counts["foundation"],
@@ -187,6 +195,10 @@ def _duration_label(pack: ExamPack) -> str:
     if not pack.duration_minutes:
         return "Unspecified"
     return f"{pack.duration_minutes} min"
+
+
+def _total_marks(pack: ExamPack) -> int:
+    return sum(item.marks for item in pack.items)
 
 
 def _table_cell(value: str) -> str:

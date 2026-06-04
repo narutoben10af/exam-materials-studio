@@ -36,6 +36,7 @@ skills:
 items:
   - type: question
     difficulty: foundation
+    marks: 2
     prompt: Write one half as quarters.
     answer: 2/4
     explanation: Two quarters cover the same amount as one half.
@@ -53,6 +54,7 @@ items:
             self.assertEqual(pack.delivery_modes, ("classroom", "tutoring"))
             self.assertEqual(pack.skills, ("equivalent fractions",))
             self.assertEqual(pack.items[0].difficulty, "foundation")
+            self.assertEqual(pack.items[0].marks, 2)
 
     def test_loads_yml_resource(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -83,10 +85,10 @@ items:
             path.write_text(
                 "\n".join(
                     [
-                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
+                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,marks,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,1,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,2,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,Wood sample;Metal spoon;Plastic bottle,classroom;tutoring,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,3,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
                     ]
                 ),
                 encoding="utf-8",
@@ -109,6 +111,7 @@ items:
             self.assertEqual(len(pack.items), 3)
             self.assertEqual(pack.items[0].item_type, "activity")
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
+            self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
 
     def test_csv_requires_prompt_and_answer_per_row(self):
         with tempfile.TemporaryDirectory() as tmpdir:

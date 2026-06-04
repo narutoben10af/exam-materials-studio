@@ -87,11 +87,12 @@ def _resource_dict(spec: ScaffoldSpec) -> dict[str, object]:
     }
 
 
-def _starter_items(spec: ScaffoldSpec) -> list[dict[str, str]]:
+def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
     return [
         {
             "type": "concept-check",
             "difficulty": "foundation",
+            "marks": 1,
             "prompt": f"Introduce one key idea from {spec.course or spec.subject}.",
             "answer": "Replace with the expected answer or success criteria.",
             "explanation": "Explain why this answer is correct and how it supports the learning goal.",
@@ -99,6 +100,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, str]]:
         {
             "type": "practice",
             "difficulty": "core",
+            "marks": 2,
             "prompt": "Add one learner-facing practice task.",
             "answer": "Replace with a complete worked answer.",
             "explanation": "Include the reasoning, method, or marking guidance a teacher needs.",
@@ -106,6 +108,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, str]]:
         {
             "type": "reflection",
             "difficulty": "extension",
+            "marks": 3,
             "prompt": "Add one extension, discussion, or reflection prompt.",
             "answer": "Replace with a strong sample response or teacher note.",
             "explanation": "Explain what a high-quality response should demonstrate.",
@@ -133,6 +136,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "skills",
         "type",
         "difficulty",
+        "marks",
         "prompt",
         "answer",
         "explanation",
