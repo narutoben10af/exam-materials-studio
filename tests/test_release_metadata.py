@@ -21,6 +21,21 @@ class ReleaseMetadataTests(unittest.TestCase):
         self.assertIsNotNone(match)
         self.assertEqual(match.group(1), _project_version())
 
+    def test_v040_release_documents_metadata_workflows(self):
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        section = _changelog_section(changelog, "v0.4.0")
+
+        for expected in (
+            "delivery_modes",
+            "duration_minutes",
+            "prerequisites",
+            "materials",
+            "scaffold",
+            "catalogs",
+            "inventory",
+        ):
+            self.assertIn(expected, section)
+
 
 def _project_version() -> str:
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
@@ -28,6 +43,17 @@ def _project_version() -> str:
     if match is None:
         raise AssertionError("pyproject.toml is missing project version")
     return match.group(1)
+
+
+def _changelog_section(changelog: str, heading: str) -> str:
+    match = re.search(
+        rf"^## {re.escape(heading)}\n(?P<section>.*?)(?=^## |\Z)",
+        changelog,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if match is None:
+        raise AssertionError(f"CHANGELOG.md is missing {heading}")
+    return match.group("section")
 
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.4.0
+
 - Added `delivery_modes` metadata for classroom, tutoring, self-study, homework, revision, seminar, and discussion workflows.
 - Added delivery-mode output to rendered resources, answer keys, Markdown/HTML catalogs, JSON catalogs, and inventory reports.
 - Added `--delivery-modes` scaffold support and delivery-mode examples for JSON, YAML, and CSV resources.
