@@ -50,6 +50,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         ("Education Systems", _count_field(inventory.packs, "education_system")),
         ("Exam Boards", _count_field(inventory.packs, "exam_board")),
         ("Courses", _count_field(inventory.packs, "course")),
+        ("Delivery Modes", _count_list_field(inventory.packs, "delivery_modes")),
     ]:
         lines.extend(_render_counter_section(title, counter))
 
@@ -102,6 +103,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "exam_board",
                 "course",
                 "duration_minutes",
+                "delivery_modes",
                 "item_count",
                 "foundation_items",
                 "core_items",
@@ -123,6 +125,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "exam_board": pack.exam_board,
                     "course": pack.course,
                     "duration_minutes": pack.duration_minutes or "",
+                    "delivery_modes": ";".join(pack.delivery_modes),
                     "item_count": len(pack.items),
                     "foundation_items": difficulty_counts["foundation"],
                     "core_items": difficulty_counts["core"],
@@ -137,6 +140,14 @@ def _count_field(packs: tuple[ExamPack, ...], field_name: str) -> Counter[str]:
     for pack in packs:
         value = str(getattr(pack, field_name)).strip() or "Unspecified"
         values.append(value)
+    return Counter(values)
+
+
+def _count_list_field(packs: tuple[ExamPack, ...], field_name: str) -> Counter[str]:
+    values = []
+    for pack in packs:
+        entries = tuple(str(value).strip() for value in getattr(pack, field_name) if str(value).strip())
+        values.extend(entries or ("Unspecified",))
     return Counter(values)
 
 

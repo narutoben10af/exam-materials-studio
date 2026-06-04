@@ -326,6 +326,8 @@ items:
                         "Recognise equal parts;Count quarters",
                         "--materials",
                         "Fraction strips;Counters",
+                        "--delivery-modes",
+                        "classroom;tutoring",
                         "--format",
                         "yaml",
                         "--out",
@@ -341,6 +343,8 @@ items:
             self.assertIn("Count quarters", output)
             self.assertIn("Fraction strips", output)
             self.assertIn("Counters", output)
+            self.assertIn("classroom", output)
+            self.assertIn("tutoring", output)
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

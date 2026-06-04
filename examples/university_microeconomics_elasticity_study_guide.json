@@ -15,6 +15,11 @@
     "Calculator or spreadsheet.",
     "Course notes on demand and revenue."
   ],
+  "delivery_modes": [
+    "self-study",
+    "seminar",
+    "revision"
+  ],
   "summary": "A compact study guide for price elasticity of demand and revenue interpretation.",
   "learning_objectives": [
     "Interpret price elasticity values in economic context.",

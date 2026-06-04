@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added `delivery_modes` metadata for classroom, tutoring, self-study, homework, revision, seminar, and discussion workflows.
+- Added delivery-mode output to rendered resources, answer keys, Markdown/HTML catalogs, JSON catalogs, and inventory reports.
+- Added `--delivery-modes` scaffold support and delivery-mode examples for JSON, YAML, and CSV resources.
 - Added `duration_minutes` metadata for lesson, tutoring, and study-planning estimates.
 - Added duration output to rendered resources, answer keys, JSON catalogs, and inventory reports.
 - Added `--duration-minutes` scaffold support and duration examples for JSON, YAML, and CSV resources.

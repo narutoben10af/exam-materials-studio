@@ -54,6 +54,12 @@ lesson pathways, tutoring courses, revision plans, and university study guides.
 Materials metadata adds practical classroom preparation support, so activity
 sheets, lessons, labs, tutoring sessions, and study guides can state the
 supplies, devices, files, or tools needed before delivery.
+Delivery-mode metadata is another step beyond exam materials into deeper
+education-material workflows. Resources can now identify whether they are meant
+for classrooms, tutoring, self-study, homework, revision, seminars, or
+discussion, which helps the repository grow into a broader platform for lesson
+materials, worksheets, study guides, activities, and course resources rather
+than only exam-pack generation.
 
 ## API Credits Use
 
