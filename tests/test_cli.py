@@ -322,6 +322,8 @@ items:
                         "fractions;equivalent fractions",
                         "--duration-minutes",
                         "45",
+                        "--prerequisites",
+                        "Recognise equal parts;Count quarters",
                         "--format",
                         "yaml",
                         "--out",
@@ -333,6 +335,8 @@ items:
             output = output_path.read_text(encoding="utf-8")
             self.assertIn("title: Primary Fractions YAML", output)
             self.assertIn("duration_minutes: 45", output)
+            self.assertIn("Recognise equal parts", output)
+            self.assertIn("Count quarters", output)
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

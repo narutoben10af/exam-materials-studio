@@ -80,6 +80,7 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         "exam_board": _cell(first, "exam_board"),
         "course": _cell(first, "course"),
         "duration_minutes": _cell(first, "duration_minutes"),
+        "prerequisites": _split_skills(_cell(first, "prerequisites")),
         "summary": _cell(first, "summary"),
         "skills": _split_skills(_cell(first, "skills")),
         "learning_objectives": _split_skills(_cell(first, "learning_objectives")),

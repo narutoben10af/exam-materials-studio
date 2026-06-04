@@ -6,6 +6,9 @@ resource_type: source-analysis
 education_system: General secondary
 course: Historical source skills
 duration_minutes: 30
+prerequisites:
+  - Identify the author and date of a historical source.
+  - Distinguish fact from opinion in a short text.
 summary: A short resource for evaluating historical source reliability and usefulness.
 learning_objectives:
   - Identify provenance details in a historical source.

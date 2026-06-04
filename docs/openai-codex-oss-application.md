@@ -48,6 +48,9 @@ Estimated duration metadata now helps the project support broader education
 materials too: lesson activities, tutoring sessions, revision blocks, and study
 guides can show expected time and roll up total planned minutes in inventory
 reports.
+Prerequisite metadata helps resources become sequenced education materials
+rather than isolated packs, since teachers can show expected prior knowledge for
+lesson pathways, tutoring courses, revision plans, and university study guides.
 
 ## API Credits Use
 

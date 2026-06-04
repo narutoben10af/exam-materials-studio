@@ -7,6 +7,10 @@
   "education_system": "Higher education",
   "course": "Introductory Microeconomics",
   "duration_minutes": 35,
+  "prerequisites": [
+    "Understand demand curves and price changes.",
+    "Calculate percentage change."
+  ],
   "summary": "A compact study guide for price elasticity of demand and revenue interpretation.",
   "learning_objectives": [
     "Interpret price elasticity values in economic context.",
