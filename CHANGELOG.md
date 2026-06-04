@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.8.0
+
 - Added item-level `standards` metadata for mapping individual activities,
   questions, prompts, and teacher notes to syllabus points, curriculum
   standards, or course outcomes.

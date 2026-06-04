@@ -80,6 +80,23 @@ class ReleaseMetadataTests(unittest.TestCase):
         ):
             self.assertIn(expected, section)
 
+    def test_v080_release_documents_planning_metadata(self):
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        section = _changelog_section(changelog, "v0.8.0")
+
+        for expected in (
+            "time_minutes",
+            "standards",
+            "syllabus",
+            "course outcomes",
+            "rendered resources",
+            "answer keys",
+            "JSON catalogs",
+            "inventory",
+            "scaffolds",
+        ):
+            self.assertIn(expected, section)
+
 
 def _project_version() -> str:
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
