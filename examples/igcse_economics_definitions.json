@@ -7,6 +7,7 @@
   "education_system": "Cambridge International",
   "exam_board": "Cambridge",
   "course": "0455 Economics",
+  "duration_minutes": 20,
   "summary": "Short-answer practice for foundational economics definitions.",
   "learning_objectives": [
     "Recall core IGCSE Economics definitions accurately.",

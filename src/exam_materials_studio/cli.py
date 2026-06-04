@@ -84,6 +84,12 @@ def main(argv: list[str] | None = None) -> int:
     scaffold_parser.add_argument("--education-system")
     scaffold_parser.add_argument("--exam-board")
     scaffold_parser.add_argument("--course", default="")
+    scaffold_parser.add_argument(
+        "--duration-minutes",
+        type=int,
+        default=30,
+        help="Estimated resource time in minutes for lesson or study planning",
+    )
     scaffold_parser.add_argument("--summary", default="")
     scaffold_parser.add_argument(
         "--learning-objectives",
@@ -218,6 +224,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         education_system=education_system,
         exam_board=exam_board,
         course=args.course,
+        duration_minutes=getattr(args, "duration_minutes", 30),
         summary=summary,
         learning_objectives=learning_objectives,
         curriculum_references=curriculum_references,

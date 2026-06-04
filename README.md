@@ -18,6 +18,8 @@ payment workflows, or commercial customer data.
 - Validates resource structure before output is written.
 - Supports optional metadata for education systems, exam boards, courses, and
   curriculum references.
+- Tracks estimated duration so resources can support lesson, tutoring, and
+  independent-study planning.
 - Tracks optional item difficulty metadata for foundation, core, and extension
   activities.
 - Provides scaffold presets for common preschool, primary, exam-board, and
@@ -71,7 +73,7 @@ Validation reports separate structural errors from quality warnings. Errors
 return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
 explanations, missing learning objectives, missing curriculum references,
-missing item difficulty, or very short resources.
+missing estimated duration, missing item difficulty, or very short resources.
 
 ## Inventory Coverage
 
@@ -84,7 +86,8 @@ exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv -
 The Markdown report summarizes resources and item counts by subject, level,
 resource type, education system, exam board, course, and difficulty coverage.
 The CSV export gives a spreadsheet-friendly row per resource, including
-foundation/core/extension/unspecified difficulty counts for maintainer review.
+estimated duration plus foundation/core/extension/unspecified difficulty counts
+for maintainer review.
 
 ## Scaffold New Resources
 
@@ -99,6 +102,7 @@ exam-materials-studio scaffold \
   --resource-type worksheet \
   --education-system "General primary" \
   --course Fractions \
+  --duration-minutes 30 \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -139,10 +143,11 @@ where teachers want readable lists and indentation. CSV is useful when teachers
 are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
-`exam_board`, `course`, `learning_objectives`, and `curriculum_references`
-fields are optional, but useful for catalogs and teacher-facing resources that
-span different levels and curricula. Each item can also include optional
-`difficulty` metadata using `foundation`, `core`, or `extension`.
+`exam_board`, `course`, `duration_minutes`, `learning_objectives`, and
+`curriculum_references` fields are optional, but useful for catalogs and
+teacher-facing resources that span different levels and curricula. Each item
+can also include optional `difficulty` metadata using `foundation`, `core`, or
+`extension`.
 
 ```json
 {
@@ -154,6 +159,7 @@ span different levels and curricula. Each item can also include optional
   "education_system": "Cambridge International",
   "exam_board": "Cambridge",
   "course": "0478 Computer Science",
+  "duration_minutes": 25,
   "summary": "Targeted practice for Boolean logic gates and truth tables.",
   "learning_objectives": [
     "Complete truth-table outputs for common logic gates.",
@@ -180,8 +186,8 @@ metadata is read from the first row. `skills`, `learning_objectives`, and
 `curriculum_references` are separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -194,6 +200,7 @@ level: Secondary
 resource_type: source-analysis
 education_system: General secondary
 course: Historical source skills
+duration_minutes: 30
 summary: A short resource for evaluating historical source reliability and usefulness.
 skills:
   - provenance

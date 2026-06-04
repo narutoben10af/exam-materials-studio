@@ -19,6 +19,7 @@ class ScaffoldTests(unittest.TestCase):
             education_system="General primary",
             exam_board="",
             course="Fractions",
+            duration_minutes=30,
             summary="A starter worksheet for equivalent fractions.",
             learning_objectives=("Represent equivalent fractions with simple models.",),
             curriculum_references=("Local primary mathematics: fractions",),
@@ -37,6 +38,7 @@ class ScaffoldTests(unittest.TestCase):
             result = validate_resource(path)
 
             self.assertEqual(pack.title, "Primary Fractions Starter")
+            self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
             self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(len(pack.items), 3)
@@ -52,6 +54,7 @@ class ScaffoldTests(unittest.TestCase):
             pack = load_resource(path)
 
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
+            self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
             self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(pack.items[0].item_type, "concept-check")
@@ -67,6 +70,7 @@ class ScaffoldTests(unittest.TestCase):
 
             self.assertIn("title: Primary Fractions Starter", path.read_text(encoding="utf-8"))
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
+            self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
             self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
             self.assertEqual(pack.items[0].item_type, "concept-check")

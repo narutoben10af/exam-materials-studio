@@ -19,6 +19,7 @@ class InventoryTests(unittest.TestCase):
                     "resource_type": "activity-sheet",
                     "education_system": "General early years",
                     "course": "Counting",
+                    "duration_minutes": 15,
                     "summary": "Count small groups.",
                     "skills": ["counting"],
                     "items": [
@@ -47,6 +48,7 @@ class InventoryTests(unittest.TestCase):
                     "education_system": "Cambridge International",
                     "exam_board": "Cambridge",
                     "course": "0455 Economics",
+                    "duration_minutes": 20,
                     "summary": "Define key economics terms.",
                     "skills": ["definitions"],
                     "items": [{"prompt": "Define scarcity.", "answer": "Limited resources.", "explanation": "Resources are limited."}],
@@ -59,11 +61,13 @@ class InventoryTests(unittest.TestCase):
 
         self.assertEqual(inventory.resource_count, 2)
         self.assertEqual(inventory.item_count, 3)
+        self.assertEqual(inventory.total_duration_minutes, 35)
 
     def test_markdown_report_contains_coverage_sections(self):
         report = render_inventory_markdown(build_inventory(self.packs))
 
         self.assertIn("# Resource Coverage Inventory", report)
+        self.assertIn("- Planned time: 35 minutes", report)
         self.assertIn("## Subjects", report)
         self.assertIn("## Difficulty Coverage", report)
         self.assertIn("| foundation | 1 |", report)
@@ -74,11 +78,11 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("| Preschool | 1 |", report)
         self.assertIn("0455 Economics", report)
         self.assertIn(
-            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 2 | 1 | 1 | 0 | 0 |",
+            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 2 | 1 | 1 | 0 | 0 |",
             report,
         )
         self.assertIn(
-            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 1 | 0 | 0 | 0 | 1 |",
+            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 1 | 0 | 0 | 0 | 1 |",
             report,
         )
 
@@ -92,11 +96,13 @@ class InventoryTests(unittest.TestCase):
 
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[0]["title"], "Preschool Counting")
+            self.assertEqual(rows[0]["duration_minutes"], "15")
             self.assertEqual(rows[0]["foundation_items"], "1")
             self.assertEqual(rows[0]["core_items"], "1")
             self.assertEqual(rows[0]["extension_items"], "0")
             self.assertEqual(rows[0]["unspecified_difficulty_items"], "0")
             self.assertEqual(rows[1]["course"], "0455 Economics")
+            self.assertEqual(rows[1]["duration_minutes"], "20")
             self.assertEqual(rows[1]["unspecified_difficulty_items"], "1")
 
 

@@ -31,6 +31,7 @@ class RendererTests(unittest.TestCase):
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
                 "course": "0478 Computer Science",
+                "duration_minutes": 40,
                 "skills": ["truth tables"],
                 "items": [
                     {
@@ -50,6 +51,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Build truth tables for common logic gates.", markdown)
         self.assertIn("## Curriculum References", markdown)
         self.assertIn("Cambridge 0478 4.1", markdown)
+        self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("A AND B", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
@@ -57,6 +59,7 @@ class RendererTests(unittest.TestCase):
     def test_answer_key_contains_explanation(self):
         markdown = render_answer_key_markdown(self.pack)
 
+        self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("0", markdown)
         self.assertIn("Both inputs must be 1.", markdown)
@@ -98,6 +101,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["education_system"], "Cambridge International")
         self.assertEqual(resource["exam_board"], "Cambridge")
         self.assertEqual(resource["course"], "0478 Computer Science")
+        self.assertEqual(resource["duration_minutes"], 40)
         self.assertEqual(resource["skills"], ["truth tables"])
         self.assertEqual(resource["learning_objectives"], ["Build truth tables for common logic gates.", "Explain Boolean outputs from binary inputs."])
         self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
@@ -145,6 +149,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Build truth tables for common logic gates.", html)
         self.assertIn("Curriculum References", html)
         self.assertIn("Cambridge 0478 4.1", html)
+        self.assertIn("<strong>Estimated time:</strong> 40 minutes", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)

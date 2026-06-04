@@ -21,6 +21,7 @@ class ValidatorTests(unittest.TestCase):
                         "education_system": "Cambridge International",
                         "exam_board": "Cambridge",
                         "course": "9700 Biology",
+                        "duration_minutes": 35,
                         "summary": "Practice on enzyme structure and rates of reaction.",
                         "learning_objectives": [
                             "Describe how enzyme structure supports catalysis.",
@@ -95,6 +96,7 @@ class ValidatorTests(unittest.TestCase):
             self.assertIn("education_system is missing", report)
             self.assertIn("learning_objectives is missing", report)
             self.assertIn("curriculum_references is missing", report)
+            self.assertIn("duration_minutes is missing", report)
             self.assertIn("missing difficulty for item(s): 1", report)
             self.assertIn("thin or missing explanations", report)
 

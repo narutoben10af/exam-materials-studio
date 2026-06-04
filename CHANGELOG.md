@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Added `duration_minutes` metadata for lesson, tutoring, and study-planning estimates.
+- Added duration output to rendered resources, answer keys, JSON catalogs, and inventory reports.
+- Added `--duration-minutes` scaffold support and duration examples for JSON, YAML, and CSV resources.
+- Added validation warnings for resources missing estimated duration metadata.
+
 ## v0.3.0
 
 - Added item difficulty metadata with foundation, core, and extension progression labels.
