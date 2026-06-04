@@ -74,6 +74,9 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         command_word = _cell(row, "command_word")
         if command_word:
             item["command_word"] = command_word
+        rubric = _cell(row, "rubric")
+        if rubric:
+            item["rubric"] = _split_semicolon_values(rubric)
         items.append(item)
 
     return {
@@ -86,13 +89,13 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         "exam_board": _cell(first, "exam_board"),
         "course": _cell(first, "course"),
         "duration_minutes": _cell(first, "duration_minutes"),
-        "prerequisites": _split_skills(_cell(first, "prerequisites")),
-        "materials": _split_skills(_cell(first, "materials")),
-        "delivery_modes": _split_skills(_cell(first, "delivery_modes")),
+        "prerequisites": _split_semicolon_values(_cell(first, "prerequisites")),
+        "materials": _split_semicolon_values(_cell(first, "materials")),
+        "delivery_modes": _split_semicolon_values(_cell(first, "delivery_modes")),
         "summary": _cell(first, "summary"),
-        "skills": _split_skills(_cell(first, "skills")),
-        "learning_objectives": _split_skills(_cell(first, "learning_objectives")),
-        "curriculum_references": _split_skills(_cell(first, "curriculum_references")),
+        "skills": _split_semicolon_values(_cell(first, "skills")),
+        "learning_objectives": _split_semicolon_values(_cell(first, "learning_objectives")),
+        "curriculum_references": _split_semicolon_values(_cell(first, "curriculum_references")),
         "items": items,
     }
 
@@ -101,5 +104,5 @@ def _cell(row: dict[str, str | None], field: str) -> str:
     return str(row.get(field) or "").strip()
 
 
-def _split_skills(raw_skills: str) -> list[str]:
-    return [skill.strip() for skill in raw_skills.split(";") if skill.strip()]
+def _split_semicolon_values(raw_values: str) -> list[str]:
+    return [value.strip() for value in raw_values.split(";") if value.strip()]

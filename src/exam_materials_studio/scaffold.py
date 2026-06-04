@@ -97,6 +97,9 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "prompt": f"Introduce one key idea from {spec.course or spec.subject}.",
             "answer": "Replace with the expected answer or success criteria.",
             "explanation": "Explain why this answer is correct and how it supports the learning goal.",
+            "rubric": [
+                "Award credit for a clear, correct response.",
+            ],
         },
         {
             "type": "practice",
@@ -106,6 +109,10 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "prompt": "Add one learner-facing practice task.",
             "answer": "Replace with a complete worked answer.",
             "explanation": "Include the reasoning, method, or marking guidance a teacher needs.",
+            "rubric": [
+                "Award credit for the correct method.",
+                "Award credit for the correct final answer.",
+            ],
         },
         {
             "type": "reflection",
@@ -115,6 +122,11 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "prompt": "Add one extension, discussion, or reflection prompt.",
             "answer": "Replace with a strong sample response or teacher note.",
             "explanation": "Explain what a high-quality response should demonstrate.",
+            "rubric": [
+                "Award credit for a justified response.",
+                "Award credit for subject-specific vocabulary.",
+                "Award credit for a clear link to the learning objective.",
+            ],
         },
     ]
 
@@ -141,6 +153,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "difficulty",
         "marks",
         "command_word",
+        "rubric",
         "prompt",
         "answer",
         "explanation",
@@ -149,6 +162,8 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for item in _starter_items(spec):
+            row = dict(item)
+            row["rubric"] = ";".join(str(point) for point in item["rubric"])
             writer.writerow(
                 {
                     "title": spec.title,
@@ -167,6 +182,6 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
                     "learning_objectives": ";".join(spec.learning_objectives),
                     "curriculum_references": ";".join(spec.curriculum_references),
                     "skills": ";".join(spec.skills),
-                    **item,
+                    **row,
                 }
             )

@@ -34,6 +34,9 @@ items:
     prompt: Identify two provenance details a historian should check before using a source.
     answer: The author and the date of creation.
     explanation: Provenance details such as author, date, audience, and origin help establish context.
+    rubric:
+      - 1 mark for identifying the author.
+      - 1 mark for identifying the date or origin.
   - type: analysis
     difficulty: core
     marks: 3
@@ -41,6 +44,10 @@ items:
     prompt: Explain why the purpose of a wartime poster might affect its reliability.
     answer: It may be designed to persuade, so it could exaggerate or omit information.
     explanation: Purpose shapes the message and can introduce bias, especially in propaganda.
+    rubric:
+      - 1 mark for identifying persuasive purpose.
+      - 1 mark for explaining bias or exaggeration.
+      - 1 mark for linking purpose to reliability.
   - type: discussion
     difficulty: extension
     marks: 3
@@ -48,3 +55,7 @@ items:
     prompt: When might a biased source still be useful to a historian?
     answer: It can reveal attitudes, beliefs, priorities, or propaganda methods from the time.
     explanation: A biased source may be unreliable for facts but useful as evidence of perspective.
+    rubric:
+      - 1 mark for explaining limited factual reliability.
+      - 1 mark for identifying evidence of attitudes or beliefs.
+      - 1 mark for making a balanced judgement.

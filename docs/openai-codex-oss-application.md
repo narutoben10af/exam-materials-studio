@@ -68,6 +68,11 @@ Item-level command-word metadata adds exam-board and assessment-intent support:
 resources can show whether an item asks learners to define, explain, calculate,
 discuss, compare, identify, or evaluate. Inventory and catalog outputs can then
 surface command-word coverage across subjects, levels, and formats.
+Item-level rubric metadata adds teacher-facing marking criteria and success
+criteria to answer keys while keeping learner-facing resources clean. Catalog
+and inventory outputs roll up rubric point counts, which helps maintainers see
+whether a resource has enough marking depth for exams, worksheets, activities,
+study guides, and course materials across preschool through university levels.
 
 ## API Credits Use
 

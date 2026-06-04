@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added item-level `rubric` metadata for teacher-facing marking criteria and success criteria.
+- Added rubric output to answer keys while keeping learner-facing resources free of rubric content.
+- Added rubric point totals to JSON catalogs, Markdown inventory summaries, and CSV inventory exports.
+- Added default scaffold rubric bullets and rubric examples for JSON, YAML, and CSV resources.
+
 ## v0.5.0
 
 - Added item-level `command_word` metadata for assessment intent such as define, explain, calculate, discuss, compare, identify, and evaluate.
