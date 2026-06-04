@@ -1,23 +1,14 @@
 from __future__ import annotations
 
+import csv
 from collections import defaultdict
+from pathlib import Path
 
 from .models import ExamPack
 
 
 def render_pathway_markdown(packs: list[ExamPack]) -> str:
-    ordered_packs = sorted(
-        packs,
-        key=lambda pack: (
-            pack.level,
-            pack.subject,
-            pack.course or "Unspecified course",
-            pack.unit or "Unspecified unit",
-            pack.sequence_order is None,
-            pack.sequence_order or 0,
-            pack.title,
-        ),
-    )
+    ordered_packs = _ordered_packs(packs)
     sequenced_count = sum(1 for pack in ordered_packs if pack.sequence_order is not None)
     total_duration = sum(pack.duration_minutes or 0 for pack in ordered_packs)
     lines = [
@@ -46,6 +37,63 @@ def render_pathway_markdown(packs: list[ExamPack]) -> str:
             lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
+
+
+def write_pathway_csv(packs: list[ExamPack], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "level",
+        "subject",
+        "course",
+        "unit",
+        "sequence_order",
+        "title",
+        "slug",
+        "resource_type",
+        "duration_minutes",
+        "delivery_modes",
+        "prerequisites",
+        "learning_objectives",
+        "resource_file",
+        "answer_key_file",
+    ]
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for pack in _ordered_packs(packs):
+            writer.writerow(
+                {
+                    "level": pack.level,
+                    "subject": pack.subject,
+                    "course": pack.course,
+                    "unit": pack.unit,
+                    "sequence_order": str(pack.sequence_order) if pack.sequence_order is not None else "Unsequenced",
+                    "title": pack.title,
+                    "slug": pack.slug,
+                    "resource_type": pack.resource_type,
+                    "duration_minutes": str(pack.duration_minutes or ""),
+                    "delivery_modes": ";".join(pack.delivery_modes),
+                    "prerequisites": ";".join(pack.prerequisites),
+                    "learning_objectives": ";".join(pack.learning_objectives),
+                    "resource_file": f"{pack.slug}.md",
+                    "answer_key_file": f"{pack.slug}-answer-key.md",
+                }
+            )
+
+
+def _ordered_packs(packs: list[ExamPack]) -> list[ExamPack]:
+    return sorted(
+        packs,
+        key=lambda pack: (
+            pack.level,
+            pack.subject,
+            pack.course or "Unspecified course",
+            pack.unit or "Unspecified unit",
+            pack.sequence_order is None,
+            pack.sequence_order or 0,
+            pack.title,
+        ),
+    )
 
 
 def _group_packs(packs: list[ExamPack]) -> dict[tuple[str, str, str], list[ExamPack]]:

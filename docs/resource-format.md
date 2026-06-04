@@ -268,7 +268,7 @@ intent coverage, marking support, assessment balance, or progression balance.
 Run:
 
 ```bash
-exam-materials-studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md
+exam-materials-studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md --csv generated/pathway.csv
 ```
 
 The pathway report is designed for maintainers planning ordered education
@@ -281,3 +281,9 @@ prerequisites, learning objectives, and links to the expected generated Markdown
 resource and answer-key filenames. This makes the same source files useful for
 reviewing tutoring pathways, lesson series, revision plans, study guides, and
 multi-unit course packs.
+
+The optional CSV export writes one row per resource in the same order as the
+Markdown pathway. It includes `level`, `subject`, `course`, `unit`,
+`sequence_order`, `title`, `slug`, `resource_type`, `duration_minutes`,
+`delivery_modes`, `prerequisites`, `learning_objectives`, `resource_file`, and
+`answer_key_file` columns for spreadsheet sorting, filtering, and planning.
