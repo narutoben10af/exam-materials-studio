@@ -28,6 +28,8 @@ payment workflows, or commercial customer data.
   independent-study planning.
 - Tracks optional item time metadata so lesson steps, tutoring tasks, worksheet
   activities, and study-guide prompts can show pacing.
+- Tracks optional item standards so activities, questions, prompts, and teacher
+  notes can map to syllabus points, curriculum standards, or course outcomes.
 - Tracks optional item difficulty metadata for foundation, core, and extension
   activities.
 - Tracks optional item phase metadata so resources can show lesson flow across
@@ -101,9 +103,9 @@ exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv -
 
 The Markdown report summarizes resources and item counts by subject, level,
 resource type, education system, exam board, course, delivery mode, command
-word, learning phase, and difficulty coverage. The CSV export gives a
+word, learning phase, item standards, and difficulty coverage. The CSV export gives a
 spreadsheet-friendly row per resource, including delivery modes, command words,
-learning phases, estimated duration, item-level planned time, total marks,
+learning phases, item standards, estimated duration, item-level planned time, total marks,
 rubric points, and
 foundation/core/extension/unspecified difficulty counts for maintainer review.
 
@@ -171,8 +173,9 @@ different levels, curricula, and delivery settings. Each item can also include
 optional `difficulty` metadata using `foundation`, `core`, or `extension`, plus
 optional `phase` metadata such as `warm-up`, `guided-practice`, `application`,
 `assessment`, or `reflection`, plus optional positive-integer `time_minutes`
-metadata for item pacing. Items can also include optional positive-integer
-`marks` metadata for assessment weighting and optional `command_word` metadata for
+metadata for item pacing. Items can also include optional `standards` metadata
+as a list of syllabus points, curriculum standards, or course outcomes, optional
+positive-integer `marks` metadata for assessment weighting, and optional `command_word` metadata for
 assessment intent. Optional `rubric` bullets are teacher-facing marking criteria
 that appear in answer keys and coverage reports, not in learner-facing resources.
 
@@ -214,6 +217,9 @@ that appear in answer keys and coverage reports, not in learner-facing resources
     {
       "phase": "warm-up",
       "time_minutes": 5,
+      "standards": [
+        "Cambridge IGCSE Computer Science 0478: logic gates"
+      ],
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "state",
@@ -230,12 +236,12 @@ that appear in answer keys and coverage reports, not in learner-facing resources
 
 CSV resources use one row per activity, question, or teacher note. Resource
 metadata is read from the first row. `skills`, `prerequisites`, `materials`,
-`delivery_modes`, `learning_objectives`, and `curriculum_references` are
-separated with semicolons:
+`delivery_modes`, `learning_objectives`, `curriculum_references`, item
+`standards`, and `rubric` points are separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,phase,time_minutes,difficulty,marks,command_word,rubric,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,warm-up,5,foundation,1,sort,1 mark for grouping objects by material.,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,phase,time_minutes,standards,difficulty,marks,command_word,rubric,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,warm-up,5,Primary science: everyday materials,foundation,1,sort,1 mark for grouping objects by material.,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -267,6 +273,8 @@ items:
   - type: concept-check
     phase: warm-up
     time_minutes: 8
+    standards:
+      - "Secondary history: source provenance"
     difficulty: foundation
     marks: 2
     command_word: identify

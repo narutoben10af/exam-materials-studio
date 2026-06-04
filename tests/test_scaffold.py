@@ -51,6 +51,14 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.phase for item in pack.items], ["warm-up", "guided-practice", "reflection"])
             self.assertEqual([item.time_minutes for item in pack.items], [5, 15, 10])
+            self.assertEqual(
+                [item.standards for item in pack.items],
+                [
+                    ("Local primary mathematics: fractions",),
+                    ("Local primary mathematics: fractions",),
+                    ("Local primary mathematics: fractions",),
+                ],
+            )
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
             self.assertTrue(all(item.rubric for item in pack.items))
@@ -75,6 +83,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.phase for item in pack.items], ["warm-up", "guided-practice", "reflection"])
             self.assertEqual([item.time_minutes for item in pack.items], [5, 15, 10])
+            self.assertEqual([item.standards for item in pack.items], [("Local primary mathematics: fractions",)] * 3)
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
             self.assertTrue(all(item.rubric for item in pack.items))
@@ -86,8 +95,11 @@ class ScaffoldTests(unittest.TestCase):
             scaffold_resource(self.spec, path, "yaml")
             pack = load_resource(path)
             result = validate_resource(path)
+            output = path.read_text(encoding="utf-8")
 
-            self.assertIn("title: Primary Fractions Starter", path.read_text(encoding="utf-8"))
+            self.assertIn("title: Primary Fractions Starter", output)
+            self.assertNotIn("&id", output)
+            self.assertNotIn("*id", output)
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
             self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.prerequisites, ("Count equal parts in a shape.",))
@@ -99,6 +111,7 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
             self.assertEqual([item.phase for item in pack.items], ["warm-up", "guided-practice", "reflection"])
             self.assertEqual([item.time_minutes for item in pack.items], [5, 15, 10])
+            self.assertEqual([item.standards for item in pack.items], [("Local primary mathematics: fractions",)] * 3)
             self.assertEqual([item.marks for item in pack.items], [1, 2, 3])
             self.assertEqual([item.command_word for item in pack.items], ["identify", "apply", "evaluate"])
             self.assertTrue(all(item.rubric for item in pack.items))

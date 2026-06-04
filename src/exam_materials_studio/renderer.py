@@ -198,6 +198,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "total_marks": _total_marks(pack),
         "rubric_point_count": _rubric_point_count(pack),
         "phase_counts": _phase_counts(pack),
+        "standard_counts": _standard_counts(pack),
         "command_word_counts": _command_word_counts(pack),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -434,6 +435,8 @@ def _item_metadata_markdown(item: PackItem) -> list[str]:
         lines.extend([f"**Phase:** {item.phase}", ""])
     if item.time_minutes:
         lines.extend([f"**Time:** {item.time_minutes} minutes", ""])
+    if item.standards:
+        lines.extend([f"**Standards:** {', '.join(item.standards)}", ""])
     if item.difficulty:
         lines.extend([f"**Difficulty:** {item.difficulty}", ""])
     if item.marks:
@@ -449,6 +452,8 @@ def _item_metadata_html(item: PackItem) -> list[str]:
         lines.append(f"  <p><strong>Phase:</strong> {escape(item.phase)}</p>")
     if item.time_minutes:
         lines.append(f"  <p><strong>Time:</strong> {item.time_minutes} minutes</p>")
+    if item.standards:
+        lines.append(f"  <p><strong>Standards:</strong> {escape(', '.join(item.standards))}</p>")
     if item.difficulty:
         lines.append(f"  <p><strong>Difficulty:</strong> {escape(item.difficulty)}</p>")
     if item.marks:
@@ -479,6 +484,14 @@ def _phase_counts(pack: ExamPack) -> dict[str, int]:
     return {
         phase: sum(1 for item in pack.items if item.phase == phase)
         for phase in phases
+    }
+
+
+def _standard_counts(pack: ExamPack) -> dict[str, int]:
+    standards = sorted({standard for item in pack.items for standard in item.standards})
+    return {
+        standard: sum(1 for item in pack.items if standard in item.standards)
+        for standard in standards
     }
 
 

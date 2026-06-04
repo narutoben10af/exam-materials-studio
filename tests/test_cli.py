@@ -349,6 +349,8 @@ items:
             self.assertIn("command_word: identify", output)
             self.assertIn("phase: warm-up", output)
             self.assertIn("time_minutes: 5", output)
+            self.assertIn("standards:", output)
+            self.assertIn("Count quarters", output)
             self.assertIn("rubric:", output)
             self.assertIn("Award credit for a clear, correct response.", output)
 

@@ -33,6 +33,9 @@
       "type": "activity",
       "phase": "warm-up",
       "time_minutes": 5,
+      "standards": [
+        "Early years number sense: counting and cardinality"
+      ],
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "draw",
@@ -47,6 +50,9 @@
       "type": "activity",
       "phase": "guided-practice",
       "time_minutes": 5,
+      "standards": [
+        "Early years number sense: quantity comparison"
+      ],
       "difficulty": "core",
       "marks": 1,
       "command_word": "circle",
@@ -61,6 +67,9 @@
       "type": "teacher-note",
       "phase": "observation",
       "time_minutes": 5,
+      "standards": [
+        "Early years number sense: one-to-one correspondence"
+      ],
       "difficulty": "extension",
       "marks": 1,
       "command_word": "count",

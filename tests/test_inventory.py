@@ -33,6 +33,7 @@ class InventoryTests(unittest.TestCase):
                             "time_minutes": 5,
                             "marks": 1,
                             "command_word": "count",
+                            "standards": ["EYFS Mathematics Number 1"],
                             "rubric": ["1 mark for counting both dots."],
                         },
                         {
@@ -44,6 +45,7 @@ class InventoryTests(unittest.TestCase):
                             "time_minutes": 10,
                             "marks": 2,
                             "command_word": "count",
+                            "standards": ["EYFS Mathematics Number 1", "School Scheme Counting A"],
                             "rubric": ["1 mark for each counted dot.", "1 mark for writing the numeral."],
                         },
                     ],
@@ -72,6 +74,7 @@ class InventoryTests(unittest.TestCase):
                             "command_word": "define",
                             "phase": "assessment",
                             "time_minutes": 7,
+                            "standards": ["Cambridge 0455 1.1 Basic economic problem"],
                             "rubric": ["1 mark for limited resources."],
                         }
                     ],
@@ -108,6 +111,10 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("| warm-up | 1 |", report)
         self.assertIn("| guided-practice | 1 |", report)
         self.assertIn("| assessment | 1 |", report)
+        self.assertIn("## Standards", report)
+        self.assertIn("| EYFS Mathematics Number 1 | 2 |", report)
+        self.assertIn("| School Scheme Counting A | 1 |", report)
+        self.assertIn("| Cambridge 0455 1.1 Basic economic problem | 1 |", report)
         self.assertIn("## Difficulty Coverage", report)
         self.assertIn("| foundation | 1 |", report)
         self.assertIn("| core | 1 |", report)
@@ -117,11 +124,11 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("| Preschool | 1 |", report)
         self.assertIn("0455 Economics", report)
         self.assertIn(
-            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 15 | 3 | 3 | guided-practice;warm-up | 2 | 1 | 1 | 0 | 0 |",
+            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 15 | 3 | 3 | guided-practice;warm-up | EYFS Mathematics Number 1;School Scheme Counting A | 2 | 1 | 1 | 0 | 0 |",
             report,
         )
         self.assertIn(
-            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 7 | 3 | 1 | assessment | 1 | 0 | 0 | 0 | 1 |",
+            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 7 | 3 | 1 | assessment | Cambridge 0455 1.1 Basic economic problem | 1 | 0 | 0 | 0 | 1 |",
             report,
         )
 
@@ -140,6 +147,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[0]["total_marks"], "3")
             self.assertEqual(rows[0]["rubric_points"], "3")
             self.assertEqual(rows[0]["phases"], "guided-practice;warm-up")
+            self.assertEqual(rows[0]["standards"], "EYFS Mathematics Number 1;School Scheme Counting A")
             self.assertEqual(rows[0]["command_words"], "count")
             self.assertEqual(rows[0]["delivery_modes"], "classroom;tutoring")
             self.assertEqual(rows[0]["foundation_items"], "1")
@@ -152,6 +160,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[1]["total_marks"], "3")
             self.assertEqual(rows[1]["rubric_points"], "1")
             self.assertEqual(rows[1]["phases"], "assessment")
+            self.assertEqual(rows[1]["standards"], "Cambridge 0455 1.1 Basic economic problem")
             self.assertEqual(rows[1]["command_words"], "define")
             self.assertEqual(rows[1]["delivery_modes"], "revision;self-study")
             self.assertEqual(rows[1]["unspecified_difficulty_items"], "1")

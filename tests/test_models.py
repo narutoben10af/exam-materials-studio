@@ -35,6 +35,11 @@ class PackModelTests(unittest.TestCase):
                         "command_word": "Explain",
                         "phase": "Guided Practice",
                         "time_minutes": "7",
+                        "standards": [
+                            "Cambridge 0478 4.1.1",
+                            "Cambridge 0478 4.1.2",
+                            " ",
+                        ],
                         "rubric": [
                             "1 mark for identifying the output.",
                             "1 mark for explaining the gate rule.",
@@ -67,6 +72,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.items[0].command_word, "explain")
         self.assertEqual(pack.items[0].phase, "guided-practice")
         self.assertEqual(pack.items[0].time_minutes, 7)
+        self.assertEqual(pack.items[0].standards, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
         self.assertEqual(
             pack.items[0].rubric,
             ("1 mark for identifying the output.", "1 mark for explaining the gate rule."),
@@ -220,6 +226,20 @@ class PackModelTests(unittest.TestCase):
                             "items": [{"prompt": "Question?", "answer": "Answer.", "time_minutes": time_minutes}],
                         }
                     )
+
+    def test_invalid_item_standards_are_rejected(self):
+        with self.assertRaisesRegex(PackValidationError, "item 1 standards must be a list"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "items": [{"prompt": "Question?", "answer": "Answer.", "standards": "Cambridge 0478"}],
+                }
+            )
 
     def test_invalid_slug_is_rejected(self):
         with self.assertRaises(PackValidationError):

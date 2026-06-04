@@ -71,14 +71,15 @@ def render_inventory_markdown(inventory: Inventory) -> str:
     ]:
         lines.extend(_render_counter_section(title, counter))
 
+    lines.extend(_render_item_counter_section("Standards", _count_standards(inventory.packs)))
     lines.extend(_render_difficulty_section(_count_difficulties(inventory.packs)))
 
     lines.extend(
         [
             "## Resources",
             "",
-            "| Title | Level | Subject | Type | Course | Duration | Item Time | Marks | Rubric Points | Phases | Items | Foundation | Core | Extension | Unspecified Difficulty |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Title | Level | Subject | Type | Course | Duration | Item Time | Marks | Rubric Points | Phases | Standards | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
@@ -97,6 +98,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     str(_total_marks(pack)),
                     str(_rubric_point_count(pack)),
                     _table_cell(";".join(_phases_for_pack(pack)) or "Unspecified"),
+                    _table_cell(";".join(_standards_for_pack(pack)) or "Unspecified"),
                     str(len(pack.items)),
                     str(difficulty_counts["foundation"]),
                     str(difficulty_counts["core"]),
@@ -128,6 +130,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "total_marks",
                 "rubric_points",
                 "phases",
+                "standards",
                 "command_words",
                 "delivery_modes",
                 "item_count",
@@ -155,6 +158,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "total_marks": _total_marks(pack),
                     "rubric_points": _rubric_point_count(pack),
                     "phases": ";".join(_phases_for_pack(pack)),
+                    "standards": ";".join(_standards_for_pack(pack)),
                     "command_words": ";".join(_command_words_for_pack(pack)),
                     "delivery_modes": ";".join(pack.delivery_modes),
                     "item_count": len(pack.items),
@@ -200,8 +204,26 @@ def _count_phases(packs: tuple[ExamPack, ...]) -> Counter[str]:
     return counter
 
 
+def _count_standards(packs: tuple[ExamPack, ...]) -> Counter[str]:
+    counter: Counter[str] = Counter()
+    for pack in packs:
+        for item in pack.items:
+            counter.update(item.standards)
+    if not counter:
+        counter.update(["Unspecified"])
+    return counter
+
+
 def _render_counter_section(title: str, counter: Counter[str]) -> list[str]:
     lines = [f"## {title}", "", "| Value | Resources |", "| --- | --- |"]
+    for value, count in sorted(counter.items(), key=lambda item: (-item[1], item[0].lower())):
+        lines.append(f"| {_table_cell(value)} | {count} |")
+    lines.append("")
+    return lines
+
+
+def _render_item_counter_section(title: str, counter: Counter[str]) -> list[str]:
+    lines = [f"## {title}", "", "| Value | Items |", "| --- | --- |"]
     for value, count in sorted(counter.items(), key=lambda item: (-item[1], item[0].lower())):
         lines.append(f"| {_table_cell(value)} | {count} |")
     lines.append("")
@@ -256,6 +278,10 @@ def _command_words_for_pack(pack: ExamPack) -> tuple[str, ...]:
 
 def _phases_for_pack(pack: ExamPack) -> tuple[str, ...]:
     return tuple(sorted({item.phase for item in pack.items if item.phase}))
+
+
+def _standards_for_pack(pack: ExamPack) -> tuple[str, ...]:
+    return tuple(sorted({standard for item in pack.items for standard in item.standards}))
 
 
 def _table_cell(value: str) -> str:
