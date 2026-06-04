@@ -11,6 +11,7 @@ class PackItem:
     explanation: str = ""
     item_type: str = "question"
     phase: str = ""
+    time_minutes: int = 0
     difficulty: str = ""
     marks: int = 0
     command_word: str = ""
@@ -78,6 +79,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         explanation = str(raw_item.get("explanation", "")).strip()
         item_type = str(raw_item.get("type", "question")).strip() or "question"
         phase = _optional_item_label(raw_item.get("phase", ""), "phase", index)
+        time_minutes = _optional_item_positive_int(raw_item.get("time_minutes", None), "time_minutes", index)
         difficulty = _optional_difficulty(raw_item.get("difficulty", ""), index)
         marks = _optional_item_marks(raw_item.get("marks", None), index)
         command_word = str(raw_item.get("command_word", "")).strip().lower()
@@ -89,6 +91,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
                 explanation=explanation,
                 item_type=item_type,
                 phase=phase,
+                time_minutes=time_minutes,
                 difficulty=difficulty,
                 marks=marks,
                 command_word=command_word,
@@ -154,6 +157,18 @@ def _optional_item_label(value: Any, field: str, index: int) -> str:
     if not isinstance(value, str):
         raise PackValidationError(f"item {index} {field} must be text when provided")
     return "-".join(value.strip().lower().split())
+
+
+def _optional_item_positive_int(value: Any, field: str, index: int) -> int:
+    if value in (None, ""):
+        return 0
+    try:
+        result = int(str(value).strip())
+    except (TypeError, ValueError) as error:
+        raise PackValidationError(f"item {index} {field} must be a positive integer") from error
+    if result < 1:
+        raise PackValidationError(f"item {index} {field} must be a positive integer")
+    return result
 
 
 def _optional_difficulty(value: Any, index: int) -> str:

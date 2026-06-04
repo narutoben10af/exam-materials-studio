@@ -30,6 +30,7 @@ class InventoryTests(unittest.TestCase):
                             "explanation": "Two dots are counted.",
                             "difficulty": "foundation",
                             "phase": "warm-up",
+                            "time_minutes": 5,
                             "marks": 1,
                             "command_word": "count",
                             "rubric": ["1 mark for counting both dots."],
@@ -40,6 +41,7 @@ class InventoryTests(unittest.TestCase):
                             "explanation": "Three dots are counted.",
                             "difficulty": "core",
                             "phase": "guided-practice",
+                            "time_minutes": 10,
                             "marks": 2,
                             "command_word": "count",
                             "rubric": ["1 mark for each counted dot.", "1 mark for writing the numeral."],
@@ -69,6 +71,7 @@ class InventoryTests(unittest.TestCase):
                             "marks": 3,
                             "command_word": "define",
                             "phase": "assessment",
+                            "time_minutes": 7,
                             "rubric": ["1 mark for limited resources."],
                         }
                     ],
@@ -82,6 +85,7 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual(inventory.resource_count, 2)
         self.assertEqual(inventory.item_count, 3)
         self.assertEqual(inventory.total_duration_minutes, 35)
+        self.assertEqual(inventory.total_item_time_minutes, 22)
         self.assertEqual(inventory.total_marks, 6)
         self.assertEqual(inventory.total_rubric_points, 4)
 
@@ -90,6 +94,7 @@ class InventoryTests(unittest.TestCase):
 
         self.assertIn("# Resource Coverage Inventory", report)
         self.assertIn("- Planned time: 35 minutes", report)
+        self.assertIn("- Item planned time: 22 minutes", report)
         self.assertIn("- Total marks: 6", report)
         self.assertIn("- Rubric points: 4", report)
         self.assertIn("## Subjects", report)
@@ -112,11 +117,11 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("| Preschool | 1 |", report)
         self.assertIn("0455 Economics", report)
         self.assertIn(
-            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 3 | 3 | guided-practice;warm-up | 2 | 1 | 1 | 0 | 0 |",
+            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 15 min | 15 | 3 | 3 | guided-practice;warm-up | 2 | 1 | 1 | 0 | 0 |",
             report,
         )
         self.assertIn(
-            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 3 | 1 | assessment | 1 | 0 | 0 | 0 | 1 |",
+            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 20 min | 7 | 3 | 1 | assessment | 1 | 0 | 0 | 0 | 1 |",
             report,
         )
 
@@ -131,6 +136,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[0]["title"], "Preschool Counting")
             self.assertEqual(rows[0]["duration_minutes"], "15")
+            self.assertEqual(rows[0]["item_time_minutes"], "15")
             self.assertEqual(rows[0]["total_marks"], "3")
             self.assertEqual(rows[0]["rubric_points"], "3")
             self.assertEqual(rows[0]["phases"], "guided-practice;warm-up")
@@ -142,6 +148,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[0]["unspecified_difficulty_items"], "0")
             self.assertEqual(rows[1]["course"], "0455 Economics")
             self.assertEqual(rows[1]["duration_minutes"], "20")
+            self.assertEqual(rows[1]["item_time_minutes"], "7")
             self.assertEqual(rows[1]["total_marks"], "3")
             self.assertEqual(rows[1]["rubric_points"], "1")
             self.assertEqual(rows[1]["phases"], "assessment")

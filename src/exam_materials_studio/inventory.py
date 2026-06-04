@@ -29,6 +29,10 @@ class Inventory:
         return sum(pack.duration_minutes or 0 for pack in self.packs)
 
     @property
+    def total_item_time_minutes(self) -> int:
+        return sum(_item_time_minutes(pack) for pack in self.packs)
+
+    @property
     def total_marks(self) -> int:
         return sum(_total_marks(pack) for pack in self.packs)
 
@@ -48,6 +52,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         f"- Resources: {inventory.resource_count}",
         f"- Items: {inventory.item_count}",
         f"- Planned time: {inventory.total_duration_minutes} minutes",
+        f"- Item planned time: {inventory.total_item_time_minutes} minutes",
         f"- Total marks: {inventory.total_marks}",
         f"- Rubric points: {inventory.total_rubric_points}",
         "",
@@ -72,8 +77,8 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         [
             "## Resources",
             "",
-            "| Title | Level | Subject | Type | Course | Duration | Marks | Rubric Points | Phases | Items | Foundation | Core | Extension | Unspecified Difficulty |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Title | Level | Subject | Type | Course | Duration | Item Time | Marks | Rubric Points | Phases | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
@@ -88,6 +93,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     _table_cell(pack.resource_type),
                     _table_cell(pack.course or "Unspecified"),
                     _table_cell(_duration_label(pack)),
+                    str(_item_time_minutes(pack)),
                     str(_total_marks(pack)),
                     str(_rubric_point_count(pack)),
                     _table_cell(";".join(_phases_for_pack(pack)) or "Unspecified"),
@@ -118,6 +124,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "exam_board",
                 "course",
                 "duration_minutes",
+                "item_time_minutes",
                 "total_marks",
                 "rubric_points",
                 "phases",
@@ -144,6 +151,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "exam_board": pack.exam_board,
                     "course": pack.course,
                     "duration_minutes": pack.duration_minutes or "",
+                    "item_time_minutes": _item_time_minutes(pack),
                     "total_marks": _total_marks(pack),
                     "rubric_points": _rubric_point_count(pack),
                     "phases": ";".join(_phases_for_pack(pack)),
@@ -232,6 +240,10 @@ def _duration_label(pack: ExamPack) -> str:
 
 def _total_marks(pack: ExamPack) -> int:
     return sum(item.marks for item in pack.items)
+
+
+def _item_time_minutes(pack: ExamPack) -> int:
+    return sum(item.time_minutes for item in pack.items)
 
 
 def _rubric_point_count(pack: ExamPack) -> int:
