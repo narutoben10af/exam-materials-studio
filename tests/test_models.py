@@ -24,6 +24,7 @@ class PackModelTests(unittest.TestCase):
                 "duration_minutes": "45",
                 "prerequisites": ["Binary inputs", "Truth-table basics"],
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
+                "delivery_modes": ["classroom", "self-study"],
                 "skills": ["logic"],
                 "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core"}],
             }
@@ -37,6 +38,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.duration_minutes, 45)
         self.assertEqual(pack.prerequisites, ("Binary inputs", "Truth-table basics"))
         self.assertEqual(pack.materials, ("Mini whiteboards", "Logic-gate reference sheet"))
+        self.assertEqual(pack.delivery_modes, ("classroom", "self-study"))
         self.assertEqual(
             pack.learning_objectives,
             (
@@ -103,6 +105,21 @@ class PackModelTests(unittest.TestCase):
                     "summary": "A sample pack.",
                     "skills": ["materials"],
                     "materials": "scissors",
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
+
+    def test_delivery_modes_must_be_a_list_when_provided(self):
+        with self.assertRaisesRegex(PackValidationError, "delivery_modes must be a list"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Science",
+                    "level": "Primary",
+                    "summary": "A sample pack.",
+                    "skills": ["materials"],
+                    "delivery_modes": "classroom",
                     "items": [{"prompt": "Question?", "answer": "Answer."}],
                 }
             )

@@ -140,6 +140,8 @@ def render_catalog_markdown(packs: list[ExamPack]) -> str:
             lines.append(f"**Prerequisites:** {', '.join(pack.prerequisites)}")
         if pack.materials:
             lines.append(f"**Materials:** {', '.join(pack.materials)}")
+        if pack.delivery_modes:
+            lines.append(f"**Delivery modes:** {', '.join(pack.delivery_modes)}")
         lines.extend(
             [
                 f"**Skills:** {skills}",
@@ -188,6 +190,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "duration_minutes": pack.duration_minutes,
         "prerequisites": list(pack.prerequisites),
         "materials": list(pack.materials),
+        "delivery_modes": list(pack.delivery_modes),
         "item_count": len(pack.items),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -255,6 +258,11 @@ def render_catalog_html(packs: list[ExamPack], formats: set[str] | None = None) 
                         if pack.materials
                         else []
                     ),
+                    *(
+                        [f"  <p><strong>Delivery modes:</strong> {escape(', '.join(pack.delivery_modes))}</p>"]
+                        if pack.delivery_modes
+                        else []
+                    ),
                     f"  <p><strong>Skills:</strong> {escape(skills)}</p>",
                     *links,
                     "</article>",
@@ -293,6 +301,10 @@ def _metadata_fields(pack: ExamPack) -> list[tuple[str, str]]:
             (
                 "Estimated time",
                 f"{pack.duration_minutes} minutes" if pack.duration_minutes else "",
+            ),
+            (
+                "Delivery modes",
+                ", ".join(pack.delivery_modes) if pack.delivery_modes else "",
             ),
         ]
         if value

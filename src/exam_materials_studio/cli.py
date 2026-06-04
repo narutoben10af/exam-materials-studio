@@ -100,6 +100,11 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="Semicolon-separated supplies, devices, files, or tools needed for the resource",
     )
+    scaffold_parser.add_argument(
+        "--delivery-modes",
+        default="",
+        help="Semicolon-separated delivery modes, for example: classroom;tutoring;self-study",
+    )
     scaffold_parser.add_argument("--summary", default="")
     scaffold_parser.add_argument(
         "--learning-objectives",
@@ -225,6 +230,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         curriculum_references = (args.course or f"{education_system or args.level} {args.subject}",)
     prerequisites = _parse_skills(getattr(args, "prerequisites", ""))
     materials = _parse_skills(getattr(args, "materials", ""))
+    delivery_modes = _parse_skills(getattr(args, "delivery_modes", ""))
     skills = _parse_skills(args.skills) or (args.subject,)
     summary = args.summary or f"Starter {resource_type} for {args.subject} at {level} level."
     spec = ScaffoldSpec(
@@ -239,6 +245,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         duration_minutes=getattr(args, "duration_minutes", 30),
         prerequisites=prerequisites,
         materials=materials,
+        delivery_modes=delivery_modes,
         summary=summary,
         learning_objectives=learning_objectives,
         curriculum_references=curriculum_references,

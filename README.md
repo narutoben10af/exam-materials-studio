@@ -22,6 +22,8 @@ payment workflows, or commercial customer data.
   pathways, and revision plans.
 - Tracks materials so teachers can prepare supplies, devices, files, or tools
   before running a resource.
+- Tracks delivery modes so resources can be planned for classroom, tutoring,
+  self-study, homework, revision, seminar, or discussion workflows.
 - Tracks estimated duration so resources can support lesson, tutoring, and
   independent-study planning.
 - Tracks optional item difficulty metadata for foundation, core, and extension
@@ -88,10 +90,10 @@ exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv -
 ```
 
 The Markdown report summarizes resources and item counts by subject, level,
-resource type, education system, exam board, course, and difficulty coverage.
-The CSV export gives a spreadsheet-friendly row per resource, including
-estimated duration plus foundation/core/extension/unspecified difficulty counts
-for maintainer review.
+resource type, education system, exam board, course, delivery mode, and
+difficulty coverage. The CSV export gives a spreadsheet-friendly row per
+resource, including delivery modes, estimated duration, and
+foundation/core/extension/unspecified difficulty counts for maintainer review.
 
 ## Scaffold New Resources
 
@@ -109,6 +111,7 @@ exam-materials-studio scaffold \
   --duration-minutes 30 \
   --prerequisites "Count equal parts in a shape" \
   --materials "Fraction strips;Counters" \
+  --delivery-modes "classroom;tutoring" \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -149,10 +152,10 @@ where teachers want readable lists and indentation. CSV is useful when teachers
 are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
-`exam_board`, `course`, `duration_minutes`, `prerequisites`,
-`materials`, `learning_objectives`, and `curriculum_references` fields are
+`exam_board`, `course`, `duration_minutes`, `prerequisites`, `materials`,
+`delivery_modes`, `learning_objectives`, and `curriculum_references` fields are
 optional, but useful for catalogs and teacher-facing resources that span
-different levels and curricula. Each item can also include optional
+different levels, curricula, and delivery settings. Each item can also include optional
 `difficulty` metadata using `foundation`, `core`, or `extension`.
 
 ```json
@@ -173,6 +176,11 @@ different levels and curricula. Each item can also include optional
   "materials": [
     "Printed worksheet or shared digital copy.",
     "Logic-gate reference sheet."
+  ],
+  "delivery_modes": [
+    "classroom",
+    "revision",
+    "self-study"
   ],
   "summary": "Targeted practice for Boolean logic gates and truth tables.",
   "learning_objectives": [
@@ -196,13 +204,13 @@ different levels and curricula. Each item can also include optional
 ```
 
 CSV resources use one row per activity, question, or teacher note. Resource
-metadata is read from the first row. `skills`, `prerequisites`,
-`materials`, `learning_objectives`, and `curriculum_references` are separated with
-semicolons:
+metadata is read from the first row. `skills`, `prerequisites`, `materials`,
+`delivery_modes`, `learning_objectives`, and `curriculum_references` are
+separated with semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,delivery_modes,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,classroom;tutoring,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -222,6 +230,10 @@ prerequisites:
 materials:
   - Printed or projected historical source extract.
   - Highlighters or annotation tools.
+delivery_modes:
+  - classroom
+  - discussion
+  - homework
 summary: A short resource for evaluating historical source reliability and usefulness.
 skills:
   - provenance
@@ -239,8 +251,8 @@ items:
 ```bash
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
-python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
-python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
+python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
 python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
 python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated

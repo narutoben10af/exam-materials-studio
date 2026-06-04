@@ -20,6 +20,7 @@ class InventoryTests(unittest.TestCase):
                     "education_system": "General early years",
                     "course": "Counting",
                     "duration_minutes": 15,
+                    "delivery_modes": ["classroom", "tutoring"],
                     "summary": "Count small groups.",
                     "skills": ["counting"],
                     "items": [
@@ -49,6 +50,7 @@ class InventoryTests(unittest.TestCase):
                     "exam_board": "Cambridge",
                     "course": "0455 Economics",
                     "duration_minutes": 20,
+                    "delivery_modes": ["revision", "self-study"],
                     "summary": "Define key economics terms.",
                     "skills": ["definitions"],
                     "items": [{"prompt": "Define scarcity.", "answer": "Limited resources.", "explanation": "Resources are limited."}],
@@ -69,6 +71,9 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("# Resource Coverage Inventory", report)
         self.assertIn("- Planned time: 35 minutes", report)
         self.assertIn("## Subjects", report)
+        self.assertIn("## Delivery Modes", report)
+        self.assertIn("| classroom | 1 |", report)
+        self.assertIn("| self-study | 1 |", report)
         self.assertIn("## Difficulty Coverage", report)
         self.assertIn("| foundation | 1 |", report)
         self.assertIn("| core | 1 |", report)
@@ -97,12 +102,14 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[0]["title"], "Preschool Counting")
             self.assertEqual(rows[0]["duration_minutes"], "15")
+            self.assertEqual(rows[0]["delivery_modes"], "classroom;tutoring")
             self.assertEqual(rows[0]["foundation_items"], "1")
             self.assertEqual(rows[0]["core_items"], "1")
             self.assertEqual(rows[0]["extension_items"], "0")
             self.assertEqual(rows[0]["unspecified_difficulty_items"], "0")
             self.assertEqual(rows[1]["course"], "0455 Economics")
             self.assertEqual(rows[1]["duration_minutes"], "20")
+            self.assertEqual(rows[1]["delivery_modes"], "revision;self-study")
             self.assertEqual(rows[1]["unspecified_difficulty_items"], "1")
 
 

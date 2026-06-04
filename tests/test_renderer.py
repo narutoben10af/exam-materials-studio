@@ -34,6 +34,7 @@ class RendererTests(unittest.TestCase):
                 "duration_minutes": 40,
                 "prerequisites": ["Binary inputs", "Truth-table columns"],
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
+                "delivery_modes": ["classroom", "self-study"],
                 "skills": ["truth tables"],
                 "items": [
                     {
@@ -57,6 +58,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("- Binary inputs", markdown)
         self.assertIn("## Materials", markdown)
         self.assertIn("- Mini whiteboards", markdown)
+        self.assertIn("**Delivery modes:** classroom, self-study", markdown)
         self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("A AND B", markdown)
@@ -66,6 +68,7 @@ class RendererTests(unittest.TestCase):
         markdown = render_answer_key_markdown(self.pack)
 
         self.assertIn("**Estimated time:** 40 minutes", markdown)
+        self.assertIn("**Delivery modes:** classroom, self-study", markdown)
         self.assertIn("## Prerequisites", markdown)
         self.assertIn("## Materials", markdown)
         self.assertIn("**Difficulty:** core", markdown)
@@ -93,6 +96,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Track:** Cambridge International / Cambridge / 0478 Computer Science", markdown)
         self.assertIn("**Prerequisites:** Binary inputs, Truth-table columns", markdown)
         self.assertIn("**Materials:** Mini whiteboards, Logic-gate reference sheet", markdown)
+        self.assertIn("**Delivery modes:** classroom, self-study", markdown)
         self.assertIn("**Skills:** truth tables", markdown)
         self.assertIn("[Resource](boolean-logic.md)", markdown)
         self.assertIn("[Answer key](boolean-logic-answer-key.md)", markdown)
@@ -114,6 +118,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["duration_minutes"], 40)
         self.assertEqual(resource["prerequisites"], ["Binary inputs", "Truth-table columns"])
         self.assertEqual(resource["materials"], ["Mini whiteboards", "Logic-gate reference sheet"])
+        self.assertEqual(resource["delivery_modes"], ["classroom", "self-study"])
         self.assertEqual(resource["skills"], ["truth tables"])
         self.assertEqual(resource["learning_objectives"], ["Build truth tables for common logic gates.", "Explain Boolean outputs from binary inputs."])
         self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
@@ -165,6 +170,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Binary inputs", html)
         self.assertIn("Materials", html)
         self.assertIn("Mini whiteboards", html)
+        self.assertIn("<strong>Delivery modes:</strong> classroom, self-study", html)
         self.assertIn("<strong>Estimated time:</strong> 40 minutes", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("Cambridge International", html)

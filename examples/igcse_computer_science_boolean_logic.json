@@ -16,6 +16,11 @@
     "Printed worksheet or shared digital copy.",
     "Logic-gate reference sheet."
   ],
+  "delivery_modes": [
+    "classroom",
+    "revision",
+    "self-study"
+  ],
   "summary": "Targeted practice for logic gates, Boolean expressions, and truth tables.",
   "learning_objectives": [
     "Complete truth-table outputs for common logic gates.",

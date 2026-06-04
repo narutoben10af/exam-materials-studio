@@ -23,6 +23,8 @@ database.
 - `duration_minutes`: Estimated learner or classroom time as a positive integer.
 - `prerequisites`: Prior knowledge, skills, or lessons expected before starting the resource.
 - `materials`: Supplies, devices, files, or tools needed to run the resource.
+- `delivery_modes`: Intended teaching or learning settings, such as `classroom`,
+  `tutoring`, `self-study`, `homework`, `revision`, `seminar`, or `discussion`.
 - `learning_objectives`: Teacher-facing objectives describing what learners should be able to do.
 - `curriculum_references`: Syllabus sections, standards, specification points, or module outcomes.
 
@@ -65,6 +67,7 @@ Supported columns:
 - `duration_minutes`
 - `prerequisites`
 - `materials`
+- `delivery_modes`
 - `summary`
 - `skills`
 - `learning_objectives`
@@ -75,10 +78,11 @@ Supported columns:
 - `answer`
 - `explanation`
 
-Separate multiple skills, prerequisites, materials, objectives, or references with semicolons, for example:
+Separate multiple skills, prerequisites, materials, delivery modes, objectives, or references with semicolons, for example:
 `classification;materials;properties` or
 `Name common classroom objects;Describe simple object uses` or
 `Wood sample;Metal spoon;Plastic bottle` or
+`classroom;tutoring;self-study` or
 `Classify everyday materials;Link properties to object uses` or
 `Cambridge 0478 4.1;Cambridge 0478 4.2`.
 
@@ -97,6 +101,7 @@ exam-materials-studio scaffold \
   --duration-minutes 30 \
   --prerequisites "Count equal parts in a shape" \
   --materials "Fraction strips;Counters" \
+  --delivery-modes "classroom;tutoring" \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -127,7 +132,7 @@ school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, explanations, prerequisites, materials, estimated duration,
-and starter difficulty progression labels.
+delivery modes, and starter difficulty progression labels.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -145,9 +150,10 @@ By default the CLI writes:
 - Static `index.html` catalog.
 
 The JSON catalog includes per-resource `duration_minutes`, `prerequisites`,
-`materials`, and `difficulty_counts` so maintainers can quickly see entry
-requirements, preparation needs, planned time, and whether a resource leans too
-heavily toward foundation, core, or extension work.
+`materials`, `delivery_modes`, and `difficulty_counts` so maintainers can
+quickly see entry requirements, preparation needs, delivery settings, planned
+time, and whether a resource leans too heavily toward foundation, core, or
+extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -197,10 +203,12 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - education system
 - exam board
 - course
+- delivery mode
 - total planned duration
 - difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
-filter coverage in a spreadsheet. It includes `duration_minutes`, `foundation_items`,
-`core_items`, `extension_items`, and `unspecified_difficulty_items` columns so
-reviewers can spot resources that need more progression balance.
+filter coverage in a spreadsheet. It includes `delivery_modes`,
+`duration_minutes`, `foundation_items`, `core_items`, `extension_items`, and
+`unspecified_difficulty_items` columns so reviewers can spot resources that need
+more delivery coverage or progression balance.
