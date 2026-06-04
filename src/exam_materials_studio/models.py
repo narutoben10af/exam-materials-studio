@@ -26,6 +26,7 @@ class ExamPack:
     education_system: str = ""
     exam_board: str = ""
     course: str = ""
+    duration_minutes: int | None = None
     learning_objectives: tuple[str, ...] = ()
     curriculum_references: tuple[str, ...] = ()
 
@@ -89,6 +90,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         education_system=str(data.get("education_system", "")).strip(),
         exam_board=str(data.get("exam_board", "")).strip(),
         course=str(data.get("course", "")).strip(),
+        duration_minutes=_optional_positive_int(data.get("duration_minutes", None), "duration_minutes"),
         learning_objectives=learning_objectives,
         curriculum_references=curriculum_references,
     )
@@ -123,3 +125,15 @@ def _optional_difficulty(value: Any, index: int) -> str:
         allowed = ", ".join(sorted(ALLOWED_DIFFICULTIES))
         raise PackValidationError(f"item {index} difficulty must be one of: {allowed}")
     return difficulty
+
+
+def _optional_positive_int(value: Any, field: str) -> int | None:
+    if value in (None, ""):
+        return None
+    try:
+        duration = int(str(value).strip())
+    except (TypeError, ValueError) as error:
+        raise PackValidationError(f"{field} must be a positive integer") from error
+    if duration < 1:
+        raise PackValidationError(f"{field} must be a positive integer")
+    return duration

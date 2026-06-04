@@ -20,6 +20,7 @@ database.
 - `education_system`: For example `Cambridge International`, `IB`, `AP`, `US Common Core`, or `General early years`.
 - `exam_board`: For exam-board-specific resources, such as `Cambridge`, `Pearson Edexcel`, or `AQA`.
 - `course`: Course or specification identifier, such as `0478 Computer Science`.
+- `duration_minutes`: Estimated learner or classroom time as a positive integer.
 - `learning_objectives`: Teacher-facing objectives describing what learners should be able to do.
 - `curriculum_references`: Syllabus sections, standards, specification points, or module outcomes.
 
@@ -59,6 +60,7 @@ Supported columns:
 - `education_system`
 - `exam_board`
 - `course`
+- `duration_minutes`
 - `summary`
 - `skills`
 - `learning_objectives`
@@ -86,6 +88,7 @@ exam-materials-studio scaffold \
   --resource-type worksheet \
   --education-system "General primary" \
   --course Fractions \
+  --duration-minutes 30 \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -115,7 +118,8 @@ metadata flags, and explicit flags override preset defaults when a course or
 school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
-prompts, answers, explanations, and starter difficulty progression labels.
+prompts, answers, explanations, estimated duration, and starter difficulty
+progression labels.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -132,9 +136,9 @@ By default the CLI writes:
 - Static `index.json` catalog for search, hosting, and integration workflows.
 - Static `index.html` catalog.
 
-The JSON catalog includes per-resource `difficulty_counts` so maintainers can
-quickly see whether a resource leans too heavily toward foundation, core, or
-extension work.
+The JSON catalog includes per-resource `duration_minutes` and
+`difficulty_counts` so maintainers can quickly see planned time and whether a
+resource leans too heavily toward foundation, core, or extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -161,7 +165,8 @@ resources that are technically valid but weak for publishing, including missing
 `education_system`, missing `course`, missing `learning_objectives`, missing
 `curriculum_references`, exam-specific resources without an `exam_board`,
 missing item difficulty labels, very short resources, and thin or missing
-explanations.
+explanations. Missing `duration_minutes` is also reported as a
+planning-quality warning.
 
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.
@@ -183,9 +188,10 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - education system
 - exam board
 - course
+- total planned duration
 - difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
-filter coverage in a spreadsheet. It includes `foundation_items`,
+filter coverage in a spreadsheet. It includes `duration_minutes`, `foundation_items`,
 `core_items`, `extension_items`, and `unspecified_difficulty_items` columns so
 reviewers can spot resources that need more progression balance.

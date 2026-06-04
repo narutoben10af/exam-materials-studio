@@ -128,6 +128,8 @@ def render_catalog_markdown(packs: list[ExamPack]) -> str:
         )
         if metadata:
             lines.append(f"**Track:** {metadata}")
+        if pack.duration_minutes:
+            lines.append(f"**Estimated time:** {pack.duration_minutes} minutes")
         lines.extend(
             [
                 f"**Skills:** {skills}",
@@ -173,6 +175,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "skills": list(pack.skills),
         "learning_objectives": list(pack.learning_objectives),
         "curriculum_references": list(pack.curriculum_references),
+        "duration_minutes": pack.duration_minutes,
         "item_count": len(pack.items),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -225,6 +228,11 @@ def render_catalog_html(packs: list[ExamPack], formats: set[str] | None = None) 
                     f"  <p><strong>Subject:</strong> {escape(pack.subject)}</p>",
                     f"  <p><strong>Level:</strong> {escape(pack.level)}</p>",
                     *([f"  <p><strong>Track:</strong> {escape(metadata)}</p>"] if metadata else []),
+                    *(
+                        [f"  <p><strong>Estimated time:</strong> {pack.duration_minutes} minutes</p>"]
+                        if pack.duration_minutes
+                        else []
+                    ),
                     f"  <p><strong>Skills:</strong> {escape(skills)}</p>",
                     *links,
                     "</article>",
@@ -260,6 +268,10 @@ def _metadata_fields(pack: ExamPack) -> list[tuple[str, str]]:
             ("Education system", pack.education_system),
             ("Exam board", pack.exam_board),
             ("Course", pack.course),
+            (
+                "Estimated time",
+                f"{pack.duration_minutes} minutes" if pack.duration_minutes else "",
+            ),
         ]
         if value
     ]

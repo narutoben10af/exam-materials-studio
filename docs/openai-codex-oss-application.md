@@ -44,6 +44,10 @@ Item-level difficulty metadata now lets maintainers balance foundation, core,
 and extension work inside each resource, while inventory reports expose that
 balance across the repository. This supports deeper learning progressions
 beyond simple exam-question generation.
+Estimated duration metadata now helps the project support broader education
+materials too: lesson activities, tutoring sessions, revision blocks, and study
+guides can show expected time and roll up total planned minutes in inventory
+reports.
 
 ## API Credits Use
 

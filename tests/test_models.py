@@ -21,6 +21,7 @@ class PackModelTests(unittest.TestCase):
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
                 "course": "0478 Computer Science",
+                "duration_minutes": "45",
                 "skills": ["logic"],
                 "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core"}],
             }
@@ -31,6 +32,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.education_system, "Cambridge International")
         self.assertEqual(pack.exam_board, "Cambridge")
         self.assertEqual(pack.course, "0478 Computer Science")
+        self.assertEqual(pack.duration_minutes, 45)
         self.assertEqual(
             pack.learning_objectives,
             (
@@ -41,6 +43,35 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.curriculum_references, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
         self.assertEqual(pack.items[0].difficulty, "core")
         self.assertEqual(len(pack.items), 1)
+
+    def test_invalid_duration_is_rejected(self):
+        with self.assertRaisesRegex(PackValidationError, "duration_minutes must be a positive integer"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "duration_minutes": "soon",
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
+
+        with self.assertRaisesRegex(PackValidationError, "duration_minutes must be a positive integer"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "duration_minutes": 0,
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
 
     def test_invalid_item_difficulty_is_rejected(self):
         with self.assertRaisesRegex(PackValidationError, "item 1 difficulty"):

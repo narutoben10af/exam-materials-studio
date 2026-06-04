@@ -5,6 +5,7 @@ level: Secondary
 resource_type: source-analysis
 education_system: General secondary
 course: Historical source skills
+duration_minutes: 30
 summary: A short resource for evaluating historical source reliability and usefulness.
 learning_objectives:
   - Identify provenance details in a historical source.

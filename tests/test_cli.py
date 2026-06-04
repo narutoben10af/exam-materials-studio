@@ -320,6 +320,8 @@ items:
                         "Local Grade 4 Fractions",
                         "--skills",
                         "fractions;equivalent fractions",
+                        "--duration-minutes",
+                        "45",
                         "--format",
                         "yaml",
                         "--out",
@@ -328,7 +330,9 @@ items:
                 )
 
             self.assertEqual(result, 0)
-            self.assertIn("title: Primary Fractions YAML", output_path.read_text(encoding="utf-8"))
+            output = output_path.read_text(encoding="utf-8")
+            self.assertIn("title: Primary Fractions YAML", output)
+            self.assertIn("duration_minutes: 45", output)
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(
