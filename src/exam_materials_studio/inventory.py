@@ -5,7 +5,11 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
-from .models import ExamPack
+from .models import DIFFICULTY_ORDER, ExamPack
+
+
+UNSPECIFIED_DIFFICULTY = "unspecified"
+DIFFICULTY_LABELS = (*DIFFICULTY_ORDER, UNSPECIFIED_DIFFICULTY)
 
 
 @dataclass(frozen=True)
@@ -44,8 +48,18 @@ def render_inventory_markdown(inventory: Inventory) -> str:
     ]:
         lines.extend(_render_counter_section(title, counter))
 
-    lines.extend(["## Resources", "", "| Title | Level | Subject | Type | Course | Items |", "| --- | --- | --- | --- | --- | --- |"])
+    lines.extend(_render_difficulty_section(_count_difficulties(inventory.packs)))
+
+    lines.extend(
+        [
+            "## Resources",
+            "",
+            "| Title | Level | Subject | Type | Course | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
     for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
+        difficulty_counts = _difficulty_counts_for_pack(pack)
         lines.append(
             "| "
             + " | ".join(
@@ -56,6 +70,10 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     _table_cell(pack.resource_type),
                     _table_cell(pack.course or "Unspecified"),
                     str(len(pack.items)),
+                    str(difficulty_counts["foundation"]),
+                    str(difficulty_counts["core"]),
+                    str(difficulty_counts["extension"]),
+                    str(difficulty_counts[UNSPECIFIED_DIFFICULTY]),
                 ]
             )
             + " |"
@@ -78,10 +96,15 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "exam_board",
                 "course",
                 "item_count",
+                "foundation_items",
+                "core_items",
+                "extension_items",
+                "unspecified_difficulty_items",
             ],
         )
         writer.writeheader()
         for pack in inventory.packs:
+            difficulty_counts = _difficulty_counts_for_pack(pack)
             writer.writerow(
                 {
                     "title": pack.title,
@@ -93,6 +116,10 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "exam_board": pack.exam_board,
                     "course": pack.course,
                     "item_count": len(pack.items),
+                    "foundation_items": difficulty_counts["foundation"],
+                    "core_items": difficulty_counts["core"],
+                    "extension_items": difficulty_counts["extension"],
+                    "unspecified_difficulty_items": difficulty_counts[UNSPECIFIED_DIFFICULTY],
                 }
             )
 
@@ -113,6 +140,29 @@ def _render_counter_section(title: str, counter: Counter[str]) -> list[str]:
     return lines
 
 
+def _render_difficulty_section(counter: Counter[str]) -> list[str]:
+    lines = ["## Difficulty Coverage", "", "| Difficulty | Items |", "| --- | --- |"]
+    for difficulty in DIFFICULTY_LABELS:
+        lines.append(f"| {_table_cell(difficulty)} | {counter[difficulty]} |")
+    lines.append("")
+    return lines
+
+
+def _count_difficulties(packs: tuple[ExamPack, ...]) -> Counter[str]:
+    counter: Counter[str] = Counter()
+    for pack in packs:
+        counter.update(_difficulty_label(item.difficulty) for item in pack.items)
+    return counter
+
+
+def _difficulty_counts_for_pack(pack: ExamPack) -> dict[str, int]:
+    counter = Counter(_difficulty_label(item.difficulty) for item in pack.items)
+    return {difficulty: counter[difficulty] for difficulty in DIFFICULTY_LABELS}
+
+
+def _difficulty_label(difficulty: str) -> str:
+    return difficulty if difficulty in DIFFICULTY_ORDER else UNSPECIFIED_DIFFICULTY
+
+
 def _table_cell(value: str) -> str:
     return str(value).replace("|", "\\|")
-

@@ -25,7 +25,8 @@ quality before publishing. It also supports spreadsheet-friendly CSV input, so
 teachers can draft resources in familiar tools before generating Markdown, HTML,
 answer keys, and catalogs. The inventory command gives maintainers a way to
 track coverage across subjects, education systems, exam boards, courses, levels,
-and resource types as the project grows. A scaffold command helps contributors
+resource types, and item difficulty progression as the project grows. A scaffold
+command helps contributors
 start new JSON or CSV resources with the required metadata and starter items,
 and built-in scaffold presets now make common preschool, primary, Cambridge
 IGCSE, Cambridge A Level, AP, IB Diploma, and university resources easier to
@@ -39,8 +40,9 @@ The build output also includes a machine-readable JSON catalog so generated
 resources can be indexed or integrated into static sites and future education
 tools without scraping Markdown or HTML.
 Item-level difficulty metadata now lets maintainers balance foundation, core,
-and extension work inside each resource, which supports deeper learning
-progressions beyond simple exam-question generation.
+and extension work inside each resource, while inventory reports expose that
+balance across the repository. This supports deeper learning progressions
+beyond simple exam-question generation.
 
 ## API Credits Use
 
