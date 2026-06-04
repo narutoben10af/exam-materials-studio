@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.6.0
+
 - Added item-level `rubric` metadata for teacher-facing marking criteria and success criteria.
 - Added rubric output to answer keys while keeping learner-facing resources free of rubric content.
 - Added rubric point totals to JSON catalogs, Markdown inventory summaries, and CSV inventory exports.
