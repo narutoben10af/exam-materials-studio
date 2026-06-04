@@ -6,6 +6,9 @@
 - Added duration output to rendered resources, answer keys, JSON catalogs, and inventory reports.
 - Added `--duration-minutes` scaffold support and duration examples for JSON, YAML, and CSV resources.
 - Added validation warnings for resources missing estimated duration metadata.
+- Added `prerequisites` metadata for sequencing resources into lessons, courses, and revision pathways.
+- Added prerequisite output to rendered resources, answer keys, Markdown/HTML catalogs, and JSON catalogs.
+- Added `--prerequisites` scaffold support and prerequisite examples for JSON, YAML, and CSV resources.
 
 ## v0.3.0
 

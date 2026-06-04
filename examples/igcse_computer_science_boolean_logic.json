@@ -8,6 +8,10 @@
   "exam_board": "Cambridge",
   "course": "0478 Computer Science",
   "duration_minutes": 25,
+  "prerequisites": [
+    "Recognise binary values 0 and 1.",
+    "Read simple two-column truth tables."
+  ],
   "summary": "Targeted practice for logic gates, Boolean expressions, and truth tables.",
   "learning_objectives": [
     "Complete truth-table outputs for common logic gates.",

@@ -21,6 +21,7 @@ database.
 - `exam_board`: For exam-board-specific resources, such as `Cambridge`, `Pearson Edexcel`, or `AQA`.
 - `course`: Course or specification identifier, such as `0478 Computer Science`.
 - `duration_minutes`: Estimated learner or classroom time as a positive integer.
+- `prerequisites`: Prior knowledge, skills, or lessons expected before starting the resource.
 - `learning_objectives`: Teacher-facing objectives describing what learners should be able to do.
 - `curriculum_references`: Syllabus sections, standards, specification points, or module outcomes.
 
@@ -61,6 +62,7 @@ Supported columns:
 - `exam_board`
 - `course`
 - `duration_minutes`
+- `prerequisites`
 - `summary`
 - `skills`
 - `learning_objectives`
@@ -71,8 +73,9 @@ Supported columns:
 - `answer`
 - `explanation`
 
-Separate multiple skills, objectives, or references with semicolons, for example:
+Separate multiple skills, prerequisites, objectives, or references with semicolons, for example:
 `classification;materials;properties` or
+`Name common classroom objects;Describe simple object uses` or
 `Classify everyday materials;Link properties to object uses` or
 `Cambridge 0478 4.1;Cambridge 0478 4.2`.
 
@@ -89,6 +92,7 @@ exam-materials-studio scaffold \
   --education-system "General primary" \
   --course Fractions \
   --duration-minutes 30 \
+  --prerequisites "Count equal parts in a shape" \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -118,8 +122,8 @@ metadata flags, and explicit flags override preset defaults when a course or
 school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
-prompts, answers, explanations, estimated duration, and starter difficulty
-progression labels.
+prompts, answers, explanations, prerequisites, estimated duration, and starter
+difficulty progression labels.
 Use `--format yaml` for hand-edited resources or `--format csv` for
 spreadsheet-first authoring. Existing files are protected by default; pass
 `--force` only when you intentionally want to replace a scaffold.
@@ -136,9 +140,10 @@ By default the CLI writes:
 - Static `index.json` catalog for search, hosting, and integration workflows.
 - Static `index.html` catalog.
 
-The JSON catalog includes per-resource `duration_minutes` and
-`difficulty_counts` so maintainers can quickly see planned time and whether a
-resource leans too heavily toward foundation, core, or extension work.
+The JSON catalog includes per-resource `duration_minutes`, `prerequisites`, and
+`difficulty_counts` so maintainers can quickly see entry requirements, planned
+time, and whether a resource leans too heavily toward foundation, core, or
+extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the

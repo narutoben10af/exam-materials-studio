@@ -8,6 +8,10 @@
   "exam_board": "Cambridge",
   "course": "0455 Economics",
   "duration_minutes": 20,
+  "prerequisites": [
+    "Understand that resources are limited.",
+    "Recognise the difference between needs and wants."
+  ],
   "summary": "Short-answer practice for foundational economics definitions.",
   "learning_objectives": [
     "Recall core IGCSE Economics definitions accurately.",

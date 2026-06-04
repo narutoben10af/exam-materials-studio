@@ -7,6 +7,10 @@
   "education_system": "General early years",
   "course": "Number sense foundations",
   "duration_minutes": 15,
+  "prerequisites": [
+    "Count aloud from one to five.",
+    "Point to one object at a time while counting."
+  ],
   "summary": "A gentle activity sheet for counting, matching, and comparing small quantities.",
   "learning_objectives": [
     "Match small quantities to written numerals.",

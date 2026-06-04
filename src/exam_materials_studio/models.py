@@ -27,6 +27,7 @@ class ExamPack:
     exam_board: str = ""
     course: str = ""
     duration_minutes: int | None = None
+    prerequisites: tuple[str, ...] = ()
     learning_objectives: tuple[str, ...] = ()
     curriculum_references: tuple[str, ...] = ()
 
@@ -55,6 +56,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         data.get("curriculum_references", []),
         "curriculum_references",
     )
+    prerequisites = _optional_text_list(data.get("prerequisites", []), "prerequisites")
 
     if not isinstance(data["items"], list) or not data["items"]:
         raise PackValidationError("items must be a non-empty list")
@@ -91,6 +93,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         exam_board=str(data.get("exam_board", "")).strip(),
         course=str(data.get("course", "")).strip(),
         duration_minutes=_optional_positive_int(data.get("duration_minutes", None), "duration_minutes"),
+        prerequisites=prerequisites,
         learning_objectives=learning_objectives,
         curriculum_references=curriculum_references,
     )

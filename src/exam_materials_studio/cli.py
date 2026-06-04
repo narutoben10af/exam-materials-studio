@@ -90,6 +90,11 @@ def main(argv: list[str] | None = None) -> int:
         default=30,
         help="Estimated resource time in minutes for lesson or study planning",
     )
+    scaffold_parser.add_argument(
+        "--prerequisites",
+        default="",
+        help="Semicolon-separated prerequisite knowledge, skills, or prior lessons",
+    )
     scaffold_parser.add_argument("--summary", default="")
     scaffold_parser.add_argument(
         "--learning-objectives",
@@ -213,6 +218,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
     curriculum_references = _parse_skills(getattr(args, "curriculum_references", ""))
     if not curriculum_references:
         curriculum_references = (args.course or f"{education_system or args.level} {args.subject}",)
+    prerequisites = _parse_skills(getattr(args, "prerequisites", ""))
     skills = _parse_skills(args.skills) or (args.subject,)
     summary = args.summary or f"Starter {resource_type} for {args.subject} at {level} level."
     spec = ScaffoldSpec(
@@ -225,6 +231,7 @@ def scaffold_pack(args: argparse.Namespace) -> int:
         exam_board=exam_board,
         course=args.course,
         duration_minutes=getattr(args, "duration_minutes", 30),
+        prerequisites=prerequisites,
         summary=summary,
         learning_objectives=learning_objectives,
         curriculum_references=curriculum_references,

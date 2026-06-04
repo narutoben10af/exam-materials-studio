@@ -19,6 +19,8 @@ education_system: General primary
 course: Fractions
 duration_minutes: 30
 summary: A YAML-authored fractions resource.
+prerequisites:
+  - Count equal parts in a shape.
 learning_objectives:
   - Represent one half using quarters.
 curriculum_references:
@@ -40,6 +42,7 @@ items:
             self.assertEqual(pack.title, "Primary Fractions YAML")
             self.assertEqual(pack.slug, "primary-fractions-yaml")
             self.assertEqual(pack.duration_minutes, 30)
+            self.assertEqual(pack.prerequisites, ("Count equal parts in a shape.",))
             self.assertEqual(pack.skills, ("equivalent fractions",))
             self.assertEqual(pack.items[0].difficulty, "foundation")
 
@@ -72,10 +75,10 @@ items:
             path.write_text(
                 "\n".join(
                     [
-                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
-                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
+                        "title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,activity,foundation,Sort wood and metal objects.,Wood objects and metal objects are grouped separately.,Learners classify materials by observable properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,question,core,Name one property of metal.,Metal is usually strong.,This checks whether learners can connect materials to properties.",
+                        "Primary Science,primary-science,Science,Primary,lesson-resource,General primary,,Materials,25,Name common classroom objects,A materials lesson,classification;properties,Classify everyday materials;Link properties to uses,National Curriculum KS1 Materials,discussion,extension,Why use glass for windows?,Glass is transparent.,The learner should connect transparency to the function of a window.",
                     ]
                 ),
                 encoding="utf-8",
@@ -86,6 +89,7 @@ items:
             self.assertEqual(pack.title, "Primary Science")
             self.assertEqual(pack.slug, "primary-science")
             self.assertEqual(pack.duration_minutes, 25)
+            self.assertEqual(pack.prerequisites, ("Name common classroom objects",))
             self.assertEqual(pack.skills, ("classification", "properties"))
             self.assertEqual(
                 pack.learning_objectives,
