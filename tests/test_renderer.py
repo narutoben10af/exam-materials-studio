@@ -42,6 +42,7 @@ class RendererTests(unittest.TestCase):
                         "answer": "0",
                         "explanation": "Both inputs must be 1.",
                         "difficulty": "core",
+                        "marks": 2,
                     }
                 ],
             }
@@ -61,6 +62,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Delivery modes:** classroom, self-study", markdown)
         self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Difficulty:** core", markdown)
+        self.assertIn("**Marks:** 2", markdown)
         self.assertIn("A AND B", markdown)
         self.assertNotIn("Both inputs must be 1.", markdown)
 
@@ -72,6 +74,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("## Prerequisites", markdown)
         self.assertIn("## Materials", markdown)
         self.assertIn("**Difficulty:** core", markdown)
+        self.assertIn("**Marks:** 2", markdown)
         self.assertIn("0", markdown)
         self.assertIn("Both inputs must be 1.", markdown)
 
@@ -123,6 +126,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["learning_objectives"], ["Build truth tables for common logic gates.", "Explain Boolean outputs from binary inputs."])
         self.assertEqual(resource["curriculum_references"], ["Cambridge 0478 4.1"])
         self.assertEqual(resource["item_count"], 1)
+        self.assertEqual(resource["total_marks"], 2)
         self.assertEqual(resource["difficulty_counts"], {"core": 1})
         self.assertEqual(resource["files"]["markdown"], "boolean-logic.md")
         self.assertEqual(resource["files"]["answer_key_markdown"], "boolean-logic-answer-key.md")
@@ -173,6 +177,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("<strong>Delivery modes:</strong> classroom, self-study", html)
         self.assertIn("<strong>Estimated time:</strong> 40 minutes", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
+        self.assertIn("<strong>Marks:</strong> 2", html)
         self.assertIn("Cambridge International", html)
         self.assertIn("A AND B", html)
         self.assertNotIn("Both inputs must be 1.", html)
@@ -182,6 +187,7 @@ class RendererTests(unittest.TestCase):
 
         self.assertIn("Answer 1", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
+        self.assertIn("<strong>Marks:</strong> 2", html)
         self.assertIn("Both inputs must be 1.", html)
 
 

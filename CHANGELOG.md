@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added item-level `marks` metadata for assessment weighting across exams, worksheets, quizzes, problem sets, and study checks.
+- Added marks output to rendered resources, answer keys, JSON catalogs, inventory summaries, and CSV inventory exports.
+- Added default scaffold marks and marks examples for JSON, YAML, and CSV resources.
+
 ## v0.4.0
 
 - Added `delivery_modes` metadata for classroom, tutoring, self-study, homework, revision, seminar, and discussion workflows.
