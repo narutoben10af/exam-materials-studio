@@ -172,6 +172,9 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - education system
 - exam board
 - course
+- difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
-filter coverage in a spreadsheet.
+filter coverage in a spreadsheet. It includes `foundation_items`,
+`core_items`, `extension_items`, and `unspecified_difficulty_items` columns so
+reviewers can spot resources that need more progression balance.

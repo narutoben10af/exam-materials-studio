@@ -22,8 +22,18 @@ class InventoryTests(unittest.TestCase):
                     "summary": "Count small groups.",
                     "skills": ["counting"],
                     "items": [
-                        {"prompt": "Count two dots.", "answer": "2", "explanation": "Two dots are counted."},
-                        {"prompt": "Count three dots.", "answer": "3", "explanation": "Three dots are counted."},
+                        {
+                            "prompt": "Count two dots.",
+                            "answer": "2",
+                            "explanation": "Two dots are counted.",
+                            "difficulty": "foundation",
+                        },
+                        {
+                            "prompt": "Count three dots.",
+                            "answer": "3",
+                            "explanation": "Three dots are counted.",
+                            "difficulty": "core",
+                        },
                     ],
                 }
             ),
@@ -55,9 +65,22 @@ class InventoryTests(unittest.TestCase):
 
         self.assertIn("# Resource Coverage Inventory", report)
         self.assertIn("## Subjects", report)
+        self.assertIn("## Difficulty Coverage", report)
+        self.assertIn("| foundation | 1 |", report)
+        self.assertIn("| core | 1 |", report)
+        self.assertIn("| extension | 0 |", report)
+        self.assertIn("| unspecified | 1 |", report)
         self.assertIn("| Economics | 1 |", report)
         self.assertIn("| Preschool | 1 |", report)
         self.assertIn("0455 Economics", report)
+        self.assertIn(
+            "| Preschool Counting | Preschool | Early Mathematics | activity-sheet | Counting | 2 | 1 | 1 | 0 | 0 |",
+            report,
+        )
+        self.assertIn(
+            "| IGCSE Economics Definitions | IGCSE | Economics | definitions-drill | 0455 Economics | 1 | 0 | 0 | 0 | 1 |",
+            report,
+        )
 
     def test_writes_resource_level_csv_inventory(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -69,9 +92,13 @@ class InventoryTests(unittest.TestCase):
 
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[0]["title"], "Preschool Counting")
+            self.assertEqual(rows[0]["foundation_items"], "1")
+            self.assertEqual(rows[0]["core_items"], "1")
+            self.assertEqual(rows[0]["extension_items"], "0")
+            self.assertEqual(rows[0]["unspecified_difficulty_items"], "0")
             self.assertEqual(rows[1]["course"], "0455 Economics")
+            self.assertEqual(rows[1]["unspecified_difficulty_items"], "1")
 
 
 if __name__ == "__main__":
     unittest.main()
-

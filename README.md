@@ -70,7 +70,7 @@ exam-materials-studio validate examples/*.json --report generated/validation-rep
 Validation reports separate structural errors from quality warnings. Errors
 return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
-explanations, missing learning objectives, missing curriculum references, or
+explanations, missing learning objectives, missing curriculum references,
 missing item difficulty, or very short resources.
 
 ## Inventory Coverage
@@ -82,8 +82,9 @@ exam-materials-studio inventory examples/*.json examples/*.csv --out generated/i
 ```
 
 The Markdown report summarizes resources and item counts by subject, level,
-resource type, education system, exam board, and course. The CSV export gives a
-spreadsheet-friendly row per resource for maintainer review.
+resource type, education system, exam board, course, and difficulty coverage.
+The CSV export gives a spreadsheet-friendly row per resource, including
+foundation/core/extension/unspecified difficulty counts for maintainer review.
 
 ## Scaffold New Resources
 
