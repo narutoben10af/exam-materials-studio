@@ -101,6 +101,10 @@ Markdown learning path with duration, delivery modes, prerequisites, objectives,
 and generated-output links. This makes the repository more useful for ongoing
 course planning and review, not just for producing individual worksheets or
 exam-practice packs.
+The pathway workflow also supports CSV export, giving maintainers a
+spreadsheet-friendly planning view for sorting and editing lesson series,
+tutoring pathways, revision plans, study guides, and course packs across
+subjects, levels, and education systems.
 
 ## API Credits Use
 

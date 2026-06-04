@@ -211,6 +211,7 @@ items:
             root = Path(tmpdir)
             pack_path = root / "resource.json"
             report_path = root / "reports" / "pathway.md"
+            csv_path = root / "reports" / "pathway.csv"
             pack_path.write_text(
                 json.dumps(
                     {
@@ -235,13 +236,16 @@ items:
             )
 
             with redirect_stdout(StringIO()):
-                result = pathway_packs([pack_path], report_path)
+                result = pathway_packs([pack_path], report_path, csv_path)
 
             self.assertEqual(result, 0)
             report = report_path.read_text(encoding="utf-8")
             self.assertIn("# Learning Pathway", report)
             self.assertIn("## Primary / Mathematics / Fractions", report)
             self.assertIn("| 1 | [Primary Fractions Worksheet](primary-fractions-worksheet.md)", report)
+            csv_output = csv_path.read_text(encoding="utf-8")
+            self.assertIn("level,subject,course,unit,sequence_order,title", csv_output)
+            self.assertIn("Primary,Mathematics,Fractions,Equivalent fractions,1,Primary Fractions Worksheet", csv_output)
 
     def test_scaffold_pack_creates_json_from_cli_args(self):
         with tempfile.TemporaryDirectory() as tmpdir:

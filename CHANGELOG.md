@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added CSV export support to the `pathway` command for spreadsheet-friendly
+  course-pack and tutoring-pathway planning.
 - Added a `pathway` command that renders ordered Markdown learning pathways
   from course, unit, and sequence metadata.
 - Added pathway report tests so maintainers can review lesson series, tutoring

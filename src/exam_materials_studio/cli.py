@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .inventory import build_inventory, render_inventory_markdown, write_inventory_csv
 from .loader import ResourceLoadError, load_resource
-from .pathway import render_pathway_markdown
+from .pathway import render_pathway_markdown, write_pathway_csv
 from .presets import PresetError, get_preset, render_presets_markdown
 from .renderer import (
     render_answer_key_html,
@@ -69,6 +69,11 @@ def main(argv: list[str] | None = None) -> int:
         "--out",
         type=Path,
         help="Optional path for writing the Markdown pathway report",
+    )
+    pathway_parser.add_argument(
+        "--csv",
+        type=Path,
+        help="Optional path for writing a spreadsheet-friendly pathway CSV",
     )
 
     presets_parser = subparsers.add_parser(
@@ -150,7 +155,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "inventory":
         return inventory_packs(args.packs, args.out, args.csv)
     if args.command == "pathway":
-        return pathway_packs(args.packs, args.out)
+        return pathway_packs(args.packs, args.out, args.csv)
     if args.command == "presets":
         return list_presets(args.out)
     if args.command == "scaffold":
@@ -228,7 +233,11 @@ def inventory_packs(
     return 0
 
 
-def pathway_packs(pack_paths: list[Path], report_path: Path | None = None) -> int:
+def pathway_packs(
+    pack_paths: list[Path],
+    report_path: Path | None = None,
+    csv_path: Path | None = None,
+) -> int:
     packs = []
     for pack_path in pack_paths:
         try:
@@ -242,6 +251,8 @@ def pathway_packs(pack_paths: list[Path], report_path: Path | None = None) -> in
     if report_path:
         report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(report, encoding="utf-8")
+    if csv_path:
+        write_pathway_csv(packs, csv_path)
     return 0
 
 

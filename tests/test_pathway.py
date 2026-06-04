@@ -1,12 +1,15 @@
+import csv
+import tempfile
 import unittest
+from pathlib import Path
 
 from exam_materials_studio.models import pack_from_dict
-from exam_materials_studio.pathway import render_pathway_markdown
+from exam_materials_studio.pathway import render_pathway_markdown, write_pathway_csv
 
 
 class PathwayTests(unittest.TestCase):
-    def test_renders_ordered_course_pathway_with_unsequenced_resources(self):
-        packs = [
+    def setUp(self):
+        self.packs = [
             pack_from_dict(
                 {
                     "title": "Equivalent Fractions Practice",
@@ -65,7 +68,8 @@ class PathwayTests(unittest.TestCase):
             ),
         ]
 
-        report = render_pathway_markdown(packs)
+    def test_renders_ordered_course_pathway_with_unsequenced_resources(self):
+        report = render_pathway_markdown(self.packs)
 
         self.assertIn("# Learning Pathway", report)
         self.assertIn("- Resources: 3", report)
@@ -88,6 +92,36 @@ class PathwayTests(unittest.TestCase):
         )
         self.assertLess(report.index("Fraction Models Warm-up"), report.index("Equivalent Fractions Practice"))
         self.assertLess(report.index("Equivalent Fractions Practice"), report.index("Fraction Unit Reflection"))
+
+    def test_writes_ordered_pathway_csv_for_spreadsheet_planning(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "pathway.csv"
+
+            write_pathway_csv(self.packs, path)
+
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+
+        self.assertEqual([row["title"] for row in rows], ["Fraction Models Warm-up", "Equivalent Fractions Practice", "Fraction Unit Reflection"])
+        self.assertEqual(rows[0]["level"], "Primary")
+        self.assertEqual(rows[0]["subject"], "Mathematics")
+        self.assertEqual(rows[0]["course"], "Fractions")
+        self.assertEqual(rows[0]["unit"], "Equivalent fractions")
+        self.assertEqual(rows[0]["sequence_order"], "1")
+        self.assertEqual(rows[0]["resource_type"], "activity-sheet")
+        self.assertEqual(rows[0]["duration_minutes"], "15")
+        self.assertEqual(rows[0]["delivery_modes"], "classroom")
+        self.assertEqual(rows[0]["prerequisites"], "")
+        self.assertEqual(rows[0]["learning_objectives"], "Represent one half with simple diagrams")
+        self.assertEqual(rows[0]["resource_file"], "fraction-models-warm-up.md")
+        self.assertEqual(rows[0]["answer_key_file"], "fraction-models-warm-up-answer-key.md")
+        self.assertEqual(rows[1]["sequence_order"], "2")
+        self.assertEqual(rows[1]["delivery_modes"], "classroom;tutoring")
+        self.assertEqual(rows[1]["prerequisites"], "Recognise halves and quarters")
+        self.assertEqual(rows[1]["learning_objectives"], "Compare equivalent fraction models")
+        self.assertEqual(rows[2]["sequence_order"], "Unsequenced")
+        self.assertEqual(rows[2]["duration_minutes"], "10")
+        self.assertEqual(rows[2]["delivery_modes"], "homework")
 
 
 if __name__ == "__main__":
