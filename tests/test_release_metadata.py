@@ -51,6 +51,20 @@ class ReleaseMetadataTests(unittest.TestCase):
         ):
             self.assertIn(expected, section)
 
+    def test_v060_release_documents_rubric_metadata(self):
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        section = _changelog_section(changelog, "v0.6.0")
+
+        for expected in (
+            "rubric",
+            "answer keys",
+            "learner-facing resources",
+            "JSON catalogs",
+            "inventory",
+            "scaffold",
+        ):
+            self.assertIn(expected, section)
+
 
 def _project_version() -> str:
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
