@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .inventory import build_inventory, render_inventory_markdown, write_inventory_csv
 from .loader import ResourceLoadError, load_resource
+from .pathway import render_pathway_markdown
 from .presets import PresetError, get_preset, render_presets_markdown
 from .renderer import (
     render_answer_key_html,
@@ -57,6 +58,17 @@ def main(argv: list[str] | None = None) -> int:
         "--csv",
         type=Path,
         help="Optional path for writing a resource-level CSV inventory",
+    )
+
+    pathway_parser = subparsers.add_parser(
+        "pathway",
+        help="Render an ordered learning pathway from course, unit, and sequence metadata",
+    )
+    pathway_parser.add_argument("packs", nargs="+", type=Path)
+    pathway_parser.add_argument(
+        "--out",
+        type=Path,
+        help="Optional path for writing the Markdown pathway report",
     )
 
     presets_parser = subparsers.add_parser(
@@ -137,6 +149,8 @@ def main(argv: list[str] | None = None) -> int:
         return validate_packs(args.packs, args.report)
     if args.command == "inventory":
         return inventory_packs(args.packs, args.out, args.csv)
+    if args.command == "pathway":
+        return pathway_packs(args.packs, args.out)
     if args.command == "presets":
         return list_presets(args.out)
     if args.command == "scaffold":
@@ -211,6 +225,23 @@ def inventory_packs(
     if csv_path:
         csv_path.parent.mkdir(parents=True, exist_ok=True)
         write_inventory_csv(inventory, csv_path)
+    return 0
+
+
+def pathway_packs(pack_paths: list[Path], report_path: Path | None = None) -> int:
+    packs = []
+    for pack_path in pack_paths:
+        try:
+            packs.append(load_resource(pack_path))
+        except ResourceLoadError as error:
+            print(f"error: {pack_path}: {error}")
+            return 1
+
+    report = render_pathway_markdown(packs)
+    print(report, end="")
+    if report_path:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(report, encoding="utf-8")
     return 0
 
 

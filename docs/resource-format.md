@@ -262,3 +262,22 @@ filter coverage in a spreadsheet. It includes `unit`, `sequence_order`,
 so reviewers can spot resources that need more sequence coverage, delivery
 coverage, pacing detail, lesson-flow coverage, standards mapping, assessment
 intent coverage, marking support, assessment balance, or progression balance.
+
+## Pathway Reports
+
+Run:
+
+```bash
+exam-materials-studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md
+```
+
+The pathway report is designed for maintainers planning ordered education
+materials. It groups resources by level, subject, course, and unit, then sorts
+each unit by `sequence_order` and title. Resources without `sequence_order` are
+listed as `Unsequenced` so they remain visible during course-pack review.
+
+Each pathway row includes the resource type, duration, delivery modes,
+prerequisites, learning objectives, and links to the expected generated Markdown
+resource and answer-key filenames. This makes the same source files useful for
+reviewing tutoring pathways, lesson series, revision plans, study guides, and
+multi-unit course packs.

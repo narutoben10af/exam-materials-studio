@@ -95,6 +95,12 @@ or course-pack section they belong to and their order inside that path, helping
 the project grow toward deeper education materials such as ordered lesson
 series, tutoring pathways, study-guide progressions, and university course
 modules.
+The pathway command turns that metadata into a practical maintainer report:
+resources are grouped by level, subject, course, and unit, then ordered into a
+Markdown learning path with duration, delivery modes, prerequisites, objectives,
+and generated-output links. This makes the repository more useful for ongoing
+course planning and review, not just for producing individual worksheets or
+exam-practice packs.
 
 ## API Credits Use
 
