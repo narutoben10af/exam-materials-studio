@@ -71,6 +71,9 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         time_minutes = _cell(row, "time_minutes")
         if time_minutes:
             item["time_minutes"] = time_minutes
+        standards = _cell(row, "standards")
+        if standards:
+            item["standards"] = _split_semicolon_values(standards)
         difficulty = _cell(row, "difficulty")
         if difficulty:
             item["difficulty"] = difficulty

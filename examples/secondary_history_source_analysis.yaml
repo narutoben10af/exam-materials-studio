@@ -30,6 +30,8 @@ items:
   - type: concept-check
     phase: warm-up
     time_minutes: 8
+    standards:
+      - "Secondary history: source provenance"
     difficulty: foundation
     marks: 2
     command_word: identify
@@ -42,6 +44,9 @@ items:
   - type: analysis
     phase: guided-practice
     time_minutes: 12
+    standards:
+      - "Secondary history: source reliability"
+      - "Secondary history: evidence evaluation"
     difficulty: core
     marks: 3
     command_word: explain
@@ -55,6 +60,8 @@ items:
   - type: discussion
     phase: reflection
     time_minutes: 10
+    standards:
+      - "Secondary history: usefulness and limitation"
     difficulty: extension
     marks: 3
     command_word: evaluate

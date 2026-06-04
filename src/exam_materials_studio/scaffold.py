@@ -93,6 +93,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "type": "concept-check",
             "phase": "warm-up",
             "time_minutes": 5,
+            "standards": list(spec.curriculum_references),
             "difficulty": "foundation",
             "marks": 1,
             "command_word": "identify",
@@ -107,6 +108,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "type": "practice",
             "phase": "guided-practice",
             "time_minutes": 15,
+            "standards": list(spec.curriculum_references),
             "difficulty": "core",
             "marks": 2,
             "command_word": "apply",
@@ -122,6 +124,7 @@ def _starter_items(spec: ScaffoldSpec) -> list[dict[str, object]]:
             "type": "reflection",
             "phase": "reflection",
             "time_minutes": 10,
+            "standards": list(spec.curriculum_references),
             "difficulty": "extension",
             "marks": 3,
             "command_word": "evaluate",
@@ -158,6 +161,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "type",
         "phase",
         "time_minutes",
+        "standards",
         "difficulty",
         "marks",
         "command_word",
@@ -172,6 +176,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         for item in _starter_items(spec):
             row = dict(item)
             row["rubric"] = ";".join(str(point) for point in item["rubric"])
+            row["standards"] = ";".join(str(standard) for standard in item["standards"])
             writer.writerow(
                 {
                     "title": spec.title,

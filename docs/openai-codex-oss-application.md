@@ -83,6 +83,12 @@ Item-level time metadata adds practical pacing for each step of a resource.
 Learner outputs and answer keys can show how long a warm-up, guided-practice
 task, assessment item, or reflection should take, while catalogs and inventory
 reports roll up item-level planned minutes for maintainer review.
+Item-level standards metadata adds curriculum mapping at the activity/question
+level: resources can connect individual prompts to syllabus points, local
+standards, specification objectives, or university module outcomes. Catalog and
+inventory outputs surface standards coverage, which helps maintainers review
+whether a resource is useful for broader lesson planning and course coverage,
+not just exam-style generation.
 
 ## API Credits Use
 

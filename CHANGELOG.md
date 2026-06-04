@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added item-level `standards` metadata for mapping individual activities,
+  questions, prompts, and teacher notes to syllabus points, curriculum
+  standards, or course outcomes.
+- Added standards output to rendered resources, answer keys, JSON catalogs,
+  Markdown inventory summaries, CSV inventory exports, scaffolds, and bundled examples.
 - Added item-level `time_minutes` metadata for pacing individual lesson,
   tutoring, activity, worksheet, study-guide, and assessment steps.
 - Added item-time output to rendered resources, answer keys, JSON catalogs,

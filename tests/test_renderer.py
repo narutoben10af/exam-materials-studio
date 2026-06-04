@@ -46,6 +46,7 @@ class RendererTests(unittest.TestCase):
                         "command_word": "calculate",
                         "phase": "Guided Practice",
                         "time_minutes": 6,
+                        "standards": ["Cambridge 0478 4.1 Boolean logic"],
                         "rubric": [
                             "1 mark for the correct output.",
                             "1 mark for applying the AND rule.",
@@ -70,6 +71,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Phase:** guided-practice", markdown)
         self.assertIn("**Time:** 6 minutes", markdown)
+        self.assertIn("**Standards:** Cambridge 0478 4.1 Boolean logic", markdown)
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("**Marks:** 2", markdown)
         self.assertIn("**Command word:** calculate", markdown)
@@ -88,6 +90,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Difficulty:** core", markdown)
         self.assertIn("**Phase:** guided-practice", markdown)
         self.assertIn("**Time:** 6 minutes", markdown)
+        self.assertIn("**Standards:** Cambridge 0478 4.1 Boolean logic", markdown)
         self.assertIn("**Marks:** 2", markdown)
         self.assertIn("**Command word:** calculate", markdown)
         self.assertIn("**Rubric:**", markdown)
@@ -148,6 +151,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["rubric_point_count"], 2)
         self.assertEqual(resource["item_time_minutes"], 6)
         self.assertEqual(resource["phase_counts"], {"guided-practice": 1})
+        self.assertEqual(resource["standard_counts"], {"Cambridge 0478 4.1 Boolean logic": 1})
         self.assertEqual(resource["command_word_counts"], {"calculate": 1})
         self.assertEqual(resource["difficulty_counts"], {"core": 1})
         self.assertEqual(resource["files"]["markdown"], "boolean-logic.md")
@@ -200,6 +204,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("<strong>Estimated time:</strong> 40 minutes", html)
         self.assertIn("<strong>Phase:</strong> guided-practice", html)
         self.assertIn("<strong>Time:</strong> 6 minutes", html)
+        self.assertIn("<strong>Standards:</strong> Cambridge 0478 4.1 Boolean logic", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("<strong>Marks:</strong> 2", html)
         self.assertIn("<strong>Command word:</strong> calculate", html)
@@ -215,6 +220,7 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Answer 1", html)
         self.assertIn("<strong>Phase:</strong> guided-practice", html)
         self.assertIn("<strong>Time:</strong> 6 minutes", html)
+        self.assertIn("<strong>Standards:</strong> Cambridge 0478 4.1 Boolean logic", html)
         self.assertIn("<strong>Difficulty:</strong> core", html)
         self.assertIn("<strong>Marks:</strong> 2", html)
         self.assertIn("<strong>Command word:</strong> calculate", html)
