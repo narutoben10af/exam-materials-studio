@@ -193,6 +193,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "delivery_modes": list(pack.delivery_modes),
         "item_count": len(pack.items),
         "total_marks": _total_marks(pack),
+        "command_word_counts": _command_word_counts(pack),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
     }
@@ -419,6 +420,8 @@ def _item_metadata_markdown(item: PackItem) -> list[str]:
         lines.extend([f"**Difficulty:** {item.difficulty}", ""])
     if item.marks:
         lines.extend([f"**Marks:** {item.marks}", ""])
+    if item.command_word:
+        lines.extend([f"**Command word:** {item.command_word}", ""])
     return lines
 
 
@@ -428,6 +431,8 @@ def _item_metadata_html(item: PackItem) -> list[str]:
         lines.append(f"  <p><strong>Difficulty:</strong> {escape(item.difficulty)}</p>")
     if item.marks:
         lines.append(f"  <p><strong>Marks:</strong> {item.marks}</p>")
+    if item.command_word:
+        lines.append(f"  <p><strong>Command word:</strong> {escape(item.command_word)}</p>")
     return lines
 
 
@@ -437,6 +442,14 @@ def _difficulty_counts(pack: ExamPack) -> dict[str, int]:
         for difficulty in DIFFICULTY_ORDER
     }
     return {difficulty: count for difficulty, count in counts.items() if count}
+
+
+def _command_word_counts(pack: ExamPack) -> dict[str, int]:
+    command_words = sorted({item.command_word for item in pack.items if item.command_word})
+    return {
+        command_word: sum(1 for item in pack.items if item.command_word == command_word)
+        for command_word in command_words
+    }
 
 
 def _total_marks(pack: ExamPack) -> int:

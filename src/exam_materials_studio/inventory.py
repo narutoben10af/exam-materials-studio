@@ -56,6 +56,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         ("Exam Boards", _count_field(inventory.packs, "exam_board")),
         ("Courses", _count_field(inventory.packs, "course")),
         ("Delivery Modes", _count_list_field(inventory.packs, "delivery_modes")),
+        ("Command Words", _count_command_words(inventory.packs)),
     ]:
         lines.extend(_render_counter_section(title, counter))
 
@@ -110,6 +111,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "course",
                 "duration_minutes",
                 "total_marks",
+                "command_words",
                 "delivery_modes",
                 "item_count",
                 "foundation_items",
@@ -133,6 +135,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "course": pack.course,
                     "duration_minutes": pack.duration_minutes or "",
                     "total_marks": _total_marks(pack),
+                    "command_words": ";".join(_command_words_for_pack(pack)),
                     "delivery_modes": ";".join(pack.delivery_modes),
                     "item_count": len(pack.items),
                     "foundation_items": difficulty_counts["foundation"],
@@ -157,6 +160,15 @@ def _count_list_field(packs: tuple[ExamPack, ...], field_name: str) -> Counter[s
         entries = tuple(str(value).strip() for value in getattr(pack, field_name) if str(value).strip())
         values.extend(entries or ("Unspecified",))
     return Counter(values)
+
+
+def _count_command_words(packs: tuple[ExamPack, ...]) -> Counter[str]:
+    counter: Counter[str] = Counter()
+    for pack in packs:
+        counter.update(item.command_word for item in pack.items if item.command_word)
+    if not counter:
+        counter.update(["Unspecified"])
+    return counter
 
 
 def _render_counter_section(title: str, counter: Counter[str]) -> list[str]:
@@ -199,6 +211,10 @@ def _duration_label(pack: ExamPack) -> str:
 
 def _total_marks(pack: ExamPack) -> int:
     return sum(item.marks for item in pack.items)
+
+
+def _command_words_for_pack(pack: ExamPack) -> tuple[str, ...]:
+    return tuple(sorted({item.command_word for item in pack.items if item.command_word}))
 
 
 def _table_cell(value: str) -> str:

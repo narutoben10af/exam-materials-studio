@@ -26,7 +26,15 @@ class PackModelTests(unittest.TestCase):
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
                 "delivery_modes": ["classroom", "self-study"],
                 "skills": ["logic"],
-                "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core", "marks": "2"}],
+                "items": [
+                    {
+                        "prompt": "Question?",
+                        "answer": "Answer.",
+                        "difficulty": "Core",
+                        "marks": "2",
+                        "command_word": "Explain",
+                    }
+                ],
             }
         )
 
@@ -49,6 +57,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.curriculum_references, ("Cambridge 0478 4.1.1", "Cambridge 0478 4.1.2"))
         self.assertEqual(pack.items[0].difficulty, "core")
         self.assertEqual(pack.items[0].marks, 2)
+        self.assertEqual(pack.items[0].command_word, "explain")
         self.assertEqual(len(pack.items), 1)
 
     def test_invalid_duration_is_rejected(self):

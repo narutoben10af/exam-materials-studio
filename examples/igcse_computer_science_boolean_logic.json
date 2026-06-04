@@ -35,6 +35,7 @@
     {
       "difficulty": "foundation",
       "marks": 1,
+      "command_word": "complete",
       "prompt": "Complete the output for A AND B when A = 1 and B = 0.",
       "answer": "0",
       "explanation": "An AND gate only outputs 1 when both inputs are 1."
@@ -42,6 +43,7 @@
     {
       "difficulty": "core",
       "marks": 2,
+      "command_word": "write",
       "prompt": "Write the Boolean expression for a NOT gate applied to input X.",
       "answer": "NOT X",
       "explanation": "A NOT gate reverses a single input."
@@ -49,6 +51,7 @@
     {
       "difficulty": "extension",
       "marks": 3,
+      "command_word": "write",
       "prompt": "A system sounds an alarm when motion is detected OR the door is opened. Write this as a Boolean expression using M and D.",
       "answer": "M OR D",
       "explanation": "The alarm is active when either condition is true."

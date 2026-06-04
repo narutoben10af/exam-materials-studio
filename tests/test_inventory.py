@@ -30,6 +30,7 @@ class InventoryTests(unittest.TestCase):
                             "explanation": "Two dots are counted.",
                             "difficulty": "foundation",
                             "marks": 1,
+                            "command_word": "count",
                         },
                         {
                             "prompt": "Count three dots.",
@@ -37,6 +38,7 @@ class InventoryTests(unittest.TestCase):
                             "explanation": "Three dots are counted.",
                             "difficulty": "core",
                             "marks": 2,
+                            "command_word": "count",
                         },
                     ],
                 }
@@ -55,7 +57,15 @@ class InventoryTests(unittest.TestCase):
                     "delivery_modes": ["revision", "self-study"],
                     "summary": "Define key economics terms.",
                     "skills": ["definitions"],
-                    "items": [{"prompt": "Define scarcity.", "answer": "Limited resources.", "explanation": "Resources are limited.", "marks": 3}],
+                    "items": [
+                        {
+                            "prompt": "Define scarcity.",
+                            "answer": "Limited resources.",
+                            "explanation": "Resources are limited.",
+                            "marks": 3,
+                            "command_word": "define",
+                        }
+                    ],
                 }
             ),
         ]
@@ -78,6 +88,9 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("## Delivery Modes", report)
         self.assertIn("| classroom | 1 |", report)
         self.assertIn("| self-study | 1 |", report)
+        self.assertIn("## Command Words", report)
+        self.assertIn("| count | 2 |", report)
+        self.assertIn("| define | 1 |", report)
         self.assertIn("## Difficulty Coverage", report)
         self.assertIn("| foundation | 1 |", report)
         self.assertIn("| core | 1 |", report)
@@ -107,6 +120,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[0]["title"], "Preschool Counting")
             self.assertEqual(rows[0]["duration_minutes"], "15")
             self.assertEqual(rows[0]["total_marks"], "3")
+            self.assertEqual(rows[0]["command_words"], "count")
             self.assertEqual(rows[0]["delivery_modes"], "classroom;tutoring")
             self.assertEqual(rows[0]["foundation_items"], "1")
             self.assertEqual(rows[0]["core_items"], "1")
@@ -115,6 +129,7 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(rows[1]["course"], "0455 Economics")
             self.assertEqual(rows[1]["duration_minutes"], "20")
             self.assertEqual(rows[1]["total_marks"], "3")
+            self.assertEqual(rows[1]["command_words"], "define")
             self.assertEqual(rows[1]["delivery_modes"], "revision;self-study")
             self.assertEqual(rows[1]["unspecified_difficulty_items"], "1")
 

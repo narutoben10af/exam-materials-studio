@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added item-level `command_word` metadata for assessment intent such as define, explain, calculate, discuss, compare, identify, and evaluate.
+- Added command-word output to rendered resources, answer keys, JSON catalogs, inventory summaries, and CSV inventory exports.
+- Added default scaffold command words and command-word examples for JSON, YAML, and CSV resources.
 - Added item-level `marks` metadata for assessment weighting across exams, worksheets, quizzes, problem sets, and study checks.
 - Added marks output to rendered resources, answer keys, JSON catalogs, inventory summaries, and CSV inventory exports.
 - Added default scaffold marks and marks examples for JSON, YAML, and CSV resources.
