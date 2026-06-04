@@ -18,6 +18,7 @@ def render_pack_markdown(pack: ExamPack) -> str:
         pack.summary,
         "",
         *_prerequisites_markdown(pack),
+        *_materials_markdown(pack),
         *_curriculum_references_markdown(pack),
         *_learning_objectives_markdown(pack),
         "## Skills Practised",
@@ -53,6 +54,7 @@ def render_answer_key_markdown(pack: ExamPack) -> str:
         *[f"**{label}:** {value}" for label, value in _metadata_fields(pack)],
         "",
         *_prerequisites_markdown(pack),
+        *_materials_markdown(pack),
     ]
 
     for index, item in enumerate(pack.items, start=1):
@@ -85,6 +87,7 @@ def render_pack_html(pack: ExamPack) -> str:
             [
                 _resource_header(pack),
                 *_prerequisites_html(pack),
+                *_materials_html(pack),
                 *_curriculum_references_html(pack),
                 *_learning_objectives_html(pack),
                 "<h2>Skills Practised</h2>",
@@ -107,7 +110,7 @@ def render_answer_key_html(pack: ExamPack) -> str:
 
     return _html_page(
         title=f"{pack.title} Answer Key",
-        body="\n".join([_resource_header(pack), *_prerequisites_html(pack), "\n".join(answer_cards)]),
+        body="\n".join([_resource_header(pack), *_prerequisites_html(pack), *_materials_html(pack), "\n".join(answer_cards)]),
     )
 
 
@@ -135,6 +138,8 @@ def render_catalog_markdown(packs: list[ExamPack]) -> str:
             lines.append(f"**Estimated time:** {pack.duration_minutes} minutes")
         if pack.prerequisites:
             lines.append(f"**Prerequisites:** {', '.join(pack.prerequisites)}")
+        if pack.materials:
+            lines.append(f"**Materials:** {', '.join(pack.materials)}")
         lines.extend(
             [
                 f"**Skills:** {skills}",
@@ -182,6 +187,7 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "curriculum_references": list(pack.curriculum_references),
         "duration_minutes": pack.duration_minutes,
         "prerequisites": list(pack.prerequisites),
+        "materials": list(pack.materials),
         "item_count": len(pack.items),
         "difficulty_counts": _difficulty_counts(pack),
         "files": files,
@@ -242,6 +248,11 @@ def render_catalog_html(packs: list[ExamPack], formats: set[str] | None = None) 
                     *(
                         [f"  <p><strong>Prerequisites:</strong> {escape(', '.join(pack.prerequisites))}</p>"]
                         if pack.prerequisites
+                        else []
+                    ),
+                    *(
+                        [f"  <p><strong>Materials:</strong> {escape(', '.join(pack.materials))}</p>"]
+                        if pack.materials
                         else []
                     ),
                     f"  <p><strong>Skills:</strong> {escape(skills)}</p>",
@@ -310,6 +321,17 @@ def _prerequisites_markdown(pack: ExamPack) -> list[str]:
     ]
 
 
+def _materials_markdown(pack: ExamPack) -> list[str]:
+    if not pack.materials:
+        return []
+    return [
+        "## Materials",
+        "",
+        *[f"- {material}" for material in pack.materials],
+        "",
+    ]
+
+
 def _curriculum_references_markdown(pack: ExamPack) -> list[str]:
     if not pack.curriculum_references:
         return []
@@ -339,6 +361,17 @@ def _prerequisites_html(pack: ExamPack) -> list[str]:
         "<h2>Prerequisites</h2>",
         "<ul>",
         *[f"  <li>{escape(prerequisite)}</li>" for prerequisite in pack.prerequisites],
+        "</ul>",
+    ]
+
+
+def _materials_html(pack: ExamPack) -> list[str]:
+    if not pack.materials:
+        return []
+    return [
+        "<h2>Materials</h2>",
+        "<ul>",
+        *[f"  <li>{escape(material)}</li>" for material in pack.materials],
         "</ul>",
     ]
 

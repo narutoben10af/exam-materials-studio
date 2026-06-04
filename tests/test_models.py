@@ -23,6 +23,7 @@ class PackModelTests(unittest.TestCase):
                 "course": "0478 Computer Science",
                 "duration_minutes": "45",
                 "prerequisites": ["Binary inputs", "Truth-table basics"],
+                "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
                 "skills": ["logic"],
                 "items": [{"prompt": "Question?", "answer": "Answer.", "difficulty": "Core"}],
             }
@@ -35,6 +36,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.course, "0478 Computer Science")
         self.assertEqual(pack.duration_minutes, 45)
         self.assertEqual(pack.prerequisites, ("Binary inputs", "Truth-table basics"))
+        self.assertEqual(pack.materials, ("Mini whiteboards", "Logic-gate reference sheet"))
         self.assertEqual(
             pack.learning_objectives,
             (
@@ -86,6 +88,21 @@ class PackModelTests(unittest.TestCase):
                     "summary": "A sample pack.",
                     "skills": ["logic"],
                     "prerequisites": "truth tables",
+                    "items": [{"prompt": "Question?", "answer": "Answer."}],
+                }
+            )
+
+    def test_materials_must_be_a_list_when_provided(self):
+        with self.assertRaisesRegex(PackValidationError, "materials must be a list"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Science",
+                    "level": "Primary",
+                    "summary": "A sample pack.",
+                    "skills": ["materials"],
+                    "materials": "scissors",
                     "items": [{"prompt": "Question?", "answer": "Answer."}],
                 }
             )

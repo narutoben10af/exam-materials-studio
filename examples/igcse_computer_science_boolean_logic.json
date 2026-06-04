@@ -12,6 +12,10 @@
     "Recognise binary values 0 and 1.",
     "Read simple two-column truth tables."
   ],
+  "materials": [
+    "Printed worksheet or shared digital copy.",
+    "Logic-gate reference sheet."
+  ],
   "summary": "Targeted practice for logic gates, Boolean expressions, and truth tables.",
   "learning_objectives": [
     "Complete truth-table outputs for common logic gates.",

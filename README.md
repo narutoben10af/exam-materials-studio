@@ -20,6 +20,8 @@ payment workflows, or commercial customer data.
   curriculum references.
 - Tracks prerequisites so resources can fit into lesson sequences, tutoring
   pathways, and revision plans.
+- Tracks materials so teachers can prepare supplies, devices, files, or tools
+  before running a resource.
 - Tracks estimated duration so resources can support lesson, tutoring, and
   independent-study planning.
 - Tracks optional item difficulty metadata for foundation, core, and extension
@@ -106,6 +108,7 @@ exam-materials-studio scaffold \
   --course Fractions \
   --duration-minutes 30 \
   --prerequisites "Count equal parts in a shape" \
+  --materials "Fraction strips;Counters" \
   --learning-objectives "Represent equivalent fractions with simple models" \
   --curriculum-references "Local Grade 4 Fractions" \
   --skills "fractions;equivalent fractions" \
@@ -147,10 +150,10 @@ are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
 `exam_board`, `course`, `duration_minutes`, `prerequisites`,
-`learning_objectives`, and `curriculum_references` fields are optional, but
-useful for catalogs and teacher-facing resources that span different levels and
-curricula. Each item can also include optional `difficulty` metadata using
-`foundation`, `core`, or `extension`.
+`materials`, `learning_objectives`, and `curriculum_references` fields are
+optional, but useful for catalogs and teacher-facing resources that span
+different levels and curricula. Each item can also include optional
+`difficulty` metadata using `foundation`, `core`, or `extension`.
 
 ```json
 {
@@ -166,6 +169,10 @@ curricula. Each item can also include optional `difficulty` metadata using
   "prerequisites": [
     "Recognise binary values 0 and 1.",
     "Read simple two-column truth tables."
+  ],
+  "materials": [
+    "Printed worksheet or shared digital copy.",
+    "Logic-gate reference sheet."
   ],
   "summary": "Targeted practice for Boolean logic gates and truth tables.",
   "learning_objectives": [
@@ -190,12 +197,12 @@ curricula. Each item can also include optional `difficulty` metadata using
 
 CSV resources use one row per activity, question, or teacher note. Resource
 metadata is read from the first row. `skills`, `prerequisites`,
-`learning_objectives`, and `curriculum_references` are separated with
+`materials`, `learning_objectives`, and `curriculum_references` are separated with
 semicolons:
 
 ```csv
-title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
-Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
+title,slug,subject,level,resource_type,education_system,exam_board,course,duration_minutes,prerequisites,materials,summary,skills,learning_objectives,curriculum_references,type,difficulty,prompt,answer,explanation
+Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,25,Name common classroom objects,Wood sample;Metal spoon,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
 YAML resources use the same fields as JSON:
@@ -212,6 +219,9 @@ duration_minutes: 30
 prerequisites:
   - Identify the author and date of a historical source.
   - Distinguish fact from opinion in a short text.
+materials:
+  - Printed or projected historical source extract.
+  - Highlighters or annotation tools.
 summary: A short resource for evaluating historical source reliability and usefulness.
 skills:
   - provenance

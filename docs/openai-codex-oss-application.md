@@ -51,6 +51,9 @@ reports.
 Prerequisite metadata helps resources become sequenced education materials
 rather than isolated packs, since teachers can show expected prior knowledge for
 lesson pathways, tutoring courses, revision plans, and university study guides.
+Materials metadata adds practical classroom preparation support, so activity
+sheets, lessons, labs, tutoring sessions, and study guides can state the
+supplies, devices, files, or tools needed before delivery.
 
 ## API Credits Use
 

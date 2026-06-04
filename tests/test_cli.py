@@ -324,6 +324,8 @@ items:
                         "45",
                         "--prerequisites",
                         "Recognise equal parts;Count quarters",
+                        "--materials",
+                        "Fraction strips;Counters",
                         "--format",
                         "yaml",
                         "--out",
@@ -337,6 +339,8 @@ items:
             self.assertIn("duration_minutes: 45", output)
             self.assertIn("Recognise equal parts", output)
             self.assertIn("Count quarters", output)
+            self.assertIn("Fraction strips", output)
+            self.assertIn("Counters", output)
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

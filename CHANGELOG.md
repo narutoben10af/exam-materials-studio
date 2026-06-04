@@ -9,6 +9,9 @@
 - Added `prerequisites` metadata for sequencing resources into lessons, courses, and revision pathways.
 - Added prerequisite output to rendered resources, answer keys, Markdown/HTML catalogs, and JSON catalogs.
 - Added `--prerequisites` scaffold support and prerequisite examples for JSON, YAML, and CSV resources.
+- Added `materials` metadata for classroom supplies, devices, files, and preparation needs.
+- Added materials output to rendered resources, answer keys, Markdown/HTML catalogs, and JSON catalogs.
+- Added `--materials` scaffold support and materials examples for JSON, YAML, and CSV resources.
 
 ## v0.3.0
 
