@@ -64,6 +64,10 @@ Item-level marks metadata adds assessment planning support across exam papers,
 worksheets, quizzes, problem sets, and study checks. Generated resources and
 answer keys can show item weights, while catalogs and inventory reports roll up
 total marks so maintainers can review scoring balance across levels and formats.
+Item-level command-word metadata adds exam-board and assessment-intent support:
+resources can show whether an item asks learners to define, explain, calculate,
+discuss, compare, identify, or evaluate. Inventory and catalog outputs can then
+surface command-word coverage across subjects, levels, and formats.
 
 ## API Credits Use
 

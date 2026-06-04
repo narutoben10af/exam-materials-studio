@@ -346,6 +346,7 @@ items:
             self.assertIn("classroom", output)
             self.assertIn("tutoring", output)
             self.assertIn("marks: 1", output)
+            self.assertIn("command_word: identify", output)
 
     def test_scaffold_pack_requires_level_without_preset(self):
         args = type(

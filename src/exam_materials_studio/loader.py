@@ -71,6 +71,9 @@ def _resource_dict_from_csv(path: Path) -> dict[str, Any]:
         marks = _cell(row, "marks")
         if marks:
             item["marks"] = marks
+        command_word = _cell(row, "command_word")
+        if command_word:
+            item["command_word"] = command_word
         items.append(item)
 
     return {

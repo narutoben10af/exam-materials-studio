@@ -12,6 +12,7 @@ class PackItem:
     item_type: str = "question"
     difficulty: str = ""
     marks: int = 0
+    command_word: str = ""
 
 
 @dataclass(frozen=True)
@@ -76,6 +77,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         item_type = str(raw_item.get("type", "question")).strip() or "question"
         difficulty = _optional_difficulty(raw_item.get("difficulty", ""), index)
         marks = _optional_item_marks(raw_item.get("marks", None), index)
+        command_word = str(raw_item.get("command_word", "")).strip().lower()
         items.append(
             PackItem(
                 prompt=prompt,
@@ -84,6 +86,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
                 item_type=item_type,
                 difficulty=difficulty,
                 marks=marks,
+                command_word=command_word,
             )
         )
 
