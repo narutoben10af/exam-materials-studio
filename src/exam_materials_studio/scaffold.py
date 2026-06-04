@@ -20,6 +20,7 @@ class ScaffoldSpec:
     course: str
     duration_minutes: int
     prerequisites: tuple[str, ...]
+    materials: tuple[str, ...]
     summary: str
     learning_objectives: tuple[str, ...]
     curriculum_references: tuple[str, ...]
@@ -75,6 +76,7 @@ def _resource_dict(spec: ScaffoldSpec) -> dict[str, object]:
         "course": spec.course,
         "duration_minutes": spec.duration_minutes,
         "prerequisites": list(spec.prerequisites),
+        "materials": list(spec.materials),
         "summary": spec.summary,
         "learning_objectives": list(spec.learning_objectives),
         "curriculum_references": list(spec.curriculum_references),
@@ -121,6 +123,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "course",
         "duration_minutes",
         "prerequisites",
+        "materials",
         "summary",
         "learning_objectives",
         "curriculum_references",
@@ -147,6 +150,7 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
                     "course": spec.course,
                     "duration_minutes": spec.duration_minutes,
                     "prerequisites": ";".join(spec.prerequisites),
+                    "materials": ";".join(spec.materials),
                     "summary": spec.summary,
                     "learning_objectives": ";".join(spec.learning_objectives),
                     "curriculum_references": ";".join(spec.curriculum_references),
