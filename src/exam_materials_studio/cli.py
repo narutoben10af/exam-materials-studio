@@ -78,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
     scaffold_parser.add_argument("--subject", required=True)
     scaffold_parser.add_argument("--level")
     scaffold_parser.add_argument("--out", required=True, type=Path)
-    scaffold_parser.add_argument("--format", choices=["json", "csv"], default="json")
+    scaffold_parser.add_argument("--format", choices=["json", "yaml", "csv"], default="json")
     scaffold_parser.add_argument("--slug")
     scaffold_parser.add_argument("--resource-type")
     scaffold_parser.add_argument("--education-system")

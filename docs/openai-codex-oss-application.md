@@ -28,7 +28,7 @@ inventory command gives maintainers a way to
 track coverage across subjects, education systems, exam boards, courses, levels,
 resource types, and item difficulty progression as the project grows. A scaffold
 command helps contributors
-start new JSON or CSV resources with the required metadata and starter items,
+start new JSON, YAML, or CSV resources with the required metadata and starter items,
 and built-in scaffold presets now make common preschool, primary, Cambridge
 IGCSE, Cambridge A Level, AP, IB Diploma, and university resources easier to
 start consistently. The format also supports learning objectives so resources

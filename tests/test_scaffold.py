@@ -57,6 +57,23 @@ class ScaffoldTests(unittest.TestCase):
             self.assertEqual(pack.items[0].item_type, "concept-check")
             self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
 
+    def test_scaffold_yaml_creates_valid_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "resource.yaml"
+
+            scaffold_resource(self.spec, path, "yaml")
+            pack = load_resource(path)
+            result = validate_resource(path)
+
+            self.assertIn("title: Primary Fractions Starter", path.read_text(encoding="utf-8"))
+            self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
+            self.assertEqual(pack.learning_objectives, ("Represent equivalent fractions with simple models.",))
+            self.assertEqual(pack.curriculum_references, ("Local primary mathematics: fractions",))
+            self.assertEqual(pack.items[0].item_type, "concept-check")
+            self.assertEqual([item.difficulty for item in pack.items], ["foundation", "core", "extension"])
+            self.assertTrue(result.ok)
+            self.assertEqual(result.warnings, ())
+
     def test_scaffold_refuses_to_overwrite_without_force(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "resource.json"
