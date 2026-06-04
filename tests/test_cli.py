@@ -347,6 +347,7 @@ items:
             self.assertIn("tutoring", output)
             self.assertIn("marks: 1", output)
             self.assertIn("command_word: identify", output)
+            self.assertIn("phase: warm-up", output)
             self.assertIn("rubric:", output)
             self.assertIn("Award credit for a clear, correct response.", output)
 

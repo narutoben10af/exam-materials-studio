@@ -10,6 +10,7 @@ class PackItem:
     answer: str
     explanation: str = ""
     item_type: str = "question"
+    phase: str = ""
     difficulty: str = ""
     marks: int = 0
     command_word: str = ""
@@ -76,6 +77,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
         answer = _required_text(raw_item, "answer", f"item {index}")
         explanation = str(raw_item.get("explanation", "")).strip()
         item_type = str(raw_item.get("type", "question")).strip() or "question"
+        phase = _optional_item_label(raw_item.get("phase", ""), "phase", index)
         difficulty = _optional_difficulty(raw_item.get("difficulty", ""), index)
         marks = _optional_item_marks(raw_item.get("marks", None), index)
         command_word = str(raw_item.get("command_word", "")).strip().lower()
@@ -86,6 +88,7 @@ def pack_from_dict(data: dict[str, Any]) -> ExamPack:
                 answer=answer,
                 explanation=explanation,
                 item_type=item_type,
+                phase=phase,
                 difficulty=difficulty,
                 marks=marks,
                 command_word=command_word,
@@ -143,6 +146,14 @@ def _optional_item_text_list(value: Any, field: str, index: int) -> tuple[str, .
     if not isinstance(value, list):
         raise PackValidationError(f"item {index} {field} must be a list when provided")
     return tuple(str(item).strip() for item in value if str(item).strip())
+
+
+def _optional_item_label(value: Any, field: str, index: int) -> str:
+    if value in (None, ""):
+        return ""
+    if not isinstance(value, str):
+        raise PackValidationError(f"item {index} {field} must be text when provided")
+    return "-".join(value.strip().lower().split())
 
 
 def _optional_difficulty(value: Any, index: int) -> str:

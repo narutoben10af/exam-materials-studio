@@ -62,6 +62,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         ("Courses", _count_field(inventory.packs, "course")),
         ("Delivery Modes", _count_list_field(inventory.packs, "delivery_modes")),
         ("Command Words", _count_command_words(inventory.packs)),
+        ("Learning Phases", _count_phases(inventory.packs)),
     ]:
         lines.extend(_render_counter_section(title, counter))
 
@@ -71,8 +72,8 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         [
             "## Resources",
             "",
-            "| Title | Level | Subject | Type | Course | Duration | Marks | Rubric Points | Items | Foundation | Core | Extension | Unspecified Difficulty |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Title | Level | Subject | Type | Course | Duration | Marks | Rubric Points | Phases | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
@@ -89,6 +90,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     _table_cell(_duration_label(pack)),
                     str(_total_marks(pack)),
                     str(_rubric_point_count(pack)),
+                    _table_cell(";".join(_phases_for_pack(pack)) or "Unspecified"),
                     str(len(pack.items)),
                     str(difficulty_counts["foundation"]),
                     str(difficulty_counts["core"]),
@@ -118,6 +120,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "duration_minutes",
                 "total_marks",
                 "rubric_points",
+                "phases",
                 "command_words",
                 "delivery_modes",
                 "item_count",
@@ -143,6 +146,7 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "duration_minutes": pack.duration_minutes or "",
                     "total_marks": _total_marks(pack),
                     "rubric_points": _rubric_point_count(pack),
+                    "phases": ";".join(_phases_for_pack(pack)),
                     "command_words": ";".join(_command_words_for_pack(pack)),
                     "delivery_modes": ";".join(pack.delivery_modes),
                     "item_count": len(pack.items),
@@ -174,6 +178,15 @@ def _count_command_words(packs: tuple[ExamPack, ...]) -> Counter[str]:
     counter: Counter[str] = Counter()
     for pack in packs:
         counter.update(item.command_word for item in pack.items if item.command_word)
+    if not counter:
+        counter.update(["Unspecified"])
+    return counter
+
+
+def _count_phases(packs: tuple[ExamPack, ...]) -> Counter[str]:
+    counter: Counter[str] = Counter()
+    for pack in packs:
+        counter.update(item.phase for item in pack.items if item.phase)
     if not counter:
         counter.update(["Unspecified"])
     return counter
@@ -227,6 +240,10 @@ def _rubric_point_count(pack: ExamPack) -> int:
 
 def _command_words_for_pack(pack: ExamPack) -> tuple[str, ...]:
     return tuple(sorted({item.command_word for item in pack.items if item.command_word}))
+
+
+def _phases_for_pack(pack: ExamPack) -> tuple[str, ...]:
+    return tuple(sorted({item.phase for item in pack.items if item.phase}))
 
 
 def _table_cell(value: str) -> str:

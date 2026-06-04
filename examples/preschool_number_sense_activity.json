@@ -31,6 +31,7 @@
   "items": [
     {
       "type": "activity",
+      "phase": "warm-up",
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "draw",
@@ -43,6 +44,7 @@
     },
     {
       "type": "activity",
+      "phase": "guided-practice",
       "difficulty": "core",
       "marks": 1,
       "command_word": "circle",
@@ -55,6 +57,7 @@
     },
     {
       "type": "teacher-note",
+      "phase": "observation",
       "difficulty": "extension",
       "marks": 1,
       "command_word": "count",

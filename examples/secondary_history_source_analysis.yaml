@@ -28,6 +28,7 @@ skills:
   - usefulness
 items:
   - type: concept-check
+    phase: warm-up
     difficulty: foundation
     marks: 2
     command_word: identify
@@ -38,6 +39,7 @@ items:
       - 1 mark for identifying the author.
       - 1 mark for identifying the date or origin.
   - type: analysis
+    phase: guided-practice
     difficulty: core
     marks: 3
     command_word: explain
@@ -49,6 +51,7 @@ items:
       - 1 mark for explaining bias or exaggeration.
       - 1 mark for linking purpose to reliability.
   - type: discussion
+    phase: reflection
     difficulty: extension
     marks: 3
     command_word: evaluate

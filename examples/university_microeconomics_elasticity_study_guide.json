@@ -33,6 +33,7 @@
   "items": [
     {
       "type": "concept-check",
+      "phase": "concept-check",
       "difficulty": "foundation",
       "marks": 2,
       "command_word": "explain",
@@ -46,6 +47,7 @@
     },
     {
       "type": "calculation",
+      "phase": "guided-practice",
       "difficulty": "core",
       "marks": 4,
       "command_word": "calculate",
@@ -61,6 +63,7 @@
     },
     {
       "type": "discussion",
+      "phase": "seminar-discussion",
       "difficulty": "extension",
       "marks": 3,
       "command_word": "discuss",

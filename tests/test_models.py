@@ -33,6 +33,7 @@ class PackModelTests(unittest.TestCase):
                         "difficulty": "Core",
                         "marks": "2",
                         "command_word": "Explain",
+                        "phase": "Guided Practice",
                         "rubric": [
                             "1 mark for identifying the output.",
                             "1 mark for explaining the gate rule.",
@@ -63,6 +64,7 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.items[0].difficulty, "core")
         self.assertEqual(pack.items[0].marks, 2)
         self.assertEqual(pack.items[0].command_word, "explain")
+        self.assertEqual(pack.items[0].phase, "guided-practice")
         self.assertEqual(
             pack.items[0].rubric,
             ("1 mark for identifying the output.", "1 mark for explaining the gate rule."),
@@ -184,6 +186,20 @@ class PackModelTests(unittest.TestCase):
                     "summary": "A sample pack.",
                     "skills": ["logic"],
                     "items": [{"prompt": "Question?", "answer": "Answer.", "rubric": "two marks"}],
+                }
+            )
+
+    def test_invalid_item_phase_is_rejected(self):
+        with self.assertRaisesRegex(PackValidationError, "item 1 phase must be text"):
+            pack_from_dict(
+                {
+                    "title": "Sample",
+                    "slug": "sample-pack",
+                    "subject": "Computer Science",
+                    "level": "IGCSE",
+                    "summary": "A sample pack.",
+                    "skills": ["logic"],
+                    "items": [{"prompt": "Question?", "answer": "Answer.", "phase": ["warm-up"]}],
                 }
             )
 

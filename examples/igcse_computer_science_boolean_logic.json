@@ -33,6 +33,7 @@
   "skills": ["logic gates", "truth tables", "Boolean expressions"],
   "items": [
     {
+      "phase": "warm-up",
       "difficulty": "foundation",
       "marks": 1,
       "command_word": "complete",
@@ -44,6 +45,7 @@
       ]
     },
     {
+      "phase": "guided-practice",
       "difficulty": "core",
       "marks": 2,
       "command_word": "write",
@@ -56,6 +58,7 @@
       ]
     },
     {
+      "phase": "application",
       "difficulty": "extension",
       "marks": 3,
       "command_word": "write",
