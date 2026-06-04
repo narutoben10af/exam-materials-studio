@@ -20,6 +20,9 @@ database.
 - `education_system`: For example `Cambridge International`, `IB`, `AP`, `US Common Core`, or `General early years`.
 - `exam_board`: For exam-board-specific resources, such as `Cambridge`, `Pearson Edexcel`, or `AQA`.
 - `course`: Course or specification identifier, such as `0478 Computer Science`.
+- `unit`: Lesson, module, topic, course-pack section, or study-guide unit.
+- `sequence_order`: Positive integer for placing the resource inside a unit,
+  module, course pack, tutoring pathway, or study-guide progression.
 - `duration_minutes`: Estimated learner or classroom time as a positive integer.
 - `prerequisites`: Prior knowledge, skills, or lessons expected before starting the resource.
 - `materials`: Supplies, devices, files, or tools needed to run the resource.
@@ -29,7 +32,7 @@ database.
 - `curriculum_references`: Syllabus sections, standards, specification points, or module outcomes.
 
 These fields make the catalog useful when the repository grows across subjects,
-education systems, age ranges, and course types.
+education systems, age ranges, course types, and ordered learning pathways.
 
 ## Item Fields
 
@@ -79,6 +82,8 @@ Supported columns:
 - `education_system`
 - `exam_board`
 - `course`
+- `unit`
+- `sequence_order`
 - `duration_minutes`
 - `prerequisites`
 - `materials`
@@ -122,6 +127,8 @@ exam-materials-studio scaffold \
   --resource-type worksheet \
   --education-system "General primary" \
   --course Fractions \
+  --unit "Equivalent fractions" \
+  --sequence-order 1 \
   --duration-minutes 30 \
   --prerequisites "Count equal parts in a shape" \
   --materials "Fraction strips;Counters" \
@@ -143,6 +150,8 @@ exam-materials-studio scaffold \
   --title "IB Biology Cell Respiration Study Guide" \
   --subject Biology \
   --course "Biology HL" \
+  --unit "Cell respiration" \
+  --sequence-order 2 \
   --learning-objectives "Explain how ATP is produced during respiration" \
   --curriculum-references "IB Biology: cell respiration" \
   --skills "cell respiration;ATP" \
@@ -156,8 +165,9 @@ school needs a more specific level, board, system, or resource type.
 
 The scaffold command writes a valid three-item starter resource with placeholder
 prompts, answers, explanations, prerequisites, materials, estimated duration,
-delivery modes, starter difficulty progression labels, 1/2/3 mark weights, and
-starter command words, lesson-flow phases, and rubric bullets.
+delivery modes, unit and sequence metadata, starter difficulty progression
+labels, 1/2/3 mark weights, and starter command words, lesson-flow phases, and
+rubric bullets.
 Starter items also include item-level pacing with `time_minutes` and standards
 mapping from the scaffold curriculum references.
 Use `--format yaml` for hand-edited resources or `--format csv` for
@@ -176,14 +186,14 @@ By default the CLI writes:
 - Static `index.json` catalog for search, hosting, and integration workflows.
 - Static `index.html` catalog.
 
-The JSON catalog includes per-resource `duration_minutes`, `prerequisites`,
-`materials`, `delivery_modes`, `total_marks`, `command_word_counts`,
+The JSON catalog includes per-resource `unit`, `sequence_order`,
+`duration_minutes`, `prerequisites`, `materials`, `delivery_modes`, `total_marks`, `command_word_counts`,
 `phase_counts`, `standard_counts`, `item_time_minutes`, `rubric_point_count`, and
 `difficulty_counts` so maintainers can quickly see entry requirements,
-preparation needs, delivery settings, planned time, item pacing, assessment
-weight, lesson-flow coverage, standards coverage, marking-criteria depth,
-assessment intent, and whether a resource leans too heavily toward foundation,
-core, or extension work.
+preparation needs, course-pack placement, delivery settings, planned time, item
+pacing, assessment weight, lesson-flow coverage, standards coverage,
+marking-criteria depth, assessment intent, and whether a resource leans too
+heavily toward foundation, core, or extension work.
 
 Use `--formats markdown` or `--formats html` to limit resource and answer-key
 formats. The Markdown catalog is written when Markdown output is requested; the
@@ -233,6 +243,7 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - education system
 - exam board
 - course
+- unit
 - delivery mode
 - command word
 - learning phase
@@ -244,10 +255,10 @@ curriculum coverage. It reports total resources, total items, and counts by:
 - difficulty coverage
 
 The CSV inventory writes one row per resource so maintainers can sort and
-filter coverage in a spreadsheet. It includes `delivery_modes`,
-`command_words`, `phases`, `standards`, `duration_minutes`, `item_time_minutes`, `total_marks`,
-`foundation_items`, `core_items`, `extension_items`, `rubric_points`, and
-`unspecified_difficulty_items` columns so reviewers can spot resources that need
-more delivery coverage, pacing detail, lesson-flow coverage, standards mapping,
-assessment intent coverage, marking support, assessment balance, or progression
-balance.
+filter coverage in a spreadsheet. It includes `unit`, `sequence_order`,
+`delivery_modes`, `command_words`, `phases`, `standards`, `duration_minutes`,
+`item_time_minutes`, `total_marks`, `foundation_items`, `core_items`,
+`extension_items`, `rubric_points`, and `unspecified_difficulty_items` columns
+so reviewers can spot resources that need more sequence coverage, delivery
+coverage, pacing detail, lesson-flow coverage, standards mapping, assessment
+intent coverage, marking support, assessment balance, or progression balance.

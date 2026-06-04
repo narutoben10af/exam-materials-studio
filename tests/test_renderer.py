@@ -31,6 +31,8 @@ class RendererTests(unittest.TestCase):
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
                 "course": "0478 Computer Science",
+                "unit": "Logic and processors",
+                "sequence_order": 2,
                 "duration_minutes": 40,
                 "prerequisites": ["Binary inputs", "Truth-table columns"],
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
@@ -68,6 +70,8 @@ class RendererTests(unittest.TestCase):
         self.assertIn("## Materials", markdown)
         self.assertIn("- Mini whiteboards", markdown)
         self.assertIn("**Delivery modes:** classroom, self-study", markdown)
+        self.assertIn("**Unit:** Logic and processors", markdown)
+        self.assertIn("**Sequence:** 2", markdown)
         self.assertIn("**Estimated time:** 40 minutes", markdown)
         self.assertIn("**Phase:** guided-practice", markdown)
         self.assertIn("**Time:** 6 minutes", markdown)
@@ -84,6 +88,8 @@ class RendererTests(unittest.TestCase):
         markdown = render_answer_key_markdown(self.pack)
 
         self.assertIn("**Estimated time:** 40 minutes", markdown)
+        self.assertIn("**Unit:** Logic and processors", markdown)
+        self.assertIn("**Sequence:** 2", markdown)
         self.assertIn("**Delivery modes:** classroom, self-study", markdown)
         self.assertIn("## Prerequisites", markdown)
         self.assertIn("## Materials", markdown)
@@ -118,6 +124,8 @@ class RendererTests(unittest.TestCase):
         self.assertIn("**Subject:** Computer Science", markdown)
         self.assertIn("**Level:** IGCSE", markdown)
         self.assertIn("**Track:** Cambridge International / Cambridge / 0478 Computer Science", markdown)
+        self.assertIn("**Unit:** Logic and processors", markdown)
+        self.assertIn("**Sequence:** 2", markdown)
         self.assertIn("**Prerequisites:** Binary inputs, Truth-table columns", markdown)
         self.assertIn("**Materials:** Mini whiteboards, Logic-gate reference sheet", markdown)
         self.assertIn("**Delivery modes:** classroom, self-study", markdown)
@@ -139,6 +147,8 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(resource["education_system"], "Cambridge International")
         self.assertEqual(resource["exam_board"], "Cambridge")
         self.assertEqual(resource["course"], "0478 Computer Science")
+        self.assertEqual(resource["unit"], "Logic and processors")
+        self.assertEqual(resource["sequence_order"], 2)
         self.assertEqual(resource["duration_minutes"], 40)
         self.assertEqual(resource["prerequisites"], ["Binary inputs", "Truth-table columns"])
         self.assertEqual(resource["materials"], ["Mini whiteboards", "Logic-gate reference sheet"])
@@ -201,6 +211,8 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Materials", html)
         self.assertIn("Mini whiteboards", html)
         self.assertIn("<strong>Delivery modes:</strong> classroom, self-study", html)
+        self.assertIn("<strong>Unit:</strong> Logic and processors", html)
+        self.assertIn("<strong>Sequence:</strong> 2", html)
         self.assertIn("<strong>Estimated time:</strong> 40 minutes", html)
         self.assertIn("<strong>Phase:</strong> guided-practice", html)
         self.assertIn("<strong>Time:</strong> 6 minutes", html)

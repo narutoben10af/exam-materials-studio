@@ -21,6 +21,8 @@ class PackModelTests(unittest.TestCase):
                 "education_system": "Cambridge International",
                 "exam_board": "Cambridge",
                 "course": "0478 Computer Science",
+                "unit": "Logic and processors",
+                "sequence_order": "2",
                 "duration_minutes": "45",
                 "prerequisites": ["Binary inputs", "Truth-table basics"],
                 "materials": ["Mini whiteboards", "Logic-gate reference sheet"],
@@ -55,6 +57,8 @@ class PackModelTests(unittest.TestCase):
         self.assertEqual(pack.education_system, "Cambridge International")
         self.assertEqual(pack.exam_board, "Cambridge")
         self.assertEqual(pack.course, "0478 Computer Science")
+        self.assertEqual(pack.unit, "Logic and processors")
+        self.assertEqual(pack.sequence_order, 2)
         self.assertEqual(pack.duration_minutes, 45)
         self.assertEqual(pack.prerequisites, ("Binary inputs", "Truth-table basics"))
         self.assertEqual(pack.materials, ("Mini whiteboards", "Logic-gate reference sheet"))
@@ -93,6 +97,23 @@ class PackModelTests(unittest.TestCase):
                     "items": [{"prompt": "Question?", "answer": "Answer."}],
                 }
             )
+
+    def test_invalid_sequence_order_is_rejected(self):
+        for sequence_order in ("first", 0):
+            with self.subTest(sequence_order=sequence_order):
+                with self.assertRaisesRegex(PackValidationError, "sequence_order must be a positive integer"):
+                    pack_from_dict(
+                        {
+                            "title": "Sample",
+                            "slug": "sample-pack",
+                            "subject": "Computer Science",
+                            "level": "IGCSE",
+                            "summary": "A sample pack.",
+                            "skills": ["logic"],
+                            "sequence_order": sequence_order,
+                            "items": [{"prompt": "Question?", "answer": "Answer."}],
+                        }
+                    )
 
         with self.assertRaisesRegex(PackValidationError, "duration_minutes must be a positive integer"):
             pack_from_dict(

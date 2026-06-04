@@ -136,6 +136,10 @@ def render_catalog_markdown(packs: list[ExamPack]) -> str:
         )
         if metadata:
             lines.append(f"**Track:** {metadata}")
+        if pack.unit:
+            lines.append(f"**Unit:** {pack.unit}")
+        if pack.sequence_order:
+            lines.append(f"**Sequence:** {pack.sequence_order}")
         if pack.duration_minutes:
             lines.append(f"**Estimated time:** {pack.duration_minutes} minutes")
         if pack.prerequisites:
@@ -185,6 +189,8 @@ def _catalog_resource(pack: ExamPack, formats: set[str]) -> dict[str, object]:
         "education_system": pack.education_system,
         "exam_board": pack.exam_board,
         "course": pack.course,
+        "unit": pack.unit,
+        "sequence_order": pack.sequence_order,
         "summary": pack.summary,
         "skills": list(pack.skills),
         "learning_objectives": list(pack.learning_objectives),
@@ -260,6 +266,8 @@ def render_catalog_html(packs: list[ExamPack], formats: set[str] | None = None) 
                     f"  <p><strong>Subject:</strong> {escape(pack.subject)}</p>",
                     f"  <p><strong>Level:</strong> {escape(pack.level)}</p>",
                     *([f"  <p><strong>Track:</strong> {escape(metadata)}</p>"] if metadata else []),
+                    *([f"  <p><strong>Unit:</strong> {escape(pack.unit)}</p>"] if pack.unit else []),
+                    *([f"  <p><strong>Sequence:</strong> {pack.sequence_order}</p>"] if pack.sequence_order else []),
                     *(
                         [f"  <p><strong>Estimated time:</strong> {pack.duration_minutes} minutes</p>"]
                         if pack.duration_minutes
@@ -315,6 +323,11 @@ def _metadata_fields(pack: ExamPack) -> list[tuple[str, str]]:
             ("Education system", pack.education_system),
             ("Exam board", pack.exam_board),
             ("Course", pack.course),
+            ("Unit", pack.unit),
+            (
+                "Sequence",
+                str(pack.sequence_order) if pack.sequence_order else "",
+            ),
             (
                 "Estimated time",
                 f"{pack.duration_minutes} minutes" if pack.duration_minutes else "",

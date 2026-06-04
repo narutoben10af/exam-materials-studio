@@ -65,6 +65,7 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         ("Education Systems", _count_field(inventory.packs, "education_system")),
         ("Exam Boards", _count_field(inventory.packs, "exam_board")),
         ("Courses", _count_field(inventory.packs, "course")),
+        ("Units", _count_field(inventory.packs, "unit")),
         ("Delivery Modes", _count_list_field(inventory.packs, "delivery_modes")),
         ("Command Words", _count_command_words(inventory.packs)),
         ("Learning Phases", _count_phases(inventory.packs)),
@@ -78,11 +79,11 @@ def render_inventory_markdown(inventory: Inventory) -> str:
         [
             "## Resources",
             "",
-            "| Title | Level | Subject | Type | Course | Duration | Item Time | Marks | Rubric Points | Phases | Standards | Items | Foundation | Core | Extension | Unspecified Difficulty |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Title | Level | Subject | Type | Course | Unit | Sequence | Duration | Item Time | Marks | Rubric Points | Phases | Standards | Items | Foundation | Core | Extension | Unspecified Difficulty |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
-    for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.title)):
+    for pack in sorted(inventory.packs, key=lambda item: (item.level, item.subject, item.course, item.unit, item.sequence_order or 0, item.title)):
         difficulty_counts = _difficulty_counts_for_pack(pack)
         lines.append(
             "| "
@@ -93,6 +94,8 @@ def render_inventory_markdown(inventory: Inventory) -> str:
                     _table_cell(pack.subject),
                     _table_cell(pack.resource_type),
                     _table_cell(pack.course or "Unspecified"),
+                    _table_cell(pack.unit or "Unspecified"),
+                    str(pack.sequence_order or ""),
                     _table_cell(_duration_label(pack)),
                     str(_item_time_minutes(pack)),
                     str(_total_marks(pack)),
@@ -125,6 +128,8 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                 "education_system",
                 "exam_board",
                 "course",
+                "unit",
+                "sequence_order",
                 "duration_minutes",
                 "item_time_minutes",
                 "total_marks",
@@ -153,6 +158,8 @@ def write_inventory_csv(inventory: Inventory, path: Path) -> None:
                     "education_system": pack.education_system,
                     "exam_board": pack.exam_board,
                     "course": pack.course,
+                    "unit": pack.unit,
+                    "sequence_order": pack.sequence_order or "",
                     "duration_minutes": pack.duration_minutes or "",
                     "item_time_minutes": _item_time_minutes(pack),
                     "total_marks": _total_marks(pack),

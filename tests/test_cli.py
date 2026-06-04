@@ -279,6 +279,10 @@ items:
                         "Mathematics",
                         "--course",
                         "Fractions",
+                        "--unit",
+                        "Fraction equivalence",
+                        "--sequence-order",
+                        "4",
                         "--learning-objectives",
                         "Represent equivalent fractions with simple models;Compare fraction models",
                         "--curriculum-references",
@@ -292,6 +296,8 @@ items:
             self.assertEqual(result, 0)
             self.assertEqual(data["level"], "Primary")
             self.assertEqual(data["education_system"], "General primary")
+            self.assertEqual(data["unit"], "Fraction equivalence")
+            self.assertEqual(data["sequence_order"], 4)
             self.assertEqual(
                 data["learning_objectives"],
                 ["Represent equivalent fractions with simple models", "Compare fraction models"],
@@ -314,6 +320,10 @@ items:
                         "Mathematics",
                         "--course",
                         "Fractions",
+                        "--unit",
+                        "Fraction equivalence",
+                        "--sequence-order",
+                        "4",
                         "--learning-objectives",
                         "Represent equivalent fractions with simple models",
                         "--curriculum-references",
@@ -338,6 +348,8 @@ items:
             self.assertEqual(result, 0)
             output = output_path.read_text(encoding="utf-8")
             self.assertIn("title: Primary Fractions YAML", output)
+            self.assertIn("unit: Fraction equivalence", output)
+            self.assertIn("sequence_order: 4", output)
             self.assertIn("duration_minutes: 45", output)
             self.assertIn("Recognise equal parts", output)
             self.assertIn("Count quarters", output)

@@ -7,6 +7,8 @@
   "education_system": "Cambridge International",
   "exam_board": "Cambridge",
   "course": "0455 Economics",
+  "unit": "Basic economic problem and money",
+  "sequence_order": 1,
   "duration_minutes": 20,
   "prerequisites": [
     "Understand that resources are limited.",

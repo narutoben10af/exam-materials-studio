@@ -5,6 +5,8 @@ level: Secondary
 resource_type: source-analysis
 education_system: General secondary
 course: Historical source skills
+unit: Source reliability and usefulness
+sequence_order: 1
 duration_minutes: 30
 prerequisites:
   - Identify the author and date of a historical source.

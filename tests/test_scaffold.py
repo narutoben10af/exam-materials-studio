@@ -19,6 +19,8 @@ class ScaffoldTests(unittest.TestCase):
             education_system="General primary",
             exam_board="",
             course="Fractions",
+            unit="Equivalent fractions",
+            sequence_order=2,
             duration_minutes=30,
             prerequisites=("Count equal parts in a shape.",),
             materials=("Fraction strips", "Counters"),
@@ -41,6 +43,8 @@ class ScaffoldTests(unittest.TestCase):
             result = validate_resource(path)
 
             self.assertEqual(pack.title, "Primary Fractions Starter")
+            self.assertEqual(pack.unit, "Equivalent fractions")
+            self.assertEqual(pack.sequence_order, 2)
             self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.prerequisites, ("Count equal parts in a shape.",))
             self.assertEqual(pack.materials, ("Fraction strips", "Counters"))
@@ -73,6 +77,8 @@ class ScaffoldTests(unittest.TestCase):
             pack = load_resource(path)
 
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
+            self.assertEqual(pack.unit, "Equivalent fractions")
+            self.assertEqual(pack.sequence_order, 2)
             self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.prerequisites, ("Count equal parts in a shape.",))
             self.assertEqual(pack.materials, ("Fraction strips", "Counters"))
@@ -98,9 +104,13 @@ class ScaffoldTests(unittest.TestCase):
             output = path.read_text(encoding="utf-8")
 
             self.assertIn("title: Primary Fractions Starter", output)
+            self.assertIn("unit: Equivalent fractions", output)
+            self.assertIn("sequence_order: 2", output)
             self.assertNotIn("&id", output)
             self.assertNotIn("*id", output)
             self.assertEqual(pack.skills, ("fractions", "equivalent fractions"))
+            self.assertEqual(pack.unit, "Equivalent fractions")
+            self.assertEqual(pack.sequence_order, 2)
             self.assertEqual(pack.duration_minutes, 30)
             self.assertEqual(pack.prerequisites, ("Count equal parts in a shape.",))
             self.assertEqual(pack.materials, ("Fraction strips", "Counters"))

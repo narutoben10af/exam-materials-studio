@@ -18,6 +18,8 @@ class ScaffoldSpec:
     education_system: str
     exam_board: str
     course: str
+    unit: str
+    sequence_order: int
     duration_minutes: int
     prerequisites: tuple[str, ...]
     materials: tuple[str, ...]
@@ -50,6 +52,8 @@ def scaffold_resource(spec: ScaffoldSpec, output_path: Path, output_format: str,
         raise ScaffoldError(f"unsupported scaffold format: {output_format}")
     if spec.duration_minutes < 1:
         raise ScaffoldError("duration_minutes must be a positive integer")
+    if spec.sequence_order < 1:
+        raise ScaffoldError("sequence_order must be a positive integer")
     if output_path.exists() and not force:
         raise ScaffoldError(f"refusing to overwrite existing file: {output_path}")
 
@@ -75,6 +79,8 @@ def _resource_dict(spec: ScaffoldSpec) -> dict[str, object]:
         "education_system": spec.education_system,
         "exam_board": spec.exam_board,
         "course": spec.course,
+        "unit": spec.unit,
+        "sequence_order": spec.sequence_order,
         "duration_minutes": spec.duration_minutes,
         "prerequisites": list(spec.prerequisites),
         "materials": list(spec.materials),
@@ -150,6 +156,8 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
         "education_system",
         "exam_board",
         "course",
+        "unit",
+        "sequence_order",
         "duration_minutes",
         "prerequisites",
         "materials",
@@ -187,6 +195,8 @@ def _write_csv_scaffold(spec: ScaffoldSpec, output_path: Path) -> None:
                     "education_system": spec.education_system,
                     "exam_board": spec.exam_board,
                     "course": spec.course,
+                    "unit": spec.unit,
+                    "sequence_order": spec.sequence_order,
                     "duration_minutes": spec.duration_minutes,
                     "prerequisites": ";".join(spec.prerequisites),
                     "materials": ";".join(spec.materials),

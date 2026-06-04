@@ -7,6 +7,8 @@
   "education_system": "Cambridge International",
   "exam_board": "Cambridge",
   "course": "0478 Computer Science",
+  "unit": "Logic gates and Boolean expressions",
+  "sequence_order": 1,
   "duration_minutes": 25,
   "prerequisites": [
     "Recognise binary values 0 and 1.",
