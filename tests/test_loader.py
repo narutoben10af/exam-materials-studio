@@ -6,6 +6,64 @@ from exam_materials_studio.loader import ResourceLoadError, load_resource
 
 
 class LoaderTests(unittest.TestCase):
+    def test_loads_yaml_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "primary_fractions.yaml"
+            path.write_text(
+                """title: Primary Fractions YAML
+slug: primary-fractions-yaml
+subject: Mathematics
+level: Primary
+resource_type: worksheet
+education_system: General primary
+course: Fractions
+summary: A YAML-authored fractions resource.
+learning_objectives:
+  - Represent one half using quarters.
+curriculum_references:
+  - Local Grade 4 Fractions
+skills:
+  - equivalent fractions
+items:
+  - type: question
+    difficulty: foundation
+    prompt: Write one half as quarters.
+    answer: 2/4
+    explanation: Two quarters cover the same amount as one half.
+""",
+                encoding="utf-8",
+            )
+
+            pack = load_resource(path)
+
+            self.assertEqual(pack.title, "Primary Fractions YAML")
+            self.assertEqual(pack.slug, "primary-fractions-yaml")
+            self.assertEqual(pack.skills, ("equivalent fractions",))
+            self.assertEqual(pack.items[0].difficulty, "foundation")
+
+    def test_loads_yml_resource(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "primary_fractions.yml"
+            path.write_text(
+                """title: Primary Fractions YML
+slug: primary-fractions-yml
+subject: Mathematics
+level: Primary
+summary: A YML-authored fractions resource.
+skills:
+  - equivalent fractions
+items:
+  - prompt: Write two quarters in simplest form.
+    answer: 1/2
+""",
+                encoding="utf-8",
+            )
+
+            pack = load_resource(path)
+
+            self.assertEqual(pack.title, "Primary Fractions YML")
+            self.assertEqual(pack.items[0].answer, "1/2")
+
     def test_loads_csv_resource_rows_as_one_pack(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "primary_science.csv"

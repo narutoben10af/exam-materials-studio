@@ -21,11 +21,11 @@ jobs:
       - name: Scaffold sample resource
         run: exam-materials-studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
       - name: Validate sample resources
-        run: exam-materials-studio validate examples/*.json examples/*.csv
+        run: exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv
       - name: Inventory sample coverage
-        run: exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+        run: exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
       - name: Build sample packs
-        run: exam-materials-studio build examples/*.json examples/*.csv --out generated
+        run: exam-materials-studio build examples/*.json examples/*.yaml examples/*.csv --out generated
       - name: Check generated Markdown catalog
         run: test -s generated/index.md
       - name: Check generated JSON catalog

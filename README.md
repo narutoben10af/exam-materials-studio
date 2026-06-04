@@ -11,7 +11,7 @@ payment workflows, or commercial customer data.
 
 ## What It Does
 
-- Builds printable Markdown and HTML resources from structured JSON or CSV.
+- Builds printable Markdown and HTML resources from structured JSON, YAML, or CSV.
 - Generates separate answer keys for marking or self-study.
 - Creates static Markdown, HTML, and JSON catalog files for sharing and indexing
   available packs.
@@ -64,7 +64,7 @@ python3 -m exam_materials_studio build examples/igcse_economics_definitions.json
 Before publishing or adding a new subject area, run validation:
 
 ```bash
-exam-materials-studio validate examples/*.json --report generated/validation-report.txt
+exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --report generated/validation-report.txt
 ```
 
 Validation reports separate structural errors from quality warnings. Errors
@@ -78,7 +78,7 @@ missing item difficulty, or very short resources.
 Use the inventory command to see what the repository currently covers:
 
 ```bash
-exam-materials-studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 ```
 
 The Markdown report summarizes resources and item counts by subject, level,
@@ -132,8 +132,10 @@ refuses to overwrite existing files unless `--force` is provided.
 
 ## Resource Format
 
-Each resource can be authored as JSON or CSV. JSON is best for hand-edited
-structured files. CSV is useful when teachers are drafting in a spreadsheet.
+Each resource can be authored as JSON, YAML, or CSV. JSON is best for
+machine-generated structured files. YAML is useful for hand-edited resources
+where teachers want readable lists and indentation. CSV is useful when teachers
+are drafting in a spreadsheet.
 
 JSON resources use this shape. The `resource_type`, `education_system`,
 `exam_board`, `course`, `learning_objectives`, and `curriculum_references`
@@ -181,20 +183,41 @@ title,slug,subject,level,resource_type,education_system,exam_board,course,summar
 Primary Science Materials,primary-science-materials,Science,Primary,lesson-resource,General primary,,Materials and properties,A simple primary science resource,classification;materials,Classify everyday materials;Link properties to uses,Primary science: everyday materials,activity,foundation,Sort objects by material.,Objects are grouped by material.,This checks classification by observable properties.
 ```
 
+YAML resources use the same fields as JSON:
+
+```yaml
+title: Secondary History Source Analysis
+slug: secondary-history-source-analysis
+subject: History
+level: Secondary
+resource_type: source-analysis
+education_system: General secondary
+course: Historical source skills
+summary: A short resource for evaluating historical source reliability and usefulness.
+skills:
+  - provenance
+  - reliability
+items:
+  - type: concept-check
+    difficulty: foundation
+    prompt: Identify two provenance details a historian should check before using a source.
+    answer: The author and the date of creation.
+    explanation: Provenance details such as author, date, audience, and origin help establish context.
+```
+
 ## Development
 
 ```bash
 python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
 python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
-python3 -m exam_materials_studio validate examples/*.json examples/*.csv
-python3 -m exam_materials_studio inventory examples/*.json examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
-python3 -m exam_materials_studio build examples/*.json examples/*.csv --out generated
+python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
+python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
+python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated
 ```
 
 ## Roadmap
 
-- YAML input support.
 - PDF export through optional backends.
 - More sample resources across preschool, primary, secondary, exam-board, vocational, and university workflows.
 - More teacher-facing validation checks for missing answers, weak explanations,
