@@ -97,6 +97,25 @@ class ReleaseMetadataTests(unittest.TestCase):
         ):
             self.assertIn(expected, section)
 
+    def test_v090_release_documents_pathway_and_sequence_workflows(self):
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        section = _changelog_section(changelog, "v0.9.0")
+
+        for expected in (
+            "unit",
+            "sequence_order",
+            "pathway",
+            "CSV export",
+            "course-pack",
+            "tutoring-pathway",
+            "rendered resources",
+            "answer keys",
+            "JSON catalogs",
+            "inventory",
+            "scaffolds",
+        ):
+            self.assertIn(expected, section)
+
 
 def _project_version() -> str:
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
