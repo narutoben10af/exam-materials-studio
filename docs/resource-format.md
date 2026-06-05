@@ -223,6 +223,14 @@ missing item difficulty labels, very short resources, and thin or missing
 explanations. Missing `duration_minutes` is also reported as a
 planning-quality warning.
 
+Default validation keeps warnings non-blocking so teachers can draft and iterate.
+Use `--strict` for maintainer release checks or CI gates when warnings should
+also return a non-zero exit code:
+
+```bash
+exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt
+```
+
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.
 

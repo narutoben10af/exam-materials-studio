@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added `validate --strict` so release and CI checks can fail when quality
+  warnings are present, while default validation remains drafting-friendly.
+
 ## v0.9.0
 
 - Added CSV export support to the `pathway` command for spreadsheet-friendly

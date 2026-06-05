@@ -69,6 +69,10 @@ def has_errors(results: list[ValidationResult]) -> bool:
     return any(not result.ok for result in results)
 
 
+def has_warnings(results: list[ValidationResult]) -> bool:
+    return any(result.warnings for result in results)
+
+
 def _quality_warnings(path: Path, pack: ExamPack) -> list[ValidationMessage]:
     warnings: list[ValidationMessage] = []
 
