@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.9.0
+
 - Added CSV export support to the `pathway` command for spreadsheet-friendly
   course-pack and tutoring-pathway planning.
 - Added a `pathway` command that renders ordered Markdown learning pathways
@@ -11,9 +13,9 @@
 - Added resource-level `unit` and `sequence_order` metadata so resources can be
   organized into lesson sequences, course packs, tutoring pathways, modules, and
   study-guide progressions.
-- Added unit and sequence output to rendered resources, answer keys, JSON
-  catalogs, Markdown inventory summaries, CSV inventory exports, scaffolds, and
-  bundled examples.
+- Added unit and sequence output to rendered resources, answer keys,
+  JSON catalogs, Markdown inventory summaries, CSV inventory exports,
+  scaffolds, and bundled examples.
 
 ## v0.8.0
 
