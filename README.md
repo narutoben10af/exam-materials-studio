@@ -15,7 +15,8 @@ payment workflows, or commercial customer data.
 - Generates separate answer keys for marking or self-study.
 - Creates static Markdown, HTML, and JSON catalog files for sharing and indexing
   available packs.
-- Validates resource structure before output is written.
+- Validates resource structure before output is written, with optional strict
+  mode for release and CI quality gates.
 - Renders ordered Markdown learning pathways from course, unit, and sequence
   metadata, with optional CSV export for spreadsheet planning.
 - Supports optional metadata for education systems, exam boards, courses, and
@@ -97,6 +98,12 @@ return a non-zero exit code. Warnings call out weaker maintainer signals such as
 missing education-system metadata, missing course fields, thin answer-key
 explanations, missing learning objectives, missing curriculum references,
 missing estimated duration, missing item difficulty, or very short resources.
+Use `--strict` for CI or release checks when warnings should also fail the
+command:
+
+```bash
+exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt
+```
 
 ## Inventory Coverage
 
@@ -327,7 +334,7 @@ python3 -m unittest discover -s tests
 python3 -m exam_materials_studio presets --out generated/scaffold-presets.md
 python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions Starter" --subject Mathematics --course Fractions --unit "Equivalent fractions" --sequence-order 1 --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --out generated/primary-fractions-starter.json
 python3 -m exam_materials_studio scaffold --preset primary --title "Primary Fractions YAML Starter" --subject Mathematics --course Fractions --unit "Equivalent fractions" --sequence-order 2 --delivery-modes "classroom;tutoring" --learning-objectives "Represent equivalent fractions with simple models" --curriculum-references "Local Grade 4 Fractions" --skills "fractions;equivalent fractions" --format yaml --out generated/primary-fractions-yaml-starter.yaml
-python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv
+python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv --strict
 python3 -m exam_materials_studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
 python3 -m exam_materials_studio pathway examples/*.json examples/*.yaml examples/*.csv --out generated/pathway.md --csv generated/pathway.csv
 python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated

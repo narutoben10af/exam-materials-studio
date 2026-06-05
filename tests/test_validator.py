@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from exam_materials_studio.validator import has_errors, render_validation_report, validate_resource
+from exam_materials_studio.validator import has_errors, has_warnings, render_validation_report, validate_resource
 
 
 class ValidatorTests(unittest.TestCase):
@@ -92,6 +92,7 @@ class ValidatorTests(unittest.TestCase):
 
             self.assertTrue(result.ok)
             self.assertFalse(has_errors([result]))
+            self.assertTrue(has_warnings([result]))
             self.assertIn("Warnings:", report)
             self.assertIn("education_system is missing", report)
             self.assertIn("learning_objectives is missing", report)

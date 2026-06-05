@@ -159,6 +159,61 @@ items:
             self.assertEqual(result, 0)
             self.assertIn("PASS", report_path.read_text(encoding="utf-8"))
 
+    def test_validate_packs_strict_mode_fails_on_quality_warnings(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.json"
+            report_path = root / "reports" / "validation.txt"
+            pack_path.write_text(
+                json.dumps(
+                    {
+                        "title": "Thin Primary Resource",
+                        "slug": "thin-primary-resource",
+                        "subject": "Mathematics",
+                        "level": "Primary",
+                        "summary": "A thin resource.",
+                        "skills": ["addition"],
+                        "items": [{"prompt": "1 + 1", "answer": "2"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                default_result = validate_packs([pack_path], report_path)
+            with redirect_stdout(StringIO()):
+                strict_result = validate_packs([pack_path], report_path, strict=True)
+
+            self.assertEqual(default_result, 0)
+            self.assertEqual(strict_result, 1)
+            report = report_path.read_text(encoding="utf-8")
+            self.assertIn("Warnings:", report)
+            self.assertIn("education_system is missing", report)
+
+    def test_main_validate_accepts_strict_flag(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.json"
+            pack_path.write_text(
+                json.dumps(
+                    {
+                        "title": "Thin Primary Resource",
+                        "slug": "thin-primary-resource",
+                        "subject": "Mathematics",
+                        "level": "Primary",
+                        "summary": "A thin resource.",
+                        "skills": ["addition"],
+                        "items": [{"prompt": "1 + 1", "answer": "2"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = main(["validate", "--strict", str(pack_path)])
+
+            self.assertEqual(result, 1)
+
     def test_inventory_packs_writes_markdown_and_csv_reports(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
