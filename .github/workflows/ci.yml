@@ -25,7 +25,11 @@ jobs:
       - name: Validate scaffolded YAML resource
         run: exam-materials-studio validate generated/primary-fractions-yaml-starter.yaml
       - name: Validate sample resources
-        run: exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv
+        run: exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt --json-report generated/validation-report.json
+      - name: Check validation reports
+        run: |
+          test -s generated/validation-report.txt
+          python -m json.tool generated/validation-report.json >/dev/null
       - name: Inventory sample coverage
         run: exam-materials-studio inventory examples/*.json examples/*.yaml examples/*.csv --out generated/inventory.md --csv generated/inventory.csv
       - name: Build sample packs

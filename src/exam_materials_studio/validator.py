@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -65,12 +66,46 @@ def render_validation_report(results: list[ValidationResult]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
+def render_validation_json(results: list[ValidationResult]) -> str:
+    resources = []
+    for result in results:
+        resources.append(
+            {
+                "path": str(result.path),
+                "title": result.pack.title if result.pack else result.path.name,
+                "status": "pass" if result.ok else "fail",
+                "errors": [_message_to_dict(message) for message in result.errors],
+                "warnings": [_message_to_dict(message) for message in result.warnings],
+            }
+        )
+
+    total_errors = sum(len(result.errors) for result in results)
+    total_warnings = sum(len(result.warnings) for result in results)
+    failed = sum(not result.ok for result in results)
+    report = {
+        "schema_version": 1,
+        "summary": {
+            "checked": len(results),
+            "passed": len(results) - failed,
+            "failed": failed,
+            "errors": total_errors,
+            "warnings": total_warnings,
+        },
+        "resources": resources,
+    }
+    return json.dumps(report, indent=2, sort_keys=True) + "\n"
+
+
 def has_errors(results: list[ValidationResult]) -> bool:
     return any(not result.ok for result in results)
 
 
 def has_warnings(results: list[ValidationResult]) -> bool:
     return any(result.warnings for result in results)
+
+
+def _message_to_dict(message: ValidationMessage) -> dict[str, str]:
+    return {"level": message.level, "message": message.message}
 
 
 def _quality_warnings(path: Path, pack: ExamPack) -> list[ValidationMessage]:

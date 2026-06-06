@@ -17,7 +17,13 @@ from .renderer import (
     render_pack_markdown,
 )
 from .scaffold import ScaffoldError, ScaffoldSpec, default_slug, scaffold_resource
-from .validator import has_errors, has_warnings, render_validation_report, validate_resources
+from .validator import (
+    has_errors,
+    has_warnings,
+    render_validation_json,
+    render_validation_report,
+    validate_resources,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -42,6 +48,11 @@ def main(argv: list[str] | None = None) -> int:
         "--report",
         type=Path,
         help="Optional path for writing the validation report",
+    )
+    validate_parser.add_argument(
+        "--json-report",
+        type=Path,
+        help="Optional path for writing a machine-readable JSON validation report",
     )
     validate_parser.add_argument(
         "--strict",
@@ -156,7 +167,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "build":
         return build_packs(args.packs, args.out, _parse_formats(args.formats))
     if args.command == "validate":
-        return validate_packs(args.packs, args.report, strict=args.strict)
+        return validate_packs(
+            args.packs,
+            args.report,
+            strict=args.strict,
+            json_report_path=args.json_report,
+        )
     if args.command == "inventory":
         return inventory_packs(args.packs, args.out, args.csv)
     if args.command == "pathway":
@@ -203,13 +219,21 @@ def build_packs(pack_paths: list[Path], output_dir: Path, formats: set[str]) -> 
     return 0
 
 
-def validate_packs(pack_paths: list[Path], report_path: Path | None = None, strict: bool = False) -> int:
+def validate_packs(
+    pack_paths: list[Path],
+    report_path: Path | None = None,
+    strict: bool = False,
+    json_report_path: Path | None = None,
+) -> int:
     results = validate_resources(pack_paths)
     report = render_validation_report(results)
     print(report, end="")
     if report_path:
         report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(report, encoding="utf-8")
+    if json_report_path:
+        json_report_path.parent.mkdir(parents=True, exist_ok=True)
+        json_report_path.write_text(render_validation_json(results), encoding="utf-8")
     if has_errors(results):
         return 1
     if strict and has_warnings(results):

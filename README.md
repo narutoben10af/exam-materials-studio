@@ -16,7 +16,8 @@ payment workflows, or commercial customer data.
 - Creates static Markdown, HTML, and JSON catalog files for sharing and indexing
   available packs.
 - Validates resource structure before output is written, with optional strict
-  mode for release and CI quality gates.
+  mode and machine-readable JSON reports for release, CI, and integration
+  workflows.
 - Renders ordered Markdown learning pathways from course, unit, and sequence
   metadata, with optional CSV export for spreadsheet planning.
 - Supports optional metadata for education systems, exam boards, courses, and
@@ -104,6 +105,16 @@ command:
 ```bash
 exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt
 ```
+
+Add `--json-report` when CI, dashboards, or other tools need structured results:
+
+```bash
+exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt --json-report generated/validation-report.json
+```
+
+The versioned JSON report includes aggregate checked, passed, failed, error,
+and warning counts plus each resource's path, title, status, errors, and
+warnings.
 
 ## Inventory Coverage
 
