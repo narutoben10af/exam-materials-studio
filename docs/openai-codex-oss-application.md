@@ -22,7 +22,10 @@ path beyond exam packs into lesson materials, activity sheets, worksheets, and
 study guides across preschool through university workflows. The repository also
 includes a validation command that maintainers can use to triage resource
 quality before publishing, plus a strict validation mode for release and CI
-checks where quality warnings should block publication. It also supports hand-editable YAML and
+checks where quality warnings should block publication. Validation can also
+write a versioned JSON report with aggregate counts and structured per-resource
+messages, allowing CI systems, dashboards, and future education tools to use
+quality results without scraping terminal output. It also supports hand-editable YAML and
 spreadsheet-friendly CSV input, so teachers can draft resources in familiar
 tools before generating Markdown, HTML, answer keys, and catalogs. The
 inventory command gives maintainers a way to

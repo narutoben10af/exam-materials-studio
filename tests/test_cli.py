@@ -214,6 +214,85 @@ items:
 
             self.assertEqual(result, 1)
 
+    def test_validate_packs_writes_machine_readable_json_report(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "resource.json"
+            json_report_path = root / "reports" / "validation.json"
+            pack_path.write_text(
+                json.dumps(
+                    {
+                        "title": "Primary Fractions Worksheet",
+                        "slug": "primary-fractions-worksheet",
+                        "subject": "Mathematics",
+                        "level": "Primary",
+                        "resource_type": "worksheet",
+                        "education_system": "General primary",
+                        "course": "Fractions",
+                        "duration_minutes": 25,
+                        "learning_objectives": ["Represent equivalent fractions."],
+                        "curriculum_references": ["Primary mathematics: fractions"],
+                        "summary": "Practice equivalent fractions.",
+                        "skills": ["equivalent fractions"],
+                        "items": [
+                            {
+                                "prompt": "Write one half as quarters.",
+                                "answer": "2/4",
+                                "explanation": "Two quarters cover the same amount as one half.",
+                                "difficulty": "foundation",
+                            },
+                            {
+                                "prompt": "Simplify two quarters.",
+                                "answer": "1/2",
+                                "explanation": "Divide the numerator and denominator by two.",
+                                "difficulty": "core",
+                            },
+                            {
+                                "prompt": "Explain why 3/6 equals 1/2.",
+                                "answer": "Both parts divide by three.",
+                                "explanation": "Dividing three and six by three produces one half.",
+                                "difficulty": "extension",
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with redirect_stdout(StringIO()):
+                result = validate_packs([pack_path], json_report_path=json_report_path)
+
+            self.assertEqual(result, 0)
+            report = json.loads(json_report_path.read_text(encoding="utf-8"))
+            self.assertEqual(report["summary"]["checked"], 1)
+            self.assertEqual(report["summary"]["failed"], 0)
+            self.assertEqual(report["resources"][0]["status"], "pass")
+
+    def test_main_validate_accepts_json_report_flag(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            pack_path = root / "broken.json"
+            report_path = root / "reports" / "validation.json"
+            pack_path.write_text('{"title": "Broken"}', encoding="utf-8")
+
+            with redirect_stdout(StringIO()):
+                try:
+                    result = main(
+                        [
+                            "validate",
+                            "--json-report",
+                            str(report_path),
+                            str(pack_path),
+                        ]
+                    )
+                except SystemExit as error:
+                    self.fail(f"validate rejected --json-report with exit code {error.code}")
+
+            self.assertEqual(result, 1)
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            self.assertEqual(report["summary"]["errors"], 1)
+            self.assertEqual(report["resources"][0]["status"], "fail")
+
     def test_inventory_packs_writes_markdown_and_csv_reports(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)

@@ -234,6 +234,19 @@ exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --
 Use `--report path/to/report.txt` to save a report for release checks or pull
 request review.
 
+Use `--json-report path/to/report.json` to save the same validation run in a
+versioned, machine-readable format:
+
+```bash
+exam-materials-studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt --json-report generated/validation-report.json
+```
+
+The JSON report contains a summary with checked, passed, failed, error, and
+warning counts. Its `resources` array records each input path, display title,
+pass/fail status, and structured error and warning messages. This allows CI,
+dashboards, static-site pipelines, and future education tools to consume
+validation results without parsing console output.
+
 ## Inventory Reports
 
 Run:

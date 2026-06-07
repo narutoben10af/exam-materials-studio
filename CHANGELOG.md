@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added `validate --json-report` for versioned, machine-readable validation
+  summaries and structured per-resource errors and warnings.
 - Added `validate --strict` so release and CI checks can fail when quality
   warnings are present, while default validation remains drafting-friendly.
 

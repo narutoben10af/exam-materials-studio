@@ -20,7 +20,7 @@ Please avoid committing:
 Before opening a pull request, run:
 
 ```bash
-python3 -m unittest discover
-python3 -m exam_materials_studio build examples/igcse_computer_science_boolean_logic.json --out generated
+PYTHONPATH=src python3 -m unittest discover -s tests
+PYTHONPATH=src python3 -m exam_materials_studio validate examples/*.json examples/*.yaml examples/*.csv --strict --report generated/validation-report.txt --json-report generated/validation-report.json
+PYTHONPATH=src python3 -m exam_materials_studio build examples/*.json examples/*.yaml examples/*.csv --out generated
 ```
-
